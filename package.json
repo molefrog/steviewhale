@@ -1,6 +1,7 @@
 {
   "name": "printiculo",
   "version": "0.0.0",
+  "repository" : "https://github.com/molefrog/printiculo.git",
   "description": "Real-Time printing system",
   "main": "index.coffee",
   "dependencies": {
