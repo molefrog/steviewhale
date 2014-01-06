@@ -1,0 +1,26 @@
+{
+  "name": "printiculo",
+  "version": "0.0.0",
+  "description": "Real-Time printing system",
+  "main": "index.coffee",
+  "dependencies": {
+    "express": "~3.4.7",
+    "instagram-node-lib": "~0.1.1",
+    "socket.io": "~0.9.16",
+    "socket.io-client": "~0.9.16",
+    "lodash": "~2.4.1",
+    "cupsidity": "0.0.1",
+    "request": "~2.30.0",
+    "nconf": "~0.6.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "print",
+    "instagram"
+  ],
+  "author": "molefrog",
+  "license": "MIT"
+}
