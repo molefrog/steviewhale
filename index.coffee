@@ -23,7 +23,7 @@ Instagram.set "client_secret", 	config.get "instagram:secret"
 hashtag = config.get "hashtag"
 
 processed = []
-checkInterval = 3000
+checkInterval = 5000
 
 download = (uri, filename, cb) ->
 	r = request(uri).pipe(fs.createWriteStream(filename))
@@ -38,13 +38,13 @@ processItem = (data, cb) ->
 
 	filename = "download/" + data.id + ".jpg"
 	download data.images.standard_resolution.url, filename , ->
-		cups.printFile
+		jobId = cups.printFile
 			dest : cups.getDefault()
 			title : filename
 			filename : filename
 			options : 
 				media : "Postcard(4x6in)"
-
+		console.log "Jobid", jobId
 		do cb
 
 
@@ -64,10 +64,13 @@ run = ->
 			if portion.length > 0 
 				processItem portion[0], ->
 					processed.push portion[0].id
-					do run
+					setTimeout run, checkInterval
 			else
 				setTimeout run, checkInterval
 
+		error: (err) ->
+			console.log "Instagram error", err
+			setTimeout run, checkInterval
 
 
 
