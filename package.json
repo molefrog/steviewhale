@@ -1,7 +1,7 @@
 {
   "name": "printiculo",
   "version": "0.0.0",
-  "repository" : "https://github.com/molefrog/printiculo.git",
+  "repository": "https://github.com/molefrog/printiculo.git",
   "description": "Real-Time printing system",
   "main": "index.coffee",
   "dependencies": {
@@ -11,7 +11,8 @@
     "lodash": "~2.4.1",
     "cupsidity": "0.0.1",
     "request": "~2.30.0",
-    "nconf": "~0.6.9"
+    "nconf": "~0.6.9",
+    "winston": "~0.7.2"
   },
   "devDependencies": {},
   "scripts": {

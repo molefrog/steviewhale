@@ -3,11 +3,14 @@ cups 		= require "cupsidity"
 request 	= require "request"
 _  			= require "lodash"
 fs 			= require "fs"
-
+log         = require "./log"
+	
 module.exports = (hashtag) ->
 	processed = []
 	checkInterval = 4000
 
+	log.info "Instagram watcher started ##{hashtag}, check interval: #{checkInterval}"
+	
 	download = (uri, filename, cb) ->
 		r = request(uri).pipe(fs.createWriteStream(filename))
 		r.on "close", cb
@@ -17,7 +20,7 @@ module.exports = (hashtag) ->
 		if data.type != "image"
 			return do cb
 
-		console.log data.user.username, "posted image at", data.link
+		log.info "#{data.user.username} posted image at #{data.link}"
 
 		# Doesn't work until app gets whitelisted
 		#
@@ -38,7 +41,8 @@ module.exports = (hashtag) ->
 				filename : filename
 				options : 
 					media : "Postcard(4x6in)"
-			console.log "Jobid", jobId
+
+			log.info "Cupsidity in action job id #{jobId}"
 			do cb
 
 
@@ -46,7 +50,7 @@ module.exports = (hashtag) ->
 			name: hashtag,
 			complete : (data) ->
 				processed = _.map data, (d) -> d.id
-				console.log "Instagram watcher started"
+				log.info "Got initial portion: #{processed.length} media items"
 				do run
 
 	run = ->
@@ -56,8 +60,6 @@ module.exports = (hashtag) ->
 				portion = _.filter data, (d) ->
 					not _.contains processed, d.id
 
-				console.log portion.length
-
 				if portion.length > 0 
 					processItem portion[0], ->
 						processed.push portion[0].id
@@ -66,5 +68,5 @@ module.exports = (hashtag) ->
 					setTimeout run, checkInterval
 
 			error: (err) ->
-				console.log "Instagram error", err
+				log.error "Instagram error", err
 				setTimeout run, checkInterval

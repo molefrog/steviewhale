@@ -1,5 +1,6 @@
 Instagram 	= require "instagram-node-lib"
 express 	= require "express"
+log 		= require "./app/log"
 
 ##
 # Config file
@@ -21,7 +22,7 @@ Instagram.set "client_id", 		config.get "instagram:id"
 Instagram.set "client_secret", 	config.get "instagram:secret"
 Instagram.set "redirect_uri",	config.get "instagram:redirect_uri"
 
-watcher = require "./watcher"
+watcher = require "./app/watcher"
 watcher config.get "hashtag"
 
 
@@ -30,8 +31,13 @@ watcher config.get "hashtag"
 ##
 app = express()
 
-app.listen 3030, (err) ->
-	console.log "Server started"
+port = 3030
+app.listen port, (err) ->
+	if err
+		log.error "Web server error #{err}"
+		process.exit 0
+
+	log.info "Web server started on port #{port}"
 
 app.get "/", (req, res) ->
 	url = Instagram.oauth.authorization_url
