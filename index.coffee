@@ -1,8 +1,5 @@
 Instagram 	= require "instagram-node-lib"
-cups 		= require "cupsidity"
-request 	= require "request"
-_  			= require "lodash"
-fs 			= require "fs"
+express 	= require "express"
 
 ##
 # Config file
@@ -17,60 +14,42 @@ config.defaults
 config.file({ file: config.get "config-file" })
 
 
+##
+# Setting up instagram client
+##
 Instagram.set "client_id", 		config.get "instagram:id"
 Instagram.set "client_secret", 	config.get "instagram:secret"
+Instagram.set "redirect_uri",	config.get "instagram:redirect_uri"
 
-hashtag = config.get "hashtag"
-
-processed = []
-checkInterval = 5000
-
-download = (uri, filename, cb) ->
-	r = request(uri).pipe(fs.createWriteStream(filename))
-	r.on("close", cb)
+watcher = require "./watcher"
+watcher config.get "hashtag"
 
 
-processItem = (data, cb) ->
-	if data.type != "image"
-		return do cb
+##
+# Web-server routes
+##
+app = express()
 
-	console.log data.user.username, "posted image at", data.link
+app.listen 3030, (err) ->
+	console.log "Server started"
 
-	filename = "download/" + data.id + ".jpg"
-	download data.images.standard_resolution.url, filename , ->
-		jobId = cups.printFile
-			dest : cups.getDefault()
-			title : filename
-			filename : filename
-			options : 
-				media : "Postcard(4x6in)"
-		console.log "Jobid", jobId
-		do cb
+app.get "/", (req, res) ->
+	url = Instagram.oauth.authorization_url
+		scope: 'comments likes'
+		display: 'touch'
 
+	res.redirect url
 
-Instagram.tags.recent
-		name: hashtag,
-		complete : (data) ->
-			processed = _.map data, (d) -> d.id
-			do run
+app.get "/oauth", (req, res) ->
+	Instagram.oauth.ask_for_access_token
+		request : req 
+		response : res 
+		
+		complete: (params, response) ->
+			Instagram.set "access_token", params["access_token"]
 
-run = ->
-	Instagram.tags.recent
-		name: hashtag,
-		complete : (data) ->
-			portion = _.filter data, (d) ->
-				not _.contains processed, d.id
+			response.send 200
 
-			if portion.length > 0 
-				processItem portion[0], ->
-					processed.push portion[0].id
-					setTimeout run, checkInterval
-			else
-				setTimeout run, checkInterval
-
-		error: (err) ->
-			console.log "Instagram error", err
-			setTimeout run, checkInterval
-
-
+		error: (errorMessage, errorObject, caller, response) ->
+			response.send 406
 
