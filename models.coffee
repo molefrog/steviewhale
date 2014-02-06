@@ -15,15 +15,6 @@ config.defaults
 config.file({ file: config.get "config-file" })
 
 
-
-###
-Mongoose stuff
-###
-
-mongoose = require "mongoose"
-mongoose.connect config.get "mongo:url"
-
-
 ##
 # Setting up instagram client
 ##
