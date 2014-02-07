@@ -1,0 +1,8 @@
+extends layout
+
+block content
+	form(role="form" name="login" action="/" method="get")
+			input.form-control(type="text" name="username" placeholder="Username")
+			input.form-control(type="password" name="password" placeholder="Password")
+
+			button.btn.btn-default(type="submit") Login
