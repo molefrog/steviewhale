@@ -16,6 +16,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start" : "coffee index.coffee",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
