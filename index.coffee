@@ -13,6 +13,7 @@ mongoose = require "mongoose"
 
 mongoose.connect config.get "mongo:url"
 
+# require "./app/services/watcher"
 
 app.set "port", config.get "port"
 

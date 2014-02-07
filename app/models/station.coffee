@@ -1,6 +1,7 @@
 mongoose = require "mongoose"
+Schema   = mongoose.Schema
 
-stationSchema = new mongoose.Schema 
+stationSchema = new Schema 
 	# The name of the station is used as a main id
 	name : 
 		type      : String 
