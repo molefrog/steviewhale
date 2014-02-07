@@ -1,8 +1,11 @@
 express    = require "express"
 multiparty = require "connect-multiparty"
+passport   = require "passport"
 
 config = require "./app/utils/config"
 log    = require "./app/utils/log"
+
+User = require "./app/models/user"
 
 app = do express
 
@@ -10,9 +13,14 @@ app.set "views", "#{__dirname}/app/views"
 app.set "view engine", "jade"
 
 app.configure "all", ->
+	app.use express.cookieParser()	
 	app.use multiparty()
 	app.use express.json()
 	app.use express.urlencoded()
+	app.use express.session({ secret : "keyboard cat" })
+	app.use passport.initialize()
+	app.use passport.session()
+
 	app.use "/api", require "./app/api"
 	app.use app.router
 	app.use express.static "#{__dirname}/public"

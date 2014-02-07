@@ -14,7 +14,10 @@
     "winston": "~0.7.2",
     "mongoose": "~3.8.6",
     "jade": "~1.1.5",
-    "connect-multiparty": "~1.0.3"
+    "connect-multiparty": "~1.0.3",
+    "password-hash": "~1.2.1",
+    "passport": "~0.2.0",
+    "passport-local": "~0.1.6"
   },
   "devDependencies": {},
   "scripts": {
