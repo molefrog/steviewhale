@@ -48,4 +48,7 @@ app.listen config.get("web:port"), (err) ->
 	else
 		log.info "Web server started on port #{config.get('web:port')}"
 
+# Start instagram watcher
+do (require "./app/services/watcher")
+
 

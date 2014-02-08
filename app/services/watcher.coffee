@@ -1,97 +1,89 @@
 Instagram 	= require "instagram-node-lib"
-cups 		= require "cupsidity"
-request 	= require "request"
 _  			= require "lodash"
-fs 			= require "fs"
+async       = require "async"
 
+# Util objects
 log         = require "../utils/log"
 config		= require "../utils/config"
 
-Instagram.set "client_id", 		config.get "instagram:id"
-Instagram.set "client_secret", 	config.get "instagram:secret"
-
-
+# Local models
 Shot = require "../models/shot"
 
-Instagram.tags.recent
-	name: "printiculo",
-	complete : (data) ->
-		processed = _.map data, (d) -> d.id
 
-		_.each data, (item) ->
-			shot = new Shot
-				source : item.images.standard_resolution.url
-				hash : item.id
-				instagram : item
+module.exports = ->
 
-			shot.save (err) ->
-				console.log "saved"
+	Instagram.set "client_id", 		config.get "instagram:id"
+	Instagram.set "client_secret", 	config.get "instagram:secret"
 
-		log.info "Got initial portion: #{processed.length} media items"
+	hashtag       = config.get "instagram:hashtag"
+	processed     = []
+	checkInterval = config.get "instagram:interval"
+
+	##
+	# This function processes one instagram item 
+	## 
+	processItem = (data, cb) ->
+		if data.type != "image"
+			return cb null
+
+		log.info "#{data.user.username} posted image at #{data.link}"
+
+		# TODO: save image and thumbnail to Amazon S3
+		# Instagram item can be deleted!
+
+		shot = new Shot
+			hash      : data.id
+			image     : data.images.standard_resolution.url
+			thumbnail : data.images.thumbnail.url
+			instagram : data
+
+		shot.save (err) ->
+			if err 
+				log.error "Error saving new shot item #{err}" 
+
+			# The default behaviour of async.each is to stop the whole process when 
+			# even just one item has failed.
+			# We prevent this situation by ignoring 'save' error handling 
+
+			return cb null
+
+	##
+	# This function is used to check whether a new portion of media is 
+	# available on Instagram
+	##
+	checkInstagram = ->
+		Instagram.tags.recent
+			name: hashtag,
+			complete : (data) ->
+				portion = _.filter data, (d) ->
+					not _.contains processed, d.id
+
+				async.each portion, processItem, (err) ->
+					
+					# Mark this portion as processed
+					_.each portion, (d) ->
+						processed.push d.id
+
+					setTimeout checkInstagram, checkInterval
+
+			error: (err) ->
+				log.error "Instagram error", err
+				setTimeout checkInstagram, checkInterval
+
+
+	# Get initial data
+	Instagram.tags.recent
+		name: hashtag,
+		complete : (data) ->
+			processed = _.map data, (d) -> d.id
+			log.info "Got initial portion: #{processed.length} media items"
+			log.info "Starting watcher. Interval: #{checkInterval}ms"
+			do checkInstagram
+
+
+
+
 	
+
+
 	
-# module.exports = (hashtag) ->
-# 	processed = []
-# 	checkInterval = 4000
-
-# 	log.info "Instagram watcher started ##{hashtag}, check interval: #{checkInterval}"
-	
-# 	download = (uri, filename, cb) ->
-# 		r = request(uri).pipe(fs.createWriteStream(filename))
-# 		r.on "close", cb
-
-
-# 	processItem = (data, cb) ->
-# 		if data.type != "image"
-# 			return do cb
-
-# 		log.info "#{data.user.username} posted image at #{data.link}"
-
-# 		# Doesn't work until app gets whitelisted
-# 		#
-# 		# Instagram.media.comment
-# 		# 	media_id: data.id
-# 		# 	access_token : access_token
-# 		# 	text: 'Instagame was here.'
-# 		# 	complete : ->
-# 		# 		console.log "complete"
-# 		# 	error : (errorMessage, errorObject, caller, response) ->
-# 		# 		console.log errorMessage, errorMessage, caller, response
-
-# 		filename = "download/" + data.id + ".jpg"
-# 		download data.images.standard_resolution.url, filename , ->
-# 			jobId = cups.printFile
-# 				dest : cups.getDefault()
-# 				title : filename
-# 				filename : filename
-# 				options : 
-# 					media : "Postcard(4x6in)"
-
-# 			log.info "Cupsidity in action job id #{jobId}"
-# 			do cb
-
-
-# 	Instagram.tags.recent
-# 			name: hashtag,
-# 			complete : (data) ->
-# 				processed = _.map data, (d) -> d.id
-# 				log.info "Got initial portion: #{processed.length} media items"
-# 				do run
-
-# 	run = ->
-# 		Instagram.tags.recent
-# 			name: hashtag,
-# 			complete : (data) ->
-# 				portion = _.filter data, (d) ->
-# 					not _.contains processed, d.id
-
-# 				if portion.length > 0 
-# 					processItem portion[0], ->
-# 						processed.push portion[0].id
-# 						setTimeout run, checkInterval
-# 				else
-# 					setTimeout run, checkInterval
-
-# 			error: (err) ->
-# 				log.error "Instagram error", err
-# 				setTimeout run, checkInterval

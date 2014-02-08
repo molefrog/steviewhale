@@ -18,9 +18,12 @@ shotSchema = new Schema
 		default : "initial"
 
 	# URL to a photo
-	source : 
+	image : 
 		type : String
 		required : true
+
+	thumbnail :
+		type : String
 
 	# Printer
 	printed_on : 
