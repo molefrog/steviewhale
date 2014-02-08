@@ -18,7 +18,9 @@
     "password-hash": "~1.2.1",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "redis": "~0.10.0",
+    "connect-redis": "~1.4.6"
   },
   "devDependencies": {},
   "scripts": {
