@@ -17,7 +17,9 @@ app.configure "all", ->
 	app.use multiparty()
 	app.use express.json()
 	app.use express.urlencoded()
-	app.use express.session({ secret : "keyboard cat" })
+	app.use express.session
+		secret : config.get "web:cookieSecret"
+
 	app.use passport.initialize()
 	app.use passport.session()
 
@@ -40,10 +42,10 @@ mongoose.connect config.get("db:mongo"), (err) ->
 		log.error "MongoDB connection error #{err}"
 
 # Start express http server
-app.listen config.get("port"), (err) ->
+app.listen config.get("web:port"), (err) ->
 	if err
 		log.error "Web server error #{err}"
 	else
-		log.info "Web server started on port #{config.get('port')}"
+		log.info "Web server started on port #{config.get('web:port')}"
 
 
