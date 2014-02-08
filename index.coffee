@@ -61,8 +61,12 @@ app.listen config.get("web:port"), (err) ->
 		log.error "Web server error #{err}"
 	else
 		log.info "Web server started on port #{config.get('web:port')}"
+##
+# Services
+##
 
 # Start instagram watcher
 do (require "./app/services/watcher")
+# do (require "./app/services/pool")
 
 
