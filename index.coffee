@@ -44,6 +44,11 @@ app.configure "all", ->
 
 	(require "./app/routes")(app)
 
+server = (require "http").createServer app 
+io = (require "socket.io").listen server
+
+io.set "log level", 0
+
 ###
 # Application startup
 # TODO: Make this calls to execute in series (using deferred) at startup
@@ -56,7 +61,7 @@ mongoose.connect config.get("db:mongo"), (err) ->
 		log.error "MongoDB connection error #{err}"
 
 # Start express http server
-app.listen config.get("web:port"), (err) ->
+server.listen config.get("web:port"), (err) ->
 	if err
 		log.error "Web server error #{err}"
 	else
@@ -67,6 +72,6 @@ app.listen config.get("web:port"), (err) ->
 
 # Start instagram watcher
 do (require "./app/services/watcher")
-# do (require "./app/services/pool")
+(require "./app/services/pool") io
 
 

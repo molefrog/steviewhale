@@ -1,12 +1,10 @@
-# socketio = require "socket.io"
+config = require "../utils/config"
+log    = require "../utils/log"
 
-# config = require "../utils/config"
-# log    = require "../utils/log"
+module.exports = (io) ->
+	pool = io.of "/pool"
 
-# module.exports = ->
-# 	io = socketio.listen config.get "pool:port"
-
-# 	io.sockets.on "connection", (socket) ->
-# 		console.log socket
-
-# 	return io
+	pool.on "connection", (socket) ->
+		
+		socket.on "handshake", (user, password, cb) ->
+			cb true
