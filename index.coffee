@@ -41,9 +41,7 @@ app.configure "all", ->
 	app.use app.router
 	app.use express.static "#{__dirname}/public"
 	app.use express.errorHandler()
-
-	(require "./app/routes")(app)
-
+	
 server = (require "http").createServer app 
 io = (require "socket.io").listen server
 

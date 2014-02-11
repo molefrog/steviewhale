@@ -13,16 +13,27 @@ passport.deserializeUser (id, done) ->
 	User.findById id, done
 
 ###
-# Get all shots
+# Login function
 ###
 exports.login = (req, res, next) ->
 	res.json
 		user : req.user
 
 ###
-# Get specified shot 
+# Logout function 
 ###
 exports.logout = (req, res, next) ->
 	req.logout()
 	res.json {}
  
+###
+# Get authentication status
+###
+exports.index = (req, res, next) ->
+	if req.user?
+		res.send 
+			auth : true
+			user : req.user
+	else
+		res.send 
+			auth : false	

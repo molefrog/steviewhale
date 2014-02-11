@@ -27,4 +27,6 @@ app.get    "/shots/:id", 	  ShotController.show
 app.delete "/shots/:id",      Authenticated, ShotController.delete
 
 app.post 	"/auth/login", 	  passport.authenticate("local"), AuthController.login
-app.post 	"/auth/logout",   AuthController.logout 
+app.post 	"/auth/logout",   Authenticated, AuthController.logout 
+app.get 	"/auth",          AuthController.index
+

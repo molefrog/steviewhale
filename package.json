@@ -20,7 +20,8 @@
     "passport-local": "~0.1.6",
     "async": "~0.2.10",
     "redis": "~0.10.0",
-    "connect-redis": "~1.4.6"
+    "connect-redis": "~1.4.6",
+    "kue": "~0.7.4"
   },
   "devDependencies": {},
   "scripts": {
