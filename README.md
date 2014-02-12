@@ -1,9 +1,30 @@
 # Printiculo
 ### Real-Time Printing Experience
 
-### Deployment Process
-First of all, make sure you have `node.js` installed.
+### Directory Structure
+ 1. `app/` Client-side logic (front-end): scripts, assets, styles, templates etc. The content of this folder is used by Brunch to build `public/` directory.
+ 2. `server/` Server-side logic (back-end).
+ 3. `public/` The folder contains built static files. The files inside this folder are generated automaticaly!
 
+
+### Building Process
+First of all, make sure you have `node.js` installed.
+ * Install development tools:
+```
+npm install -g coffee-script bower brunch
+```
+ * Install both `npm` and `bower` (server and client side package managers respectively) dependencies:
+```
+npm install && bower install
+```
+ * Build client-side script and assets (using Brunch):
+```
+brunch build --production
+```
+ * Launch server-side scripts:
+```
+coffee server/index.coffee
+```
 
 ### License
 The MIT License (MIT)
