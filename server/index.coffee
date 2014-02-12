@@ -34,10 +34,15 @@ app.configure "all", ->
 	app.use passport.session()
 
 	app.use "/api", require "./api"
-	app.use app.router
 	app.use express.static "#{__dirname}/../public"
-	app.use express.errorHandler()
+
+	app.use app.router
+	app.get "*", (req, res) ->
+		res.sendfile "./public/index.html"
 	
+	app.use express.errorHandler()
+
+
 server = (require "http").createServer app 
 io = (require "socket.io").listen server
 
