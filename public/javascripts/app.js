@@ -90,8 +90,8 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-require.register("main", function(exports, require, module) {
-console.log("sdf");
+require.register("initialize", function(exports, require, module) {
+console.log("Hello there");
 });
 
 ;

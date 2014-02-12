@@ -1,1 +1,1 @@
-{"version":3,"file":"public/javascripts/app.js","sources":["app/main.coffee"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,CAAQ,EAAR,IAAO;A","sourcesContent":["console.log \"sdf\""]}
+{"version":3,"file":"public/javascripts/app.js","sources":["app/initialize.coffee"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,CAAQ,EAAR,IAAO,MAAP;A","sourcesContent":["console.log \"Hello there\""]}
