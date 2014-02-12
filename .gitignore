@@ -16,5 +16,9 @@ results
 
 npm-debug.log
 node_modules
-download
-config.json
+
+### Bower ###
+bower_components
+
+### Application ###
+server/config.json

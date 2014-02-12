@@ -4,17 +4,13 @@ passport   = require "passport"
 url        = require "url"
 RedisStore = (require "connect-redis") (express)
 
-config      = require "./app/utils/config"
-log         = require "./app/utils/log"
-redis       = require "./app/utils/redis"
+config      = require "./utils/config"
+log         = require "./utils/log"
+redis       = require "./utils/redis"
 
-User = require "./app/models/user"
+User = require "./models/user"
 
 app = do express
-
-app.set "views", "#{__dirname}/app/views"
-app.set "view engine", "jade"
-
 
 app.configure "all", ->
 	app.use express.cookieParser()	
@@ -37,9 +33,9 @@ app.configure "all", ->
 	app.use passport.initialize()
 	app.use passport.session()
 
-	app.use "/api", require "./app/api"
+	app.use "/api", require "./api"
 	app.use app.router
-	app.use express.static "#{__dirname}/public"
+	app.use express.static "#{__dirname}/../public"
 	app.use express.errorHandler()
 	
 server = (require "http").createServer app 
@@ -69,7 +65,8 @@ server.listen config.get("web:port"), (err) ->
 ##
 
 # Start instagram watcher
-do (require "./app/services/watcher")
-(require "./app/services/pool") io
+do (require "./services/watcher")
+(require "./services/pool") io
+
 
 

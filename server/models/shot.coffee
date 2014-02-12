@@ -12,7 +12,7 @@ shotSchema = new Schema
 		type : Date
 
 	# Shot's status. Can have following values:
-	# "initial", "printed", "failed" 
+	# "initial", "queued", "printed", "failed" 
 	status :
 		type : String 
 		default : "initial"

@@ -1,6 +1,10 @@
 # Printiculo
 ### Real-Time Printing Experience
 
+### Deployment Process
+First of all, make sure you have `node.js` installed.
+
+
 ### License
 The MIT License (MIT)
 
