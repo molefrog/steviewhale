@@ -90,12 +90,42 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-require.register("controllers/stations-controller", function(exports, require, module) {
-var SiteView, StationsController, _ref,
+require.register("collections/station-collection", function(exports, require, module) {
+var Station, StationCollection, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require('views/site-view');
+Station = require("models/station");
+
+module.exports = StationCollection = (function(_super) {
+  __extends(StationCollection, _super);
+
+  function StationCollection() {
+    _ref = StationCollection.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationCollection.prototype.model = Station;
+
+  StationCollection.prototype.url = "/api/stations";
+
+  return StationCollection;
+
+})(Chaplin.Collection);
+});
+
+;require.register("controllers/stations-controller", function(exports, require, module) {
+var SiteView, Station, StationCollection, StationCollectionView, StationsController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+SiteView = require("views/site-view");
+
+Station = require("/models/station");
+
+StationCollection = require("/collections/station-collection");
+
+StationCollectionView = require("/views/station-collection-view");
 
 module.exports = StationsController = (function(_super) {
   __extends(StationsController, _super);
@@ -110,7 +140,15 @@ module.exports = StationsController = (function(_super) {
   };
 
   StationsController.prototype.index = function(params) {
-    return console.log("index route");
+    var _this = this;
+    this.collection = new StationCollection;
+    this.view = new StationCollectionView({
+      collection: this.collection,
+      region: "main"
+    });
+    return this.collection.fetch().then(function() {
+      return _this.view.render();
+    });
   };
 
   return StationsController;
@@ -119,29 +157,79 @@ module.exports = StationsController = (function(_super) {
 });
 
 ;require.register("initialize", function(exports, require, module) {
-var routes;
-
-routes = require("routes");
+/*
+ Application's initialization routine
+*/
 
 $(function() {
   return new Chaplin.Application({
     controllerSuffix: '-controller',
-    pushState: false,
-    routes: routes
+    pushState: true,
+    routes: require("routes")
   });
 });
 });
 
+;require.register("models/shot", function(exports, require, module) {
+var Shot, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+module.exports = Shot = (function(_super) {
+  __extends(Shot, _super);
+
+  function Shot() {
+    _ref = Shot.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Shot.prototype.urlRoot = "/api/shots";
+
+  return Shot;
+
+})(Chaplin.Model);
+});
+
+;require.register("models/station", function(exports, require, module) {
+var Station, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+module.exports = Station = (function(_super) {
+  __extends(Station, _super);
+
+  function Station() {
+    _ref = Station.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Station.prototype.url = function() {
+    return "api/station/" + (this.get('name'));
+  };
+
+  return Station;
+
+})(Chaplin.Model);
+});
+
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
-  return match('', 'stations#index');
+  match("stations", "stations#index");
+  return match("stations/:id", "stations#show");
 };
 });
 
-;require.register("views/base/base-view", function(exports, require, module) {
+;require.register("views/base/base", function(exports, require, module) {
 var View, _ref,
+  __slice = [].slice,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+jade.url = function() {
+  var options, params, routeName, _i;
+  routeName = arguments[0], params = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), options = arguments[_i++];
+  return Chaplin.utils.reverse(routeName, params);
+};
 
 module.exports = View = (function(_super) {
   __extends(View, _super);
@@ -165,7 +253,7 @@ var SiteView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-View = require('views/base/base-view');
+View = require('views/base/base');
 
 module.exports = SiteView = (function(_super) {
   __extends(SiteView, _super);
@@ -192,12 +280,80 @@ module.exports = SiteView = (function(_super) {
 })(View);
 });
 
+;require.register("views/station-collection-view", function(exports, require, module) {
+var StationCollectionView, StationView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+StationView = require("views/station");
+
+module.exports = StationCollectionView = (function(_super) {
+  __extends(StationCollectionView, _super);
+
+  function StationCollectionView() {
+    _ref = StationCollectionView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationCollectionView.prototype.itemView = StationView;
+
+  return StationCollectionView;
+
+})(Chaplin.CollectionView);
+});
+
+;require.register("views/station", function(exports, require, module) {
+var StationView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+module.exports = StationView = (function(_super) {
+  __extends(StationView, _super);
+
+  function StationView() {
+    _ref = StationView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationView.prototype.template = require("views/templates/station");
+
+  StationView.prototype.getTemplateData = function() {
+    return {
+      station: this.model
+    };
+  };
+
+  return StationView;
+
+})(View);
+});
+
 ;require.register("views/templates/site", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><h1>Hello, world!</h1><p class=\"lead\">Hello there, guys.</p><a class=\"btn btn-lg btn-success\">Hi!</a></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h1> Stevie The Whale</h1><p class=\"lead\">Hello there, guys! My name is Stevie!</p><ul class=\"nav nav-pills nav-justified\"><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + ">Печатные Станции</a></li><li><a>Фотографии</a></li><li><a>О Проекте</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/templates/station", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),station = locals_.station;
+buf.push("<div class=\"station-item\"><a href=\"\"><h2>" + (jade.escape(null == (jade.interp = station.get("title") ) ? "" : jade.interp)) + "</h2></a><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.get("description")) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

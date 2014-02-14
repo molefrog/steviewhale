@@ -1,4 +1,4 @@
-# All application routes that will be matched against URLs.
+
 module.exports = (match) ->
-	# match '@:login', 'users#show'
-	match '', 'stations#index'
+	match "stations",     "stations#index"
+	match "stations/:id", "stations#show"

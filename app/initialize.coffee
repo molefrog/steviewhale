@@ -1,9 +1,11 @@
-routes = require "routes"
+###
+ Application's initialization routine 
+###
 
 $ ->
-# Initialize new Chaplin application.
-# Specify controller suffix for clarity.
+	# Initialize new Chaplin application.
+	# Specify controller suffix for clarity.
 	new Chaplin.Application
 		controllerSuffix: '-controller'
-		pushState: false
-		routes: routes
+		pushState: true
+		routes: require "routes"
