@@ -7,6 +7,7 @@ allowedFields = [
 	"description" 
 	"instructions" 
 	"created" 
+	"online"
 ]
 
 ###

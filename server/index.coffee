@@ -22,9 +22,6 @@ app.configure "all", ->
 	redisSession.on "error", (err) ->
 		log.error "Redis Session error #{err}"
 
-	redisSession.on "ready", ->
-		log.info "Redis Session connected"
-
 	app.use express.session
 		secret : config.get "web:cookieSecret"
 		store  : new RedisStore
@@ -71,7 +68,7 @@ server.listen config.get("web:port"), (err) ->
 
 # Start instagram watcher
 do (require "./services/watcher")
-(require "./services/pool") io
+(require "./services/pool/server") io
 
 
 

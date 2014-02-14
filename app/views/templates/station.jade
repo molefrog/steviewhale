@@ -2,5 +2,12 @@
 	h3
 		=station.get("title") 
 		| 
-		span.label.label-success Онлайн
+
+		case station.get("online")
+			when true 
+				span.label.label-success Онлайн
+			default
+				span.label.label-warning Оффлайн
+
+
 	p.lead= station.get("description")

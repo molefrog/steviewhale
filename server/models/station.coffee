@@ -1,5 +1,14 @@
+_        = require "lodash"
 mongoose = require "mongoose"
 Schema   = mongoose.Schema
+
+pool = require "../services/pool/clients"
+
+schemaOptions = 
+	toJSON : 
+		virtuals : true
+	toObject : 
+		virtuals : true
 
 stationSchema = new Schema 
 	# The name of the station is used as a main id
@@ -32,5 +41,13 @@ stationSchema = new Schema
 	created :
 		type : Date
 		default : Date.now
+, schemaOptions
+
+# "online" virtual property
+# The station is online if it is in the station pool
+stationSchema
+	.virtual( "online" )
+	.get -> _.has pool, @name
+
 
 module.exports = mongoose.model "Station", stationSchema

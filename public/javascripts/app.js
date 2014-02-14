@@ -630,7 +630,16 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"station-item\"><h3>" + (jade.escape(null == (jade.interp = station.get("title") ) ? "" : jade.interp)) + " <span class=\"label label-success\">Онлайн</span></h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.get("description")) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+buf.push("<div class=\"station-item\"><h3>" + (jade.escape(null == (jade.interp = station.get("title") ) ? "" : jade.interp)) + " ");
+switch (station.get("online")){
+case true :
+buf.push("<span class=\"label label-success\">Онлайн</span>");
+  break;
+default:
+buf.push("<span class=\"label label-warning\">Оффлайн</span>");
+  break;
+}
+buf.push("</h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.get("description")) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
