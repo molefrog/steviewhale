@@ -1,7 +1,4 @@
-
-jade.url = (routeName, params..., options) ->
-		Chaplin.utils.reverse routeName, params
-
+jade.url = Chaplin.utils.reverse
  
 # Base view.
 module.exports = class View extends Chaplin.View

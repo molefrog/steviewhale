@@ -1,12 +1,11 @@
 .container
-	h1  Stevie The Whale
-	p.lead Hello there, guys! My name is Stevie!
-
-	ul.nav.nav-pills.nav-justified
+	ul.nav.nav-pills
 		li 
-			a(href="#{jade.url('stations#index')}")Печатные Станции
+			a(href="#{jade.url('stations#index')}")
+				| Печатные Станции
 		li 
-			a Фотографии
+			a(href="#{jade.url('shots#index')}")
+				| Фотографии
 		li 
 			a О Проекте
 

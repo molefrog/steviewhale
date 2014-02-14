@@ -1,4 +1,4 @@
-StationView = require "views/station"
+StationListView = require "views/station-list-view"
 
 module.exports = class StationCollectionView extends Chaplin.CollectionView
-	itemView : StationView
+	itemView : StationListView

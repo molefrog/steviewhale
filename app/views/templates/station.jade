@@ -1,4 +1,6 @@
 .station-item
-	a(href="")
-		h2= station.get("title") 
+	h3
+		=station.get("title") 
+		| 
+		span.label.label-success Онлайн
 	p.lead= station.get("description")
