@@ -1,12 +1,13 @@
 .container
 	ul.nav.nav-pills
 		li 
+			a(href=jade.url("static#about"))
+				| О Проекте
+		li 
 			a(href="#{jade.url('stations#index')}")
 				| Печатные Станции
 		li 
 			a(href="#{jade.url('shots#index')}")
 				| Фотографии
-		li 
-			a О Проекте
 
 	div#main-container 

@@ -196,6 +196,39 @@ module.exports = ShotsController = (function(_super) {
 })(Chaplin.Controller);
 });
 
+;require.register("controllers/static-controller", function(exports, require, module) {
+var AboutView, SiteView, StaticController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+SiteView = require("views/site-view");
+
+AboutView = require("views/about-view");
+
+module.exports = StaticController = (function(_super) {
+  __extends(StaticController, _super);
+
+  function StaticController() {
+    _ref = StaticController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StaticController.prototype.beforeAction = function() {
+    return this.reuse('site', SiteView);
+  };
+
+  StaticController.prototype.about = function(params) {
+    return this.view = new AboutView({
+      autoRender: true,
+      region: "main"
+    });
+  };
+
+  return StaticController;
+
+})(Chaplin.Controller);
+});
+
 ;require.register("controllers/stations-controller", function(exports, require, module) {
 var SiteView, Station, StationCollection, StationCollectionView, StationsController, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -307,8 +340,33 @@ module.exports = function(match) {
   match("stations", "stations#index");
   match("stations/:id", "stations#show");
   match("shots", "shots#index");
-  return match("shots/:id", "shots#show");
+  match("shots/:id", "shots#show");
+  return match("", "static#about");
 };
+});
+
+;require.register("views/about-view", function(exports, require, module) {
+var AboutView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+module.exports = AboutView = (function(_super) {
+  __extends(AboutView, _super);
+
+  function AboutView() {
+    _ref = AboutView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  AboutView.prototype.template = require("views/templates/about-template");
+
+  AboutView.prototype.getTemplateData = function() {};
+
+  return AboutView;
+
+})(View);
 });
 
 ;require.register("views/base/base", function(exports, require, module) {
@@ -495,6 +553,24 @@ module.exports = StationView = (function(_super) {
 })(View);
 });
 
+;require.register("views/templates/about-template", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<h1>#steviewhale</h1><img src=\"/images/stevie.svg\"/>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
 ;require.register("views/templates/shot-template", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
@@ -536,7 +612,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + ">Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + ">Фотографии</a></li><li><a>О Проекте</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + ">О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + ">Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + ">Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

@@ -5,4 +5,6 @@ module.exports = (match) ->
 
 	match "shots",        "shots#index"
 	match "shots/:id",    "shots#show"
+
+	match "",             "static#about"
 	
