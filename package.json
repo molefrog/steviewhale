@@ -30,7 +30,8 @@
     "css-brunch": "~1.7.0",
     "clean-css-brunch": "~1.7.1",
     "stylus-brunch": "~1.8.0",
-    "auto-reload-brunch": "~1.7.1"
+    "auto-reload-brunch": "~1.7.1",
+    "jade-brunch": "~1.8.0"
   },
   "scripts": {
     "start": "coffee index.coffee",
