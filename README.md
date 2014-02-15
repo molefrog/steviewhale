@@ -17,9 +17,13 @@ npm install -g coffee-script bower brunch
 ```
 npm install && bower install
 ```
- * Build client-side script and assets (using Brunch):
+ * Build client-side script and assets (using [Brunch](brunch.io) assembler):
 ```
 brunch build --production
+```
+Hint: use the following command for development, it will refresh page every time client-side files are changed:
+```
+brunch watch
 ```
  * Launch server-side scripts:
 ```
