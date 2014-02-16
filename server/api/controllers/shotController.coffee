@@ -1,3 +1,4 @@
+queue = require "../../services/queue/server"
 Shot = require "../../models/shot"
 
 ###
@@ -35,4 +36,36 @@ exports.delete = (req, res, next) ->
 			return next err
 
 		res.json {}
+
+exports.queue = (req, res, next) ->
+	Shot.findById( req.params.id )
+	.exec (err, item) ->
+		if err 
+			return next err
+
+		if not item?
+			return next new Error "Shot not found"
+
+		if item.status == "queued" 
+			return next new Error "Already in the queue"
+
+		if item.status == "printed"
+			return next new Error "Already printed"
+
+		item.status = "queued"
+		item.save (err) ->
+			job = queue.create "print", 
+				id : item._id
+			.save()
+
+			job.on "failed", ->
+				item.status = "failed"
+				item.save ->
+
+			job.on "complete", ->
+				item.status = "printed"
+				item.save ->
+
+			res.json {}
+
 

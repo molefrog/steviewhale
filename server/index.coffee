@@ -12,25 +12,27 @@ User = require "./models/user"
 
 app = do express
 
+
 app.configure "all", ->
 	app.use express.cookieParser()	
 	app.use multiparty()
 	app.use express.json()
 	app.use express.urlencoded()
 
-	redisSession = redis config.get "db:redis:session"
-	redisSession.on "error", (err) ->
-		log.error "Redis Session error #{err}"
+# redisSession = redis config.get "db:redis:session"
+# redisSession.on "error", (err) ->
+# 	log.error "Redis Session error #{err}"
 
 	app.use express.session
 		secret : config.get "web:cookieSecret"
-		store  : new RedisStore
-			client : redisSession
+# store  : new RedisStore
+# 	client : redisSession
 
 	app.use passport.initialize()
 	app.use passport.session()
 
 	app.use "/api", require "./api"
+	app.use "/queue", (require "kue").app
 	app.use express.static "#{__dirname}/../public"
 
 	app.use app.router
@@ -68,7 +70,7 @@ server.listen config.get("web:port"), (err) ->
 
 # Start instagram watcher
 do (require "./services/watcher")
+(require "./services/queue/server")
 (require "./services/pool/server") io
-
 
 
