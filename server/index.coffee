@@ -2,16 +2,15 @@ express    = require "express"
 multiparty = require "connect-multiparty"
 passport   = require "passport"
 url        = require "url"
-RedisStore = (require "connect-redis") (express)
+socketio   = require "socket.io"
 
-config      = require "./utils/config"
-log         = require "./utils/log"
-redis       = require "./utils/redis"
+# Utilities
+{ config, log } = require "./utils"
 
-User = require "./models/user"
+# Application models
+{ User } = require "./models"
 
 app = do express
-
 
 app.configure "all", ->
 	app.use express.cookieParser()	
@@ -19,14 +18,19 @@ app.configure "all", ->
 	app.use express.json()
 	app.use express.urlencoded()
 
-# redisSession = redis config.get "db:redis:session"
-# redisSession.on "error", (err) ->
-# 	log.error "Redis Session error #{err}"
+	###
+	# Use code if you want session data to be shared 
+	# across server instances  
+	###
+	# RedisStore = (require "connect-redis") (express)
+	# redisSession = redis config.get "db:redis:session"
+	# redisSession.on "error", (err) ->
+	# 	log.error "Redis Session error #{err}"
 
 	app.use express.session
 		secret : config.get "web:cookieSecret"
-# store  : new RedisStore
-# 	client : redisSession
+		# store  : new RedisStore
+		# 	client : redisSession
 
 	app.use passport.initialize()
 	app.use passport.session()
@@ -43,9 +47,8 @@ app.configure "all", ->
 
 
 server = (require "http").createServer app 
-io = (require "socket.io").listen server
-
-io.set "log level", 0
+io = socketio.listen server,
+	log: false
 
 ###
 # Application startup
@@ -54,9 +57,12 @@ io.set "log level", 0
 
 # Connect to MongoDB
 mongoose = require "mongoose"
-mongoose.connect config.get("db:mongo"), (err) ->
+MongoDB = mongoose.connect config.get("db:mongo"), (err) ->
 	if err
 		log.error "MongoDB connection error #{err}"
+
+MongoDB.connection.on "error", (err) ->
+	log.error "MongoDB connection error #{err}"
 
 # Start express http server
 server.listen config.get("web:port"), (err) ->
@@ -67,7 +73,7 @@ server.listen config.get("web:port"), (err) ->
 ##
 # Services
 ##
-
+	
 # Start instagram watcher
 do (require "./services/watcher")
 (require "./services/queue/server")

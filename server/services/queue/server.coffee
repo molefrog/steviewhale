@@ -1,24 +1,29 @@
 kue    = require "kue"
 _      = require "lodash"
 
-config = require "../../utils/config"
-log    = require "../../utils/log"
 pool   = require "../pool/clients"
 
-Shot   = require "../../models/shot"
+{ config, log } = require "../../utils"
+{ Shot }        = require "../../models"
 
 module.exports = jobs = kue.createQueue()
 
+###
+# Job processing function
+###
 jobs.process "print", (job, done) ->
 	job.log "Job started. Shot ##{job.data.id}"
 
+	# Check if the station pool is empty
 	if _.isEmpty pool
 		job.log "The pool is empty"
 		return done "No available agents!"
 
+	# Take random station
 	idx = _.sample _.keys pool
 	agent = pool[ idx ]
 	
+	# Take shot instance from database
 	Shot.findById( job.data.id )
 	.exec (err, item) ->
 		if err
@@ -27,5 +32,5 @@ jobs.process "print", (job, done) ->
 		if not item?
 			return done "Wrong element"
 
-		agent.emit "print", item.image, (err) ->
-			done err
+		# Call 'print' function
+		agent.emit "print", item.image, done

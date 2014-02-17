@@ -25,7 +25,7 @@ app.put    "/stations/:name", Authenticated, StationController.update
 app.get    "/shots",          ShotController.index
 app.get    "/shots/:id", 	  ShotController.show
 app.delete "/shots/:id",      Authenticated, ShotController.delete
-app.get    "/shots/:id/queue", ShotController.queue
+app.get    "/shots/:id/queue",ShotController.queue
 
 app.post 	"/auth/login", 	  passport.authenticate("local"), AuthController.login
 app.post 	"/auth/logout",   Authenticated, AuthController.logout 

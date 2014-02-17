@@ -1,6 +1,8 @@
 queue = require "../../services/queue/server"
 Shot = require "../../models/shot"
 
+log = require "../../utils/log"
+
 ###
 # Get all shots
 ###
@@ -53,11 +55,11 @@ exports.queue = (req, res, next) ->
 			return next new Error "Already printed"
 
 		item.status = "queued"
-		item.save (err) ->
+		item.save (err, item) ->
 			job = queue.create "print", 
 				id : item._id
 			.save()
-
+			
 			job.on "failed", ->
 				item.status = "failed"
 				item.save ->

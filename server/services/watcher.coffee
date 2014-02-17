@@ -37,7 +37,9 @@ module.exports = ->
 			thumbnail : data.images.thumbnail.url
 			instagram : data
 
-		shot.save (err) ->
+		shot.save (err, item) ->
+			log.info "Saved new shot to db ##{item._id}"
+
 			if err 
 				log.error "Error saving new shot item #{err}" 
 
