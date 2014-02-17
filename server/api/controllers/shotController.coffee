@@ -39,6 +39,9 @@ exports.delete = (req, res, next) ->
 
 		res.json {}
 
+##
+# TODO: move enque method to a separate module
+##
 exports.queue = (req, res, next) ->
 	Shot.findById( req.params.id )
 	.exec (err, item) ->
@@ -48,26 +51,21 @@ exports.queue = (req, res, next) ->
 		if not item?
 			return next new Error "Shot not found"
 
-		if item.status == "queued" 
-			return next new Error "Already in the queue"
-
-		if item.status == "printed"
-			return next new Error "Already printed"
-
 		item.status = "queued"
-		item.save (err, item) ->
+		item.save (err, item) =>
 			job = queue.create "print", 
+				title : "Shot ##{item._id}"
 				id : item._id
-			.save()
-			
-			job.on "failed", ->
+			.save ->
+				res.json {}
+
+			job.on "failed", =>
 				item.status = "failed"
-				item.save ->
+				item.save (err) =>
+					log.warn "Shot ##{item._id} marked as failed"
 
-			job.on "complete", ->
+			job.on "complete", =>
 				item.status = "printed"
-				item.save ->
-
-			res.json {}
-
-
+				item.save =>
+					log.info "Shot ##{item._id} marked as complete"
+		
