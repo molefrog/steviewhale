@@ -1,6 +1,14 @@
-# http = require "http"
+http = require "http"
 
-# module.exports = server = http.createServer() 
+{ config, log } = require "../../utils"
 
-# server.listen 3030, (err) ->
-# 	console.log "listen #{err}"
+
+module.exports.app = app = do require "express"
+module.exports.server = server = http.createServer app
+
+# Start express http server
+server.listen config.get("web:port"), (err) ->
+	if err
+		log.error "Web server error #{err}"
+	else
+		log.info "Web server started on port #{config.get('web:port')}"

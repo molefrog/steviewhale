@@ -48,14 +48,12 @@ app.configure "all", ->
 	app.use express.errorHandler()
 
 
-server = (require "http").createServer app 
-io = socketio.listen server,
-	log: false
-
 ###
 # Application startup
 # TODO: Make this calls to execute in series (using deferred) at startup
 ###
+services = require "./services"
+services.http.app.use app
 
 # Connect to MongoDB
 mongoose = require "mongoose"
@@ -66,18 +64,4 @@ MongoDB = mongoose.connect config.get("db:mongo"), (err) ->
 MongoDB.connection.on "error", (err) ->
 	log.error "MongoDB connection error #{err}"
 
-# Start express http server
-server.listen config.get("web:port"), (err) ->
-	if err
-		log.error "Web server error #{err}"
-	else
-		log.info "Web server started on port #{config.get('web:port')}"
-###
-# Services
-###
-	
-# Start instagram watcher
-do (require "./services/watcher")
-(require "./services/pool/server") (io)
-(require "./services/queue/server")
 

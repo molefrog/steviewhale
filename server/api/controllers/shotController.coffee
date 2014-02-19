@@ -1,4 +1,4 @@
-queue = require "../../services/queue/server"
+queue = require "../../services/queue"
 Shot = require "../../models/shot"
 
 log = require "../../utils/log"
