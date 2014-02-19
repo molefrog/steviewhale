@@ -37,6 +37,8 @@ app.configure "all", ->
 
 	app.use "/api", require "./api"
 	app.use "/queue", (require "kue").app
+	app.use "/streaming", require "./services/streaming"
+	
 	app.use express.static "#{__dirname}/../public"
 
 	app.use app.router
@@ -70,13 +72,12 @@ server.listen config.get("web:port"), (err) ->
 		log.error "Web server error #{err}"
 	else
 		log.info "Web server started on port #{config.get('web:port')}"
-##
+###
 # Services
-##
+###
 	
 # Start instagram watcher
 do (require "./services/watcher")
+(require "./services/pool/server") (io)
 (require "./services/queue/server")
-(require "./services/pool/server") io
-
 

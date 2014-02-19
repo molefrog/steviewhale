@@ -22,7 +22,8 @@
     "redis": "~0.10.0",
     "connect-redis": "~1.4.6",
     "kue": "~0.7.4",
-    "uid": "0.0.2"
+    "uid": "0.0.2",
+    "ws": "~0.4.31"
   },
   "devDependencies": {
     "coffee-script-brunch": "~1.7.3",
