@@ -1,5 +1,7 @@
 # Printiculo
-### Real-Time Printing Experience
+Real-Time Printing Experience
+
+![](https://rawgithub.com/molefrog/printiculo/master/app/assets/images/stevie.svg)
 
 ### Directory Structure
  1. `app/` Client-side logic (front-end): scripts, assets, styles, templates etc. The content of this folder is used by Brunch to build `public/` directory.
