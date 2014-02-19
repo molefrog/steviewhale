@@ -17,7 +17,7 @@ defaults =
 	width  : 640
 	height : 360
 
-streams = {}
+streams = require "./clients"
 sockets = {}
 
 
