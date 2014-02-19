@@ -1,4 +1,4 @@
-SiteView = require "views/siteView"
+SiteView = require "views/site/siteView"
 
 Shot = require "models/shot"
 

@@ -143,7 +143,7 @@ var Shot, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/siteView");
+SiteView = require("views/site/siteView");
 
 Shot = require("models/shot");
 
@@ -187,9 +187,9 @@ var AboutView, SiteView, StaticController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/siteView");
+SiteView = require("views/site/siteView");
 
-AboutView = require("views/aboutView");
+AboutView = require("views/about/aboutView");
 
 module.exports = StaticController = (function(_super) {
   __extends(StaticController, _super);
@@ -220,7 +220,7 @@ var SiteView, Station, StationCollection, StationEditView, StationListView, Stat
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/siteView");
+SiteView = require("views/site/siteView");
 
 Station = require("/models/station");
 
@@ -365,7 +365,7 @@ module.exports = function(match) {
 };
 });
 
-;require.register("views/aboutView", function(exports, require, module) {
+;require.register("views/about/aboutView", function(exports, require, module) {
 var AboutView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -389,7 +389,7 @@ module.exports = AboutView = (function(_super) {
 })(View);
 });
 
-;require.register("views/aboutViewTemplate", function(exports, require, module) {
+;require.register("views/about/aboutViewTemplate", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
@@ -477,7 +477,7 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
-;require.register("views/siteView", function(exports, require, module) {
+;require.register("views/site/siteView", function(exports, require, module) {
 var SiteView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -509,7 +509,7 @@ module.exports = SiteView = (function(_super) {
 })(View);
 });
 
-;require.register("views/siteViewTemplate", function(exports, require, module) {
+;require.register("views/site/siteViewTemplate", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
