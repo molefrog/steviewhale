@@ -5835,6 +5835,22 @@ td.visible-print {
 	background-color : #E0D6AD;
 }
 
+
+.how-it-works {
+	background-color: #6FB6A2;
+}
+
+.landing .jumbotron {
+	background: none;
+}
+
+.super-icon {
+	font-size: 85px;
+	width : 100px;
+	height: 100px;
+	line-height: 100px;
+}
+
 .landing img {
 	margin: 0 auto;
 }

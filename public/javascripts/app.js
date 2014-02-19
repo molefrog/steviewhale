@@ -507,7 +507,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"jumbotron text-center landing\"><h1>#steviewhale</h1><p>Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/></div>");;return buf.join("");
+buf.push("<div class=\"text-center\"><div class=\"row\"><div class=\"landing col-md-12\"><h1>#steviewhale</h1><p class=\"lead\">Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/><h2>Привет, друг! </h2><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\">\t\t\t\t<p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.</p></div></div></div></div><div class=\"row\"><div class=\"how-it-works col-md-12\"><h1>Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div style=\"color:#633B75\" class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div style=\"color:#355E75\" class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div style=\"color:#EC739A\" class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -706,7 +706,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container-fluid\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
