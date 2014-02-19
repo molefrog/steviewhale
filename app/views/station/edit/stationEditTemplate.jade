@@ -5,13 +5,13 @@
 
 	.form-group
 		label Подзаголовок
-		input.form-control(type="text" value=station.description)
+		input.subtitle-input.form-control(type="text" value=station.subtitle)
 
 	.form-group
 		label 
 			|Описание 
 			small (Поддерживает Markdown)
-		textarea.form-control(rows=5 text=station.description)
+		textarea.desc-input.form-control(rows=5 text=station.description)
 			=station.description
 
 	.row

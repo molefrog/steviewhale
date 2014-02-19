@@ -11,9 +11,15 @@ module.exports = class StationEditView extends View
 
 	save : ->
 		@model.set 
-			title : @$(".title-input").val()
+			title       : @$(".title-input").val()
+			subtitle    : @$(".subtitle-input").val()
+			description : @$(".desc-input").val()
 
-		@model.save()
+
+		@model.save null, 
+			success : =>
+				Chaplin.utils.redirectTo "stations#show",
+					name : @model.attributes.name
 
 	getTemplateData : ->
 		station : @model.attributes

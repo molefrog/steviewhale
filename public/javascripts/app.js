@@ -600,6 +600,12 @@ var View, _ref,
 
 jade.url = Chaplin.utils.reverse;
 
+jade.markdown = (function() {
+  var converter;
+  converter = new Showdown.converter();
+  return _.bind(converter.makeHtml, converter);
+})();
+
 module.exports = View = (function(_super) {
   __extends(View, _super);
 
@@ -700,7 +706,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + ">О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + ">Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + ">Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container-fluid\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -718,7 +724,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.description, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
+buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -757,10 +763,19 @@ module.exports = StationEditView = (function(_super) {
   };
 
   StationEditView.prototype.save = function() {
+    var _this = this;
     this.model.set({
-      title: this.$(".title-input").val()
+      title: this.$(".title-input").val(),
+      subtitle: this.$(".subtitle-input").val(),
+      description: this.$(".desc-input").val()
     });
-    return this.model.save();
+    return this.model.save(null, {
+      success: function() {
+        return Chaplin.utils.redirectTo("stations#show", {
+          name: _this.model.attributes.name
+        });
+      }
+    });
   };
 
   StationEditView.prototype.getTemplateData = function() {
@@ -788,7 +803,7 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+buf.push("</h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -844,6 +859,8 @@ module.exports = StationListView = (function(_super) {
     return _ref;
   }
 
+  StationListView.prototype.animationDuration = 300;
+
   StationListView.prototype.itemView = StationListItemView;
 
   return StationListView;
@@ -888,7 +905,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"station-item\"><h3>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
+buf.push("<div class=\"station-item\"><h1>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
 switch (station.online){
 case true :
 buf.push("<span class=\"label label-success\">Онлайн</span>");
@@ -897,7 +914,7 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h3><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span></a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span></button></div><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+buf.push("</h1><h2><small>" + (jade.escape(null == (jade.interp = station.subtitle	) ? "" : jade.interp)) + "</small></h2><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</button></div><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

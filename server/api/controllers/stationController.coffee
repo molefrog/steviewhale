@@ -5,7 +5,8 @@ uid     = require "uid"
 allowedReadFields = [ 
 	"_id" 
 	"name" 
-	"title" 
+	"title"
+	"subtitle" 
 	"description" 
 	"instructions" 
 	"created" 
@@ -16,6 +17,7 @@ allowedReadFields = [
 allowedWriteFields = [
 	"name"
 	"title"
+	"subtitle"
 	"description"
 	"instructions"
 ]
@@ -67,7 +69,15 @@ exports.create = (req, res, next) ->
 # Update existing station
 ###
 exports.update = (req, res, next) ->
-	return next new Error "Not implemented!"	
+	# Filter fields 
+	fields = _.pick req.body, allowedWriteFields
+
+	
+	Station.update {name : req.params.name}, {$set: fields}, {}, (err, station) ->
+		if err
+			return next err
+
+		return res.json station
 
 ###
 # Delete existing station

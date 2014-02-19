@@ -27,6 +27,9 @@ stationSchema = new Schema
 		type : String 
 		required : true
 
+	subtitle : 
+		type : String
+
 	# More detailed description of the station
 	description : 
 		type : String

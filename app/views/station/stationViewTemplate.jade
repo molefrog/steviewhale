@@ -1,5 +1,5 @@
 .station-item
-	h3
+	h1
 		=station.title 
 		| 
 		case station.online
@@ -7,12 +7,15 @@
 				span.label.label-success Онлайн
 			default
 				span.label.label-warning Оффлайн
-
+		
+	h2 
+		small= station.subtitle	
 	.btn-group
 		a.btn.btn-default(href=jade.url('station_edit', {name : station.name}))
 			span.glyphicon.glyphicon-pencil
+			|  Редактировать
 
 		button.btn.btn-default
 			span.glyphicon.glyphicon-remove
-
-	p.lead= station.description
+			|  Удалить
+	p.lead!= jade.markdown(station.description)

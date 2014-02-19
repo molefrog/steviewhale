@@ -1,13 +1,16 @@
-.container
+.container-fluid
 	ul.nav.nav-pills
 		li 
 			a(href=jade.url("static#about"))
-				| О Проекте
+				span.glyphicon.glyphicon-home
+				|  О Проекте
 		li 
 			a(href="#{jade.url('stations#index')}")
-				| Печатные Станции
+				span.glyphicon.glyphicon-print 
+				|  Печатные Станции
 		li 
 			a(href="#{jade.url('shots#index')}")
-				| Фотографии
+				span.glyphicon.glyphicon-camera
+				|  Фотографии
 
 	div#main-container 
