@@ -580,7 +580,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><form role=\"form\" class=\"login-form\"><h2>Авторизация</h2><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-primary btn-block\">Войти</div></form></div></div>");;return buf.join("");
+buf.push("<div class=\"row text-center\"><h2>Упс! Здесь нужно авторизоваться</h2><div class=\"col-md-4 col-md-offset-4\"><form role=\"form\" class=\"login-form\"><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-primary btn-block\">Войти</div></form></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

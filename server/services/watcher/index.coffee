@@ -67,7 +67,7 @@ checkInstagram = ->
 				setTimeout checkInstagram, checkInterval
 
 		error: (err) ->
-			log.error "Instagram error", err
+			log.error "Instagram error #{err}" 
 			setTimeout checkInstagram, checkInterval
 
 
