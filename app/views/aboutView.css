@@ -1,0 +1,8 @@
+.landing {
+	background-image : url("/images/wave.svg");
+	background-color : #E0D6AD;
+}
+
+.landing img {
+	margin: 0 auto;
+}

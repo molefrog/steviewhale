@@ -1,5 +1,5 @@
-SiteView  = require "views/site-view"
-AboutView = require "views/about-view"
+SiteView  = require "views/siteView"
+AboutView = require "views/aboutView"
 
 module.exports = class StaticController extends Chaplin.Controller
 	beforeAction: ->

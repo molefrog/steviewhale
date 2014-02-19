@@ -90,7 +90,7 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-require.register("collections/shot-collection", function(exports, require, module) {
+require.register("collections/shotCollection", function(exports, require, module) {
 var Shot, ShotsCollection, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -114,7 +114,7 @@ module.exports = ShotsCollection = (function(_super) {
 })(Chaplin.Collection);
 });
 
-;require.register("collections/station-collection", function(exports, require, module) {
+;require.register("collections/stationCollection", function(exports, require, module) {
 var Station, StationCollection, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -138,20 +138,16 @@ module.exports = StationCollection = (function(_super) {
 })(Chaplin.Collection);
 });
 
-;require.register("controllers/shots-controller", function(exports, require, module) {
-var Shot, ShotCollection, ShotCollectionView, ShotView, ShotsController, SiteView, _ref,
+;require.register("controllers/shotsController", function(exports, require, module) {
+var Shot, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/site-view");
+SiteView = require("views/siteView");
 
 Shot = require("models/shot");
 
-ShotView = require("views/shot-view");
-
-ShotCollection = require("collections/shot-collection");
-
-ShotCollectionView = require("views/shot-collection-view");
+ShotView = require("views/shot/shotView");
 
 module.exports = ShotsController = (function(_super) {
   __extends(ShotsController, _super);
@@ -165,17 +161,7 @@ module.exports = ShotsController = (function(_super) {
     return this.reuse('site', SiteView);
   };
 
-  ShotsController.prototype.index = function() {
-    var _this = this;
-    this.collection = new ShotCollection;
-    this.view = new ShotCollectionView({
-      collection: this.collection,
-      region: "main"
-    });
-    return this.collection.fetch().then(function() {
-      return _this.view.render();
-    });
-  };
+  ShotsController.prototype.index = function() {};
 
   ShotsController.prototype.show = function(params) {
     var _this = this;
@@ -196,14 +182,14 @@ module.exports = ShotsController = (function(_super) {
 })(Chaplin.Controller);
 });
 
-;require.register("controllers/static-controller", function(exports, require, module) {
+;require.register("controllers/staticController", function(exports, require, module) {
 var AboutView, SiteView, StaticController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/site-view");
+SiteView = require("views/siteView");
 
-AboutView = require("views/about-view");
+AboutView = require("views/aboutView");
 
 module.exports = StaticController = (function(_super) {
   __extends(StaticController, _super);
@@ -229,18 +215,22 @@ module.exports = StaticController = (function(_super) {
 })(Chaplin.Controller);
 });
 
-;require.register("controllers/stations-controller", function(exports, require, module) {
-var SiteView, Station, StationCollection, StationCollectionView, StationsController, _ref,
+;require.register("controllers/stationsController", function(exports, require, module) {
+var SiteView, Station, StationCollection, StationEditView, StationListView, StationView, StationsController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-SiteView = require("views/site-view");
+SiteView = require("views/siteView");
 
 Station = require("/models/station");
 
-StationCollection = require("/collections/station-collection");
+StationCollection = require("/collections/stationCollection");
 
-StationCollectionView = require("/views/station-collection-view");
+StationListView = require("/views/station/list/stationListView");
+
+StationEditView = require("/views/station/edit/stationEditView");
+
+StationView = require("/views/station/stationView");
 
 module.exports = StationsController = (function(_super) {
   __extends(StationsController, _super);
@@ -257,11 +247,40 @@ module.exports = StationsController = (function(_super) {
   StationsController.prototype.index = function(params) {
     var _this = this;
     this.collection = new StationCollection;
-    this.view = new StationCollectionView({
+    this.view = new StationListView({
       collection: this.collection,
       region: "main"
     });
     return this.collection.fetch().then(function() {
+      return _this.view.render();
+    });
+  };
+
+  StationsController.prototype.show = function(params) {
+    var _this = this;
+    this.model = new Station({
+      name: params.name
+    });
+    this.view = new StationView({
+      model: this.model,
+      region: "main"
+    });
+    return this.model.fetch().then(function() {
+      return _this.view.render();
+    });
+  };
+
+  StationsController.prototype.edit = function(params) {
+    var _this = this;
+    this.model = new Station({
+      name: params.name
+    });
+    this.view = new StationEditView({
+      model: this.model,
+      region: "main",
+      autoRender: true
+    });
+    return this.model.fetch().then(function() {
       return _this.view.render();
     });
   };
@@ -278,7 +297,7 @@ module.exports = StationsController = (function(_super) {
 
 $(function() {
   return new Chaplin.Application({
-    controllerSuffix: '-controller',
+    controllerSuffix: 'Controller',
     pushState: true,
     routes: require("routes")
   });
@@ -338,14 +357,15 @@ module.exports = Station = (function(_super) {
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
   match("stations", "stations#index");
-  match("stations/:id", "stations#show");
+  match("stations/:name", "stations#show");
+  match("stations/:name/edit", "stations#edit");
   match("shots", "shots#index");
   match("shots/:id", "shots#show");
   return match("", "static#about");
 };
 });
 
-;require.register("views/about-view", function(exports, require, module) {
+;require.register("views/aboutView", function(exports, require, module) {
 var AboutView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -360,13 +380,31 @@ module.exports = AboutView = (function(_super) {
     return _ref;
   }
 
-  AboutView.prototype.template = require("views/templates/about-template");
+  AboutView.prototype.template = require("./aboutViewTemplate");
 
   AboutView.prototype.getTemplateData = function() {};
 
   return AboutView;
 
 })(View);
+});
+
+;require.register("views/aboutViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<div class=\"jumbotron text-center landing\"><h1>#steviewhale</h1><p>Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/base/base", function(exports, require, module) {
@@ -393,57 +431,7 @@ module.exports = View = (function(_super) {
 })(Chaplin.View);
 });
 
-;require.register("views/shot-collection-view", function(exports, require, module) {
-var ShotCollectionView, ShotListView, _ref,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-ShotListView = require("views/shot-list-view");
-
-module.exports = ShotCollectionView = (function(_super) {
-  __extends(ShotCollectionView, _super);
-
-  function ShotCollectionView() {
-    _ref = ShotCollectionView.__super__.constructor.apply(this, arguments);
-    return _ref;
-  }
-
-  ShotCollectionView.prototype.itemView = ShotListView;
-
-  return ShotCollectionView;
-
-})(Chaplin.CollectionView);
-});
-
-;require.register("views/shot-list-view", function(exports, require, module) {
-var ShotListView, View, _ref,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-View = require("views/base/base");
-
-module.exports = ShotListView = (function(_super) {
-  __extends(ShotListView, _super);
-
-  function ShotListView() {
-    _ref = ShotListView.__super__.constructor.apply(this, arguments);
-    return _ref;
-  }
-
-  ShotListView.prototype.template = require("views/templates/shot");
-
-  ShotListView.prototype.getTemplateData = function() {
-    return {
-      shot: this.model
-    };
-  };
-
-  return ShotListView;
-
-})(View);
-});
-
-;require.register("views/shot-view", function(exports, require, module) {
+;require.register("views/shot/shotView", function(exports, require, module) {
 var ShotView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -458,7 +446,7 @@ module.exports = ShotView = (function(_super) {
     return _ref;
   }
 
-  ShotView.prototype.template = require("views/templates/shot-template");
+  ShotView.prototype.template = require("./shotViewTemplate");
 
   ShotView.prototype.getTemplateData = function() {
     return {
@@ -471,7 +459,25 @@ module.exports = ShotView = (function(_super) {
 })(View);
 });
 
-;require.register("views/site-view", function(exports, require, module) {
+;require.register("views/shot/shotViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),shot = locals_.shot;
+buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.attributes.image ) + "", true, false)) + " width=\"400\" height=\"400\" class=\"img-rounded\"/><p class=\"lead\">Опубликовано " + (jade.escape((jade.interp = shot.attributes.instagram.user.username) == null ? '' : jade.interp)) + "</p></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/siteView", function(exports, require, module) {
 var SiteView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -496,118 +502,14 @@ module.exports = SiteView = (function(_super) {
     navigation: '#nav-container'
   };
 
-  SiteView.prototype.template = require('./templates/site');
+  SiteView.prototype.template = require('./siteViewTemplate');
 
   return SiteView;
 
 })(View);
 });
 
-;require.register("views/station-collection-view", function(exports, require, module) {
-var StationCollectionView, StationListView, _ref,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-StationListView = require("views/station-list-view");
-
-module.exports = StationCollectionView = (function(_super) {
-  __extends(StationCollectionView, _super);
-
-  function StationCollectionView() {
-    _ref = StationCollectionView.__super__.constructor.apply(this, arguments);
-    return _ref;
-  }
-
-  StationCollectionView.prototype.itemView = StationListView;
-
-  return StationCollectionView;
-
-})(Chaplin.CollectionView);
-});
-
-;require.register("views/station-list-view", function(exports, require, module) {
-var StationView, View, _ref,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-View = require("views/base/base");
-
-module.exports = StationView = (function(_super) {
-  __extends(StationView, _super);
-
-  function StationView() {
-    _ref = StationView.__super__.constructor.apply(this, arguments);
-    return _ref;
-  }
-
-  StationView.prototype.template = require("views/templates/station");
-
-  StationView.prototype.getTemplateData = function() {
-    return {
-      station: this.model
-    };
-  };
-
-  return StationView;
-
-})(View);
-});
-
-;require.register("views/templates/about-template", function(exports, require, module) {
-var __templateData = function template(locals) {
-var buf = [];
-var jade_mixins = {};
-
-buf.push("<h1>#steviewhale</h1><img src=\"/images/stevie.svg\"/>");;return buf.join("");
-};
-if (typeof define === 'function' && define.amd) {
-  define([], function() {
-    return __templateData;
-  });
-} else if (typeof module === 'object' && module && module.exports) {
-  module.exports = __templateData;
-} else {
-  __templateData;
-}
-});
-
-;require.register("views/templates/shot-template", function(exports, require, module) {
-var __templateData = function template(locals) {
-var buf = [];
-var jade_mixins = {};
-var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.attributes.image ) + "", true, false)) + " width=\"400\" height=\"400\" class=\"img-rounded\"/><p class=\"lead\">Опубликовано " + (jade.escape((jade.interp = shot.attributes.instagram.user.username) == null ? '' : jade.interp)) + "</p></div></div>");;return buf.join("");
-};
-if (typeof define === 'function' && define.amd) {
-  define([], function() {
-    return __templateData;
-  });
-} else if (typeof module === 'object' && module && module.exports) {
-  module.exports = __templateData;
-} else {
-  __templateData;
-}
-});
-
-;require.register("views/templates/shot", function(exports, require, module) {
-var __templateData = function template(locals) {
-var buf = [];
-var jade_mixins = {};
-var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<a" + (jade.attr("href", jade.url('shots#show', { id : shot.id }), true, false)) + "><img" + (jade.attr("src", "" + ( shot.attributes.thumbnail ) + "", true, false)) + " class=\"img-rounded\"/></a>");;return buf.join("");
-};
-if (typeof define === 'function' && define.amd) {
-  define([], function() {
-    return __templateData;
-  });
-} else if (typeof module === 'object' && module && module.exports) {
-  module.exports = __templateData;
-} else {
-  __templateData;
-}
-});
-
-;require.register("views/templates/site", function(exports, require, module) {
+;require.register("views/siteViewTemplate", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
@@ -625,13 +527,74 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
-;require.register("views/templates/station", function(exports, require, module) {
+;require.register("views/station/edit/stationEditTemplate", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"station-item\"><h3>" + (jade.escape(null == (jade.interp = station.get("title") ) ? "" : jade.interp)) + " ");
-switch (station.get("online")){
+buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.description, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/station/edit/stationEditView", function(exports, require, module) {
+var Station, StationEditView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Station = require("models/station");
+
+module.exports = StationEditView = (function(_super) {
+  __extends(StationEditView, _super);
+
+  function StationEditView() {
+    _ref = StationEditView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationEditView.prototype.model = Station;
+
+  StationEditView.prototype.template = require("./stationEditTemplate");
+
+  StationEditView.prototype.initialize = function() {
+    return this.delegate('click', '.save-button', this.save);
+  };
+
+  StationEditView.prototype.save = function() {
+    this.model.set({
+      title: this.$(".title-input").val()
+    });
+    return this.model.save();
+  };
+
+  StationEditView.prototype.getTemplateData = function() {
+    return {
+      station: this.model.attributes
+    };
+  };
+
+  return StationEditView;
+
+})(View);
+});
+
+;require.register("views/station/list/stationListItemTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),station = locals_.station;
+buf.push("<div class=\"station-item\"><h3><a" + (jade.attr("href", jade.url('stations#show', { name : station.name }), true, false)) + ">" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + "</a> ");
+switch (station.online){
 case true :
 buf.push("<span class=\"label label-success\">Онлайн</span>");
   break;
@@ -639,7 +602,116 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.get("description")) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+buf.push("</h3><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/station/list/stationListItemView", function(exports, require, module) {
+var StationListItemView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+module.exports = StationListItemView = (function(_super) {
+  __extends(StationListItemView, _super);
+
+  function StationListItemView() {
+    _ref = StationListItemView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationListItemView.prototype.template = require("./stationListItemTemplate");
+
+  StationListItemView.prototype.getTemplateData = function() {
+    return {
+      station: this.model.attributes
+    };
+  };
+
+  return StationListItemView;
+
+})(View);
+});
+
+;require.register("views/station/list/stationListView", function(exports, require, module) {
+var StationListItemView, StationListView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+StationListItemView = require("./stationListItemView");
+
+module.exports = StationListView = (function(_super) {
+  __extends(StationListView, _super);
+
+  function StationListView() {
+    _ref = StationListView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationListView.prototype.itemView = StationListItemView;
+
+  return StationListView;
+
+})(Chaplin.CollectionView);
+});
+
+;require.register("views/station/stationView", function(exports, require, module) {
+var Station, StationView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Station = require("models/station");
+
+module.exports = StationView = (function(_super) {
+  __extends(StationView, _super);
+
+  function StationView() {
+    _ref = StationView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationView.prototype.model = Station;
+
+  StationView.prototype.template = require("./stationViewTemplate");
+
+  StationView.prototype.getTemplateData = function() {
+    return {
+      station: this.model.attributes
+    };
+  };
+
+  return StationView;
+
+})(View);
+});
+
+;require.register("views/station/stationViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),station = locals_.station;
+buf.push("<div class=\"station-item\"><h3>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
+switch (station.online){
+case true :
+buf.push("<span class=\"label label-success\">Онлайн</span>");
+  break;
+default:
+buf.push("<span class=\"label label-warning\">Оффлайн</span>");
+  break;
+}
+buf.push("</h3><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('stations#edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span></a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span></button></div><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
