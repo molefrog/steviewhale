@@ -35,17 +35,6 @@ module.exports = class StationsController extends Chaplin.Controller
     @model.fetch().then =>
       do @view.render
 
-  edit : (params) ->
-    @model = new Station
-      name : params.name
-
-    @view = new StationEditView
-      model : @model
-      region : "main"
-      autoRender : true
-
-    @model.fetch().then =>
-      do @view.render
 
 
 

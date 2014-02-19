@@ -138,6 +138,114 @@ module.exports = StationCollection = (function(_super) {
 })(Chaplin.Collection);
 });
 
+;require.register("controllers/auth/authController", function(exports, require, module) {
+var AuthController, Storage, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Storage = require("storage");
+
+module.exports = AuthController = (function(_super) {
+  __extends(AuthController, _super);
+
+  function AuthController() {
+    _ref = AuthController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  AuthController.prototype.beforeAction = function(params, route) {
+    if (Storage.user == null) {
+      Storage.redirectUrl = window.location.pathname;
+      return this.redirectTo('auth_login');
+    }
+  };
+
+  return AuthController;
+
+})(Chaplin.Controller);
+});
+
+;require.register("controllers/auth/loginController", function(exports, require, module) {
+var LoginController, LoginView, SiteView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+LoginView = require("views/auth/loginView");
+
+SiteView = require("views/site/siteView");
+
+module.exports = LoginController = (function(_super) {
+  __extends(LoginController, _super);
+
+  function LoginController() {
+    _ref = LoginController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginController.prototype.beforeAction = function() {
+    return this.reuse('site', SiteView);
+  };
+
+  LoginController.prototype.login = function() {
+    return this.view = new LoginView({
+      region: "main",
+      autoRender: true
+    });
+  };
+
+  LoginController.prototype.logout = function() {};
+
+  return LoginController;
+
+})(Chaplin.Controller);
+});
+
+;require.register("controllers/auth/stationAuthController", function(exports, require, module) {
+var AuthController, SiteView, Station, StationEditView, stationAuthController, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+AuthController = require("./authController");
+
+Station = require("models/station");
+
+StationEditView = require("views/station/edit/stationEditView");
+
+SiteView = require("views/site/siteView");
+
+module.exports = stationAuthController = (function(_super) {
+  __extends(stationAuthController, _super);
+
+  function stationAuthController() {
+    _ref = stationAuthController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  stationAuthController.prototype.beforeAction = function() {
+    stationAuthController.__super__.beforeAction.apply(this, arguments);
+    return this.reuse('site', SiteView);
+  };
+
+  stationAuthController.prototype.edit = function(params) {
+    var _this = this;
+    this.model = new Station({
+      name: params.name
+    });
+    this.view = new StationEditView({
+      model: this.model,
+      region: "main",
+      autoRender: true
+    });
+    return this.model.fetch().then(function() {
+      return _this.view.render();
+    });
+  };
+
+  return stationAuthController;
+
+})(AuthController);
+});
+
 ;require.register("controllers/shotsController", function(exports, require, module) {
 var Shot, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -270,21 +378,6 @@ module.exports = StationsController = (function(_super) {
     });
   };
 
-  StationsController.prototype.edit = function(params) {
-    var _this = this;
-    this.model = new Station({
-      name: params.name
-    });
-    this.view = new StationEditView({
-      model: this.model,
-      region: "main",
-      autoRender: true
-    });
-    return this.model.fetch().then(function() {
-      return _this.view.render();
-    });
-  };
-
   return StationsController;
 
 })(Chaplin.Controller);
@@ -358,11 +451,31 @@ module.exports = Station = (function(_super) {
 module.exports = function(match) {
   match("stations", "stations#index");
   match("stations/:name", "stations#show");
-  match("stations/:name/edit", "stations#edit");
+  match("stations/:name/edit", {
+    controller: "auth/stationAuth",
+    action: "edit",
+    name: "station_edit"
+  });
+  match("auth/login", {
+    controller: "auth/login",
+    action: "login",
+    name: "auth_login"
+  });
   match("shots", "shots#index");
   match("shots/:id", "shots#show");
   return match("", "static#about");
 };
+});
+
+;require.register("storage", function(exports, require, module) {
+var Storage;
+
+module.exports = Storage = (function() {
+  function Storage() {}
+
+  return Storage;
+
+})();
 });
 
 ;require.register("views/about/aboutView", function(exports, require, module) {
@@ -395,6 +508,79 @@ var buf = [];
 var jade_mixins = {};
 
 buf.push("<div class=\"jumbotron text-center landing\"><h1>#steviewhale</h1><p>Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/auth/loginView", function(exports, require, module) {
+var LoginView, Storage, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Storage = require("storage");
+
+module.exports = LoginView = (function(_super) {
+  __extends(LoginView, _super);
+
+  function LoginView() {
+    _ref = LoginView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  LoginView.prototype.initialize = function() {
+    return this.delegate("click", ".login-button", this.login);
+  };
+
+  LoginView.prototype.loginSuccess = function(user) {
+    Storage.user = user;
+    if (Storage.redirectUrl != null) {
+      return Chaplin.utils.redirectTo({
+        url: Storage.redirectUrl
+      });
+    } else {
+      return Chaplin.utils.redirectTo("static#about");
+    }
+  };
+
+  LoginView.prototype.login = function() {
+    var data,
+      _this = this;
+    data = {
+      username: this.$(".login-field").val(),
+      password: this.$(".password-field").val()
+    };
+    return $.post('/api/auth/login', data).done(function(data) {
+      return _this.loginSuccess(data.user);
+    }).fail(function() {
+      return alert("fail");
+    });
+  };
+
+  LoginView.prototype.template = require("./loginViewTemplate");
+
+  LoginView.prototype.getTemplateData = function() {};
+
+  return LoginView;
+
+})(View);
+});
+
+;require.register("views/auth/loginViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><form role=\"form\" class=\"login-form\"><h2>Авторизация</h2><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-primary btn-block\">Войти</div></form></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -532,7 +718,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.description, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
+buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.description, true, false)) + " class=\"form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -711,7 +897,7 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h3><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('stations#edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span></a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span></button></div><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
+buf.push("</h3><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span></a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span></button></div><p class=\"lead\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</p></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
