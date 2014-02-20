@@ -13,7 +13,7 @@ module.exports = class StationView extends View
 			success : =>
 				Chaplin.utils.redirectTo "stations#index"
 
-	template : require "./stationViewTemplate"
+	template : require "./stationView_"
 
 	getTemplateData : ->
 		station : @model.attributes

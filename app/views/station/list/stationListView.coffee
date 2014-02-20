@@ -8,7 +8,7 @@ module.exports = class StationListView extends Chaplin.CollectionView
 
 	loadingSelector : ".loading-container"
 
-	template : require "./stationListViewTemplate"
+	template : require "./stationListView_"
 
 
 	getTemplateData : ->

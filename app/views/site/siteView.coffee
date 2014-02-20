@@ -11,4 +11,4 @@ module.exports = class SiteView extends View
 		main: '#main-container'
 		navigation: '#nav-container'
 
-	template: require './siteViewTemplate'
+	template: require './siteView_'

@@ -25,6 +25,6 @@ module.exports = class LoginView extends View
 		.fail =>
 			alert "fail"
 
-	template : require "./loginViewTemplate"
+	template : require "./loginView_"
 
 	getTemplateData : -> 

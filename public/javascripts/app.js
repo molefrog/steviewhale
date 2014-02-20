@@ -554,7 +554,7 @@ module.exports = AboutView = (function(_super) {
     return _ref;
   }
 
-  AboutView.prototype.template = require("./aboutViewTemplate");
+  AboutView.prototype.template = require("./aboutView_");
 
   AboutView.prototype.getTemplateData = function() {};
 
@@ -563,12 +563,12 @@ module.exports = AboutView = (function(_super) {
 })(View);
 });
 
-;require.register("views/about/aboutViewTemplate", function(exports, require, module) {
+;require.register("views/about/aboutView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"text-center\"><div class=\"row\"><div class=\"landing col-md-12\"><h1>#steviewhale</h1><p class=\"lead\">Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/><h2>Привет, друг! </h2><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\">\t\t\t\t<p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.</p></div></div></div></div><div class=\"row\"><div class=\"how-it-works col-md-12\"><h1>Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"text-center\"><div class=\"row\"><div class=\"landing col-md-12\"><h1>#steviewhale</h1><p>Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/><h2>Привет, друг! </h2><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\">\t\t\t\t<p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.</p></div></div></div></div><div class=\"row\"><div class=\"how-it-works col-md-12\"><div class=\"container\"><h1>Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p>Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p>Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p>Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -627,7 +627,7 @@ module.exports = LoginView = (function(_super) {
     });
   };
 
-  LoginView.prototype.template = require("./loginViewTemplate");
+  LoginView.prototype.template = require("./loginView_");
 
   LoginView.prototype.getTemplateData = function() {};
 
@@ -636,12 +636,12 @@ module.exports = LoginView = (function(_super) {
 })(View);
 });
 
-;require.register("views/auth/loginViewTemplate", function(exports, require, module) {
+;require.register("views/auth/loginView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row text-center\"><h2>Упс! Здесь нужно авторизоваться</h2><div class=\"col-md-4 col-md-offset-4\"><form role=\"form\" class=\"login-form\"><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-primary btn-block\">Войти</div></form></div></div>");;return buf.join("");
+buf.push("<form role=\"form\" class=\"text-center login-form\"><h2>Вумпс! Авторизуйтесь</h2><div class=\"logo-container\"><img src=\"/images/stevie.svg\" class=\"img-responsive\"/></div><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-primary btn-block\">Войти</div></form>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -766,19 +766,19 @@ module.exports = SiteView = (function(_super) {
     navigation: '#nav-container'
   };
 
-  SiteView.prototype.template = require('./siteViewTemplate');
+  SiteView.prototype.template = require('./siteView_');
 
   return SiteView;
 
 })(View);
 });
 
-;require.register("views/site/siteViewTemplate", function(exports, require, module) {
+;require.register("views/site/siteView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li>");
+buf.push("<nav role=\"navigation\" class=\"navbar navbar-inverse navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> Войти</a></li>");
@@ -787,7 +787,7 @@ else
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> Выйти</a></li>");
 }
-buf.push("</ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("</ul></div></nav><div class=\"container-fluid site-container\"><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -938,7 +938,37 @@ module.exports = StationEditView = (function(_super) {
 })(View);
 });
 
-;require.register("views/station/list/stationListItemTemplate", function(exports, require, module) {
+;require.register("views/station/list/stationListItemView", function(exports, require, module) {
+var StationListItemView, Storage, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Storage = require("storage");
+
+module.exports = StationListItemView = (function(_super) {
+  __extends(StationListItemView, _super);
+
+  function StationListItemView() {
+    _ref = StationListItemView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationListItemView.prototype.template = require("./stationListItemView_");
+
+  StationListItemView.prototype.getTemplateData = function() {
+    return {
+      station: this.model.attributes
+    };
+  };
+
+  return StationListItemView;
+
+})(View);
+});
+
+;require.register("views/station/list/stationListItemView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
@@ -965,36 +995,6 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
-;require.register("views/station/list/stationListItemView", function(exports, require, module) {
-var StationListItemView, Storage, View, _ref,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-View = require("views/base/base");
-
-Storage = require("storage");
-
-module.exports = StationListItemView = (function(_super) {
-  __extends(StationListItemView, _super);
-
-  function StationListItemView() {
-    _ref = StationListItemView.__super__.constructor.apply(this, arguments);
-    return _ref;
-  }
-
-  StationListItemView.prototype.template = require("./stationListItemTemplate");
-
-  StationListItemView.prototype.getTemplateData = function() {
-    return {
-      station: this.model.attributes
-    };
-  };
-
-  return StationListItemView;
-
-})(View);
-});
-
 ;require.register("views/station/list/stationListView", function(exports, require, module) {
 var StationListItemView, StationListView, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -1018,7 +1018,7 @@ module.exports = StationListView = (function(_super) {
 
   StationListView.prototype.loadingSelector = ".loading-container";
 
-  StationListView.prototype.template = require("./stationListViewTemplate");
+  StationListView.prototype.template = require("./stationListView_");
 
   StationListView.prototype.getTemplateData = function() {};
 
@@ -1031,16 +1031,17 @@ module.exports = StationListView = (function(_super) {
 })(Chaplin.CollectionView);
 });
 
-;require.register("views/station/list/stationListViewTemplate", function(exports, require, module) {
+;require.register("views/station/list/stationListView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
+buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-12\">");
 if ( jade.auth())
 {
-buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-primary\">Зарегистрировать Станцию</a>");
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-default\">Зарегистрировать Станцию</a>");
 }
-buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div>");;return buf.join("");
+buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -1086,7 +1087,7 @@ module.exports = StationView = (function(_super) {
     });
   };
 
-  StationView.prototype.template = require("./stationViewTemplate");
+  StationView.prototype.template = require("./stationView_");
 
   StationView.prototype.getTemplateData = function() {
     return {
@@ -1099,12 +1100,12 @@ module.exports = StationView = (function(_super) {
 })(View);
 });
 
-;require.register("views/station/stationViewTemplate", function(exports, require, module) {
+;require.register("views/station/stationView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"station-item\"><h1>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
+buf.push("<div class=\"container\"><div class=\"station-item\"><h1>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
 switch (station.online){
 case true :
 buf.push("<span class=\"label label-success\">Онлайн</span>");
@@ -1118,7 +1119,7 @@ if ( jade.auth())
 {
 buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div>");
 }
-buf.push(" <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div>");;return buf.join("");
+buf.push(" <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
