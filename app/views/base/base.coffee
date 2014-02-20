@@ -5,6 +5,11 @@ jade.markdown = do ->
 	(text) =>
 		converter.makeHtml text if text?
 
+Storage = require "storage"
+jade.auth = ->
+	Storage.user?
+
+
  
 # Base view.
 module.exports = class View extends Chaplin.View

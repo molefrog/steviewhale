@@ -9,22 +9,22 @@
 				span.label.label-warning Оффлайн
 		
 	h2 
-		
-		.btn-group.btn-group-sm
-			button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
-				span.glyphicon.glyphicon-cog
-				| 
-				span.caret
-			ul.dropdown-menu(role="menu")
-				li
-					a.edit-button(href=jade.url('station_edit', {name : station.name}))
-						span.glyphicon.glyphicon-pencil
-						|  Редактировать
+		if jade.auth()
+			.btn-group.btn-group-sm
+				button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
+					span.glyphicon.glyphicon-cog
+					| 
+					span.caret
+				ul.dropdown-menu(role="menu")
+					li
+						a.edit-button(href=jade.url('station_edit', {name : station.name}))
+							span.glyphicon.glyphicon-pencil
+							|  Редактировать
 
-				li
-					a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
-						span.glyphicon.glyphicon-remove
-						|  Удалить
+					li
+						a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
+							span.glyphicon.glyphicon-remove
+							|  Удалить
 		| 
 		small= station.subtitle
 

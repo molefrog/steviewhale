@@ -13,9 +13,13 @@
 				span.glyphicon.glyphicon-camera
 				|  Фотографии
 
-		li 
-			a(href="#{jade.url('auth_login')}")
-				span.glyphicon.glyphicon-camera
-				|  Войти
+		if !jade.auth()
+			li 
+				a(href="#{jade.url('auth_login')}")
+					|  Войти
+		else
+			li 
+				a(href="#{jade.url('auth_logout')}")
+					|  Выйти
 
 	#main-container 

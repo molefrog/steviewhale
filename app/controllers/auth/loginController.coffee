@@ -1,6 +1,8 @@
 LoginView = require "views/auth/loginView"
 SiteView = require "views/site/siteView"
 
+Storage = require "storage"
+
 module.exports = class LoginController extends Chaplin.Controller
 	beforeAction : ->
 		# Site view declares “main” region.
@@ -12,3 +14,7 @@ module.exports = class LoginController extends Chaplin.Controller
 			autoRender : true 
 
 	logout : ->
+		$.post("/api/auth/logout")
+		.then =>
+			Storage.user = null
+			@redirectTo "static#about"

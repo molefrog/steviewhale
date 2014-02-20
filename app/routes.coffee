@@ -20,6 +20,11 @@ module.exports = (match) ->
 		action : "login"
 		name : "auth_login"
 
+	match "auth/logout", 
+		controller : "auth/login"
+		action : "logout"
+		name : "auth_logout"
+
 	match "shots",        "shots#index"
 	match "shots/:id",    "shots#show"
 

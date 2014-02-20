@@ -1,4 +1,5 @@
-a.btn.btn-primary(href=jade.url("station_create") ) Зарегистировать Станцию
+if jade.auth()
+	a.btn.btn-primary(href=jade.url("station_create") ) Зарегистрировать Станцию
 
 .loading-container
 	h2 Загрузка

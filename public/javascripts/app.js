@@ -90,7 +90,37 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-require.register("collections/shotCollection", function(exports, require, module) {
+require.register("application", function(exports, require, module) {
+var Application, Storage, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Storage = require("storage");
+
+module.exports = Application = (function(_super) {
+  __extends(Application, _super);
+
+  function Application() {
+    _ref = Application.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  Application.prototype.start = function() {
+    var _this = this;
+    return $.get("/api/auth", function(data) {
+      if (data.auth) {
+        Storage.user = data.user;
+      }
+      return Application.__super__.start.apply(_this, arguments);
+    });
+  };
+
+  return Application;
+
+})(Chaplin.Application);
+});
+
+;require.register("collections/shotCollection", function(exports, require, module) {
 var Shot, ShotsCollection, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -168,13 +198,15 @@ module.exports = AuthController = (function(_super) {
 });
 
 ;require.register("controllers/auth/loginController", function(exports, require, module) {
-var LoginController, LoginView, SiteView, _ref,
+var LoginController, LoginView, SiteView, Storage, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 LoginView = require("views/auth/loginView");
 
 SiteView = require("views/site/siteView");
+
+Storage = require("storage");
 
 module.exports = LoginController = (function(_super) {
   __extends(LoginController, _super);
@@ -195,7 +227,13 @@ module.exports = LoginController = (function(_super) {
     });
   };
 
-  LoginController.prototype.logout = function() {};
+  LoginController.prototype.logout = function() {
+    var _this = this;
+    return $.post("/api/auth/logout").then(function() {
+      Storage.user = null;
+      return _this.redirectTo("static#about");
+    });
+  };
 
   return LoginController;
 
@@ -394,12 +432,17 @@ module.exports = StationsController = (function(_super) {
 });
 
 ;require.register("initialize", function(exports, require, module) {
+var Application;
+
+Application = require("application");
+
 /*
  Application's initialization routine
 */
 
+
 $(function() {
-  return new Chaplin.Application({
+  return new Application({
     controllerSuffix: 'Controller',
     pushState: true,
     routes: require("routes")
@@ -473,6 +516,11 @@ module.exports = function(match) {
     controller: "auth/login",
     action: "login",
     name: "auth_login"
+  });
+  match("auth/logout", {
+    controller: "auth/login",
+    action: "logout",
+    name: "auth_logout"
   });
   match("shots", "shots#index");
   match("shots/:id", "shots#show");
@@ -607,7 +655,7 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/base/base", function(exports, require, module) {
-var View, _ref,
+var Storage, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -623,6 +671,12 @@ jade.markdown = (function() {
     }
   };
 })();
+
+Storage = require("storage");
+
+jade.auth = function() {
+  return Storage.user != null;
+};
 
 module.exports = View = (function(_super) {
   __extends(View, _super);
@@ -724,7 +778,16 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li><li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Войти</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li>");
+if ( !jade.auth())
+{
+buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> Войти</a></li>");
+}
+else
+{
+buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> Выйти</a></li>");
+}
+buf.push("</ul><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -903,11 +966,13 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/station/list/stationListItemView", function(exports, require, module) {
-var StationListItemView, View, _ref,
+var StationListItemView, Storage, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 View = require("views/base/base");
+
+Storage = require("storage");
 
 module.exports = StationListItemView = (function(_super) {
   __extends(StationListItemView, _super);
@@ -971,7 +1036,11 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-primary\">Зарегистировать Станцию</a><div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div>");;return buf.join("");
+if ( jade.auth())
+{
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-primary\">Зарегистрировать Станцию</a>");
+}
+buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -1044,7 +1113,12 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h1><h2><div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div> <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div>");;return buf.join("");
+buf.push("</h1><h2>");
+if ( jade.auth())
+{
+buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div>");
+}
+buf.push(" <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
