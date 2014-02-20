@@ -1,5 +1,6 @@
 
 module.exports = class Station extends Chaplin.Model
+	idAttribute: "name"
+	
 	urlRoot : "/api/stations"
-	url: ->
-		"/api/stations/#{@get 'name'}"
+	

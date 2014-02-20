@@ -20,7 +20,7 @@ app.get    "/stations",       StationController.index
 app.get    "/stations/:name", StationController.show 
 app.delete "/stations/:name", Authenticated, StationController.delete
 app.post   "/stations",       Authenticated, StationController.create
-app.put    "/stations/:name", Authenticated, StationController.update
+app.put    "/stations/:name",  StationController.update
 
 app.get    "/shots",          ShotController.index
 app.get    "/shots/:id", 	  ShotController.show

@@ -2,7 +2,8 @@ jade.url = Chaplin.utils.reverse
 
 jade.markdown = do ->
 	converter = new Showdown.converter()
-	_.bind converter.makeHtml, converter
+	(text) =>
+		converter.makeHtml text if text?
 
  
 # Base view.

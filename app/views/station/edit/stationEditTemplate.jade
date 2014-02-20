@@ -1,5 +1,9 @@
 .form(role="form")
 	.form-group
+		label Краткий адрес (URL)
+		input.name-input.form-control(type="text" value=station.name)
+	
+	.form-group
 		label Название
 		input.title-input.form-control(type="text" value=station.title)
 
@@ -11,7 +15,7 @@
 		label 
 			|Описание 
 			small (Поддерживает Markdown)
-		textarea.desc-input.form-control(rows=5 text=station.description)
+		textarea.desc-input.form-control(rows="10" text=station.description)
 			=station.description
 
 	.row

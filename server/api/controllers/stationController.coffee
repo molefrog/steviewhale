@@ -59,6 +59,9 @@ exports.create = (req, res, next) ->
 	# Generate random secret key for this station
 	fields.secret = uid 6
 
+	if not fields.name?
+		fields.name = uid 10
+
 	Station.create fields, (err, station) ->
 		if err
 			return next new Error "Database error #{err}"
@@ -72,12 +75,11 @@ exports.update = (req, res, next) ->
 	# Filter fields 
 	fields = _.pick req.body, allowedWriteFields
 
-	
-	Station.update {name : req.params.name}, {$set: fields}, {}, (err, station) ->
+	Station.update {name : req.params.name}, fields, { multi : true, upsert : true}, (err) ->
 		if err
 			return next err
 
-		return res.json station
+		res.json {}
 
 ###
 # Delete existing station

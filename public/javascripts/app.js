@@ -129,6 +129,8 @@ module.exports = StationCollection = (function(_super) {
     return _ref;
   }
 
+  _.extend(StationCollection.prototype, Chaplin.SyncMachine);
+
   StationCollection.prototype.model = Station;
 
   StationCollection.prototype.url = "/api/stations";
@@ -201,7 +203,7 @@ module.exports = LoginController = (function(_super) {
 });
 
 ;require.register("controllers/auth/stationAuthController", function(exports, require, module) {
-var AuthController, SiteView, Station, StationEditView, stationAuthController, _ref,
+var AuthController, SiteView, Station, StationCreateView, StationEditView, stationAuthController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -210,6 +212,8 @@ AuthController = require("./authController");
 Station = require("models/station");
 
 StationEditView = require("views/station/edit/stationEditView");
+
+StationCreateView = require("views/station/create/stationCreateView");
 
 SiteView = require("views/site/siteView");
 
@@ -233,11 +237,17 @@ module.exports = stationAuthController = (function(_super) {
     });
     this.view = new StationEditView({
       model: this.model,
-      region: "main",
-      autoRender: true
+      region: "main"
     });
     return this.model.fetch().then(function() {
       return _this.view.render();
+    });
+  };
+
+  stationAuthController.prototype.create = function(params) {
+    return this.view = new StationCreateView({
+      region: "main",
+      autoRender: true
     });
   };
 
@@ -415,7 +425,7 @@ module.exports = Shot = (function(_super) {
   Shot.prototype.urlRoot = "/api/shots";
 
   Shot.prototype.url = function() {
-    return "/api/shots/" + this.id;
+    return "/api/shots/" + this.name;
   };
 
   return Shot;
@@ -436,11 +446,9 @@ module.exports = Station = (function(_super) {
     return _ref;
   }
 
-  Station.prototype.urlRoot = "/api/stations";
+  Station.prototype.idAttribute = "name";
 
-  Station.prototype.url = function() {
-    return "/api/stations/" + (this.get('name'));
-  };
+  Station.prototype.urlRoot = "/api/stations";
 
   return Station;
 
@@ -450,6 +458,11 @@ module.exports = Station = (function(_super) {
 ;require.register("routes", function(exports, require, module) {
 module.exports = function(match) {
   match("stations", "stations#index");
+  match("stations/create", {
+    controller: "auth/stationAuth",
+    action: "create",
+    name: "station_create"
+  });
   match("stations/:name", "stations#show");
   match("stations/:name/edit", {
     controller: "auth/stationAuth",
@@ -507,7 +520,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"text-center\"><div class=\"row\"><div class=\"landing col-md-12\"><h1>#steviewhale</h1><p class=\"lead\">Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/><h2>Привет, друг! </h2><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\">\t\t\t\t<p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.</p></div></div></div></div><div class=\"row\"><div class=\"how-it-works col-md-12\"><h1>Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div style=\"color:#633B75\" class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div style=\"color:#355E75\" class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div style=\"color:#EC739A\" class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"text-center\"><div class=\"row\"><div class=\"landing col-md-12\"><h1>#steviewhale</h1><p class=\"lead\">Моментальная печать фотографий из Instagram</p><img src=\"/images/stevie.svg\" class=\"img-responsive\"/><h2>Привет, друг! </h2><div class=\"row\"><div class=\"col-md-6 col-md-offset-3\">\t\t\t\t<p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.</p></div></div></div></div><div class=\"row\"><div class=\"how-it-works col-md-12\"><h1>Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -601,9 +614,14 @@ var View, _ref,
 jade.url = Chaplin.utils.reverse;
 
 jade.markdown = (function() {
-  var converter;
+  var converter,
+    _this = this;
   converter = new Showdown.converter();
-  return _.bind(converter.makeHtml, converter);
+  return function(text) {
+    if (text != null) {
+      return converter.makeHtml(text);
+    }
+  };
 })();
 
 module.exports = View = (function(_super) {
@@ -719,12 +737,76 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
+;require.register("views/station/create/stationCreateView", function(exports, require, module) {
+var Station, StationCollection, StationCreateView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Station = require("models/station");
+
+StationCollection = require("collections/stationCollection");
+
+module.exports = StationCreateView = (function(_super) {
+  __extends(StationCreateView, _super);
+
+  function StationCreateView() {
+    _ref = StationCreateView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationCreateView.prototype.initialize = function() {
+    return this.delegate("click", ".register-button", this.register);
+  };
+
+  StationCreateView.prototype.register = function() {
+    var fields, station;
+    fields = {
+      title: this.$(".title-input").val(),
+      subtitle: this.$(".subtitle-input").val()
+    };
+    station = new Station(fields);
+    return station.save(null, {
+      success: function() {
+        return Chaplin.utils.redirectTo("stations#index");
+      }
+    });
+  };
+
+  StationCreateView.prototype.template = require("./stationCreateViewTemplate");
+
+  StationCreateView.prototype.getTemplateData = function() {};
+
+  return StationCreateView;
+
+})(View);
+});
+
+;require.register("views/station/create/stationCreateViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><input type=\"text\" placeholder=\"Название\" class=\"title-input form-control\"/></div><div class=\"form-group\"><input type=\"text\" placeholder=\"Подзаголовок\" class=\"subtitle-input form-control\"/></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"register-button btn btn-primary btn-lg btn-block save-button\">Зарегистрировать</div></div></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
 ;require.register("views/station/edit/stationEditTemplate", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"5\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
+buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Краткий адрес (URL)</label><input type=\"text\"" + (jade.attr("value", station.name, true, false)) + " class=\"name-input form-control\"/></div><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"10\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -763,13 +845,15 @@ module.exports = StationEditView = (function(_super) {
   };
 
   StationEditView.prototype.save = function() {
-    var _this = this;
-    this.model.set({
+    var fields,
+      _this = this;
+    fields = {
+      name: this.$(".name-input").val(),
       title: this.$(".title-input").val(),
       subtitle: this.$(".subtitle-input").val(),
       description: this.$(".desc-input").val()
-    });
-    return this.model.save(null, {
+    };
+    return this.model.save(fields, {
       success: function() {
         return Chaplin.utils.redirectTo("stations#show", {
           name: _this.model.attributes.name
@@ -863,9 +947,39 @@ module.exports = StationListView = (function(_super) {
 
   StationListView.prototype.itemView = StationListItemView;
 
+  StationListView.prototype.listSelector = ".station-list";
+
+  StationListView.prototype.loadingSelector = ".loading-container";
+
+  StationListView.prototype.template = require("./stationListViewTemplate");
+
+  StationListView.prototype.getTemplateData = function() {};
+
+  StationListView.prototype.getTemplateFunction = function() {
+    return this.template;
+  };
+
   return StationListView;
 
 })(Chaplin.CollectionView);
+});
+
+;require.register("views/station/list/stationListViewTemplate", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-primary\">Зарегистировать Станцию</a><div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/station/stationView", function(exports, require, module) {
@@ -886,6 +1000,20 @@ module.exports = StationView = (function(_super) {
   }
 
   StationView.prototype.model = Station;
+
+  StationView.prototype.initialize = function() {
+    return this.delegate("click", ".delete-confirm-button", this.deleteStation);
+  };
+
+  StationView.prototype.deleteStation = function() {
+    var _this = this;
+    this.$(".delete-modal").modal("hide");
+    return this.model.destroy({
+      success: function() {
+        return Chaplin.utils.redirectTo("stations#index");
+      }
+    });
+  };
 
   StationView.prototype.template = require("./stationViewTemplate");
 
@@ -914,7 +1042,7 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h1><h2><small>" + (jade.escape(null == (jade.interp = station.subtitle	) ? "" : jade.interp)) + "</small></h2><div class=\"btn-group\"><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"btn btn-default\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a><button class=\"btn btn-default\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</button></div><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div>");;return buf.join("");
+buf.push("</h1><h2><div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div> <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2><p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
