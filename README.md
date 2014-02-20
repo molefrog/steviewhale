@@ -1,7 +1,11 @@
 # Printiculo
-Real-Time Printing Experience
+### What is Printiculo?
 
 ![](https://rawgithub.com/molefrog/printiculo/master/app/assets/images/stevie.svg)
+
+Printiculo - is a web-application the main feature of which is to print tagged photos from Instagram in real-time. The application looks for a photos tagged with special tag and then prints it using one of the connected print stations. The Print Station - is a printer connected through **socket.io** to the main server. Print Station basically holds connection and waits for the print job to arrive.
+
+The most interesting part - you don't know exactly on which print station the photo is going to be printed. The motivation of this project is to make people happy by bringing them the experience of real printed photos.  
 
 ### Directory Structure
  1. `app/` Client-side logic (front-end): scripts, assets, styles, templates etc. The content of this folder is used by Brunch to build `public/` directory.
