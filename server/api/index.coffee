@@ -16,11 +16,13 @@ Authenticated = require "./policies/authenticated"
 ##
 # RESTful CRUD handlers
 ## 
-app.get    "/stations",       StationController.index
-app.get    "/stations/:name", StationController.show 
-app.delete "/stations/:name", Authenticated, StationController.delete
-app.post   "/stations",       Authenticated, StationController.create
-app.put    "/stations/:name",  StationController.update
+app.param  "station",                   StationController.stationParam
+app.get    "/stations",                 StationController.index
+app.get    "/stations/:station",        StationController.show 
+app.delete "/stations/:station",        Authenticated, StationController.delete
+app.post   "/stations",                 Authenticated, StationController.create
+app.put    "/stations/:station",        Authenticated, StationController.update
+app.get    "/stations/:station/secret", StationController.secret
 
 app.get    "/shots",          ShotController.index
 app.get    "/shots/:id", 	  ShotController.show

@@ -23,6 +23,20 @@ allowedWriteFields = [
 ]
 
 ###
+# Param handler
+###
+exports.stationParam = (req, res, next, name) ->
+	Station.findOne( { name : name } )
+	.exec (err, station) ->
+		return next err if err
+
+		if not station?
+			return next new Error "Station not found"
+
+		req.station = station
+		do next
+
+###
 # Get all stations
 ###
 exports.index = (req, res, next) ->
@@ -38,16 +52,7 @@ exports.index = (req, res, next) ->
 # Get station with specified name 
 ###
 exports.show = (req, res, next) ->
-	Station.findOne({ name : req.params.name })
-	.select( allowedReadFields.join " " )
-	.exec (err, item) ->
-		if err 
-			return next err
-
-		if not item?
-			return next new Error "Station not found"
-
-		res.json item 
+	res.json _.pick req.station, allowedReadFields
 
 ###
 # Create new print station
@@ -72,22 +77,26 @@ exports.create = (req, res, next) ->
 # Update existing station
 ###
 exports.update = (req, res, next) ->
-	# Filter fields 
 	fields = _.pick req.body, allowedWriteFields
 
-	Station.update {name : req.params.name}, fields, { multi : true, upsert : true}, (err) ->
-		if err
-			return next err
-
+	Station.update { name : req.station.name }, fields, (err) ->
 		res.json {}
+
 
 ###
 # Delete existing station
 ###
 exports.delete = (req, res, next) ->
-	Station.remove name : req.params.name, (err) ->
+	Station.remove name : req.station.name, (err) ->
 		if err
 			return next new Error "Database error #{err}"
 		return res.json {}
+
+###
+# Get station's secret key
+###
+exports.secret = (req, res, next) ->
+	res.json _.pick req.station, "secret"
+
 
 

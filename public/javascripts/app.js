@@ -724,7 +724,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container-fluid site-container\"><ul class=\"nav nav-pills\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "><span class=\"glyphicon glyphicon-home\"></span> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-print\"></span> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Фотографии</a></li><li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "><span class=\"glyphicon glyphicon-camera\"></span> Войти</a></li></ul><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -853,8 +853,10 @@ module.exports = StationEditView = (function(_super) {
       subtitle: this.$(".subtitle-input").val(),
       description: this.$(".desc-input").val()
     };
+    console.log(fields);
     return this.model.save(fields, {
       success: function() {
+        console.log(_this.model);
         return Chaplin.utils.redirectTo("stations#show", {
           name: _this.model.attributes.name
         });

@@ -45,6 +45,8 @@ stationSchema = new Schema
 , schemaOptions
 
 
+stationSchema.plugin (require "mongoose-multi-set")
+
 pool      = require "../services/pool/clients"
 streaming = require "../services/streaming/clients"
 
