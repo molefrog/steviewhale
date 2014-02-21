@@ -6,7 +6,7 @@ StationCollection = require "/collections/stationCollection"
 StationListView   = require "/views/station/list/stationListView"
 
 StationEditView = require "/views/station/edit/stationEditView"
-StationView = require "/views/station/stationView"
+StationView     = require "/views/station/show/stationView"
 
 
 module.exports = class StationsController extends Chaplin.Controller

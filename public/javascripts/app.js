@@ -295,7 +295,7 @@ module.exports = stationAuthController = (function(_super) {
 });
 
 ;require.register("controllers/shotsController", function(exports, require, module) {
-var Shot, ShotView, ShotsController, SiteView, _ref,
+var Shot, ShotCollection, ShotGridView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -303,7 +303,9 @@ SiteView = require("views/site/siteView");
 
 Shot = require("models/shot");
 
-ShotView = require("views/shot/shotView");
+ShotCollection = require("collections/shotCollection");
+
+ShotGridView = require("views/shot/grid/shotGridView");
 
 module.exports = ShotsController = (function(_super) {
   __extends(ShotsController, _super);
@@ -317,18 +319,14 @@ module.exports = ShotsController = (function(_super) {
     return this.reuse('site', SiteView);
   };
 
-  ShotsController.prototype.index = function() {};
-
-  ShotsController.prototype.show = function(params) {
+  ShotsController.prototype.index = function() {
     var _this = this;
-    this.model = new Shot({
-      _id: params.id
-    });
-    this.view = new ShotView({
-      model: this.model,
+    this.collection = new ShotCollection;
+    this.view = new ShotGridView({
+      collection: this.collection,
       region: "main"
     });
-    return this.model.fetch().then(function() {
+    return this.collection.fetch().then(function() {
       return _this.view.render();
     });
   };
@@ -386,7 +384,7 @@ StationListView = require("/views/station/list/stationListView");
 
 StationEditView = require("/views/station/edit/stationEditView");
 
-StationView = require("/views/station/stationView");
+StationView = require("/views/station/show/stationView");
 
 module.exports = StationsController = (function(_super) {
   __extends(StationsController, _super);
@@ -695,7 +693,120 @@ module.exports = View = (function(_super) {
 })(Chaplin.View);
 });
 
-;require.register("views/shot/shotView", function(exports, require, module) {
+;require.register("views/shot/grid/item/shotGridItemView", function(exports, require, module) {
+var Shot, ShotGridItemView, Storage, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Storage = require("storage");
+
+Shot = require("models/shot");
+
+module.exports = ShotGridItemView = (function(_super) {
+  __extends(ShotGridItemView, _super);
+
+  function ShotGridItemView() {
+    _ref = ShotGridItemView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  ShotGridItemView.prototype.model = Shot;
+
+  ShotGridItemView.prototype.className = "shot-grid-item";
+
+  ShotGridItemView.prototype.initialize = function() {
+    var _this = this;
+    return this.delegate("click", ".delete-confirm", function() {
+      return console.log("sdf");
+    });
+  };
+
+  ShotGridItemView.prototype.template = require("./shotGridItemView_");
+
+  ShotGridItemView.prototype.getTemplateData = function() {
+    return {
+      shot: this.model.attributes
+    };
+  };
+
+  return ShotGridItemView;
+
+})(View);
+});
+
+;require.register("views/shot/grid/item/shotGridItemView_", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),shot = locals_.shot;
+buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><a class=\"delete-confirm btn btn-default\">Удалить</a></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/shot/grid/shotGridView", function(exports, require, module) {
+var ShotGridItemView, ShotGridView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+ShotGridItemView = require("./item/shotGridItemView");
+
+module.exports = ShotGridView = (function(_super) {
+  __extends(ShotGridView, _super);
+
+  function ShotGridView() {
+    _ref = ShotGridView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  ShotGridView.prototype.animationDuration = 300;
+
+  ShotGridView.prototype.itemView = ShotGridItemView;
+
+  ShotGridView.prototype.listSelector = ".shot-grid";
+
+  ShotGridView.prototype.template = require("./shotGridView_");
+
+  ShotGridView.prototype.getTemplateData = function() {};
+
+  ShotGridView.prototype.getTemplateFunction = function() {
+    return this.template;
+  };
+
+  return ShotGridView;
+
+})(Chaplin.CollectionView);
+});
+
+;require.register("views/shot/grid/shotGridView_", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/shot/show/shotView", function(exports, require, module) {
 var ShotView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -710,7 +821,7 @@ module.exports = ShotView = (function(_super) {
     return _ref;
   }
 
-  ShotView.prototype.template = require("./shotViewTemplate");
+  ShotView.prototype.template = require("./shotView_");
 
   ShotView.prototype.getTemplateData = function() {
     return {
@@ -723,7 +834,7 @@ module.exports = ShotView = (function(_super) {
 })(View);
 });
 
-;require.register("views/shot/shotViewTemplate", function(exports, require, module) {
+;require.register("views/shot/show/shotView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
@@ -1054,7 +1165,7 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
-;require.register("views/station/stationView", function(exports, require, module) {
+;require.register("views/station/show/stationView", function(exports, require, module) {
 var Station, StationView, View, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1100,7 +1211,7 @@ module.exports = StationView = (function(_super) {
 })(View);
 });
 
-;require.register("views/station/stationView_", function(exports, require, module) {
+;require.register("views/station/show/stationView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
