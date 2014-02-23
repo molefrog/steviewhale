@@ -1,8 +1,8 @@
 {
-  "name": "printiculo",
-  "version": "0.0.0",
-  "repository": "https://github.com/molefrog/printiculo.git",
-  "description": "Real-Time printing system",
+  "name": "steviewhale",
+  "version": "0.0.1",
+  "repository": "https://github.com/molefrog/steviewhale.git",
+  "description": "Real-Time Printing Experience",
   "main": "server/index.coffee",
   "dependencies": {
     "express": "~3.4.7",

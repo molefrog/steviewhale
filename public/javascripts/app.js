@@ -693,6 +693,28 @@ module.exports = View = (function(_super) {
 })(Chaplin.View);
 });
 
+;require.register("views/base/collectionView", function(exports, require, module) {
+var CollectionView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('./base');
+
+module.exports = CollectionView = (function(_super) {
+  __extends(CollectionView, _super);
+
+  function CollectionView() {
+    _ref = CollectionView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  CollectionView.prototype.getTemplateFunction = View.prototype.getTemplateFunction;
+
+  return CollectionView;
+
+})(Chaplin.CollectionView);
+});
+
 ;require.register("views/shot/grid/item/shotGridItemView", function(exports, require, module) {
 var Shot, ShotGridItemView, Storage, View, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -716,11 +738,10 @@ module.exports = ShotGridItemView = (function(_super) {
 
   ShotGridItemView.prototype.className = "shot-grid-item";
 
-  ShotGridItemView.prototype.initialize = function() {
-    var _this = this;
-    return this.delegate("click", ".delete-confirm", function() {
-      return console.log("sdf");
-    });
+  ShotGridItemView.prototype.events = {
+    "click": function() {
+      return alert("234");
+    }
   };
 
   ShotGridItemView.prototype.template = require("./shotGridItemView_");
@@ -755,11 +776,13 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/shot/grid/shotGridView", function(exports, require, module) {
-var ShotGridItemView, ShotGridView, _ref,
+var CollectionView, ShotGridItemView, ShotGridView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 ShotGridItemView = require("./item/shotGridItemView");
+
+CollectionView = require("views/base/collectionView");
 
 module.exports = ShotGridView = (function(_super) {
   __extends(ShotGridView, _super);
@@ -769,23 +792,15 @@ module.exports = ShotGridView = (function(_super) {
     return _ref;
   }
 
-  ShotGridView.prototype.animationDuration = 300;
-
   ShotGridView.prototype.itemView = ShotGridItemView;
 
   ShotGridView.prototype.listSelector = ".shot-grid";
 
   ShotGridView.prototype.template = require("./shotGridView_");
 
-  ShotGridView.prototype.getTemplateData = function() {};
-
-  ShotGridView.prototype.getTemplateFunction = function() {
-    return this.template;
-  };
-
   return ShotGridView;
 
-})(Chaplin.CollectionView);
+})(CollectionView);
 });
 
 ;require.register("views/shot/grid/shotGridView_", function(exports, require, module) {
@@ -793,7 +808,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h2>sdf</h2><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

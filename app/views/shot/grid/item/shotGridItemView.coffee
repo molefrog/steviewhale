@@ -7,9 +7,9 @@ module.exports = class ShotGridItemView extends View
 	
 	className : "shot-grid-item"
 
-	initialize : ->
-		@delegate "click", ".delete-confirm", =>
-			console.log "sdf"
+	events : 
+		"click" : ->
+			alert "234"
 
 	template : require "./shotGridItemView_"
 

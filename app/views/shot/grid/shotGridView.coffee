@@ -1,18 +1,15 @@
 ShotGridItemView = require "./item/shotGridItemView"
+CollectionView   = require "views/base/collectionView"
 
-module.exports = class ShotGridView extends Chaplin.CollectionView
-	
-	
-	animationDuration : 300
+module.exports = class ShotGridView extends CollectionView
+	# animationDuration : 300
 	itemView : ShotGridItemView
+
+	# initialize : ->
+	# 	super
+	# 	@addCollectionListeners()
 
 	listSelector : ".shot-grid"
 
-	# loadingSelector : ".loading-container"
-
 	template : require "./shotGridView_"
 
-
-	getTemplateData : ->
-	getTemplateFunction: ->
-		@template
