@@ -11,6 +11,7 @@ allowedReadFields = [
 	"instructions" 
 	"created" 
 	"online"
+	"streaming"
 ]
 
 # Fields that are allowed for modification

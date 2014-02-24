@@ -15,5 +15,18 @@ module.exports = class StationView extends View
 
 	template : require "./stationView_"
 
+	render : ->
+		super
+
+		if @model.get "streaming"
+			canvas = @$(".video-canvas")[0]
+
+			wsAddress = "ws://#{window.location.hostname}:3030/#{@model.attributes.name}"
+
+			console.log wsAddress
+			@client = new WebSocket( wsAddress )
+			@player = new jsmpeg @client, 
+				canvas : canvas
+
 	getTemplateData : ->
 		station : @model.attributes
