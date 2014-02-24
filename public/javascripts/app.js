@@ -139,6 +139,13 @@ module.exports = ShotsCollection = (function(_super) {
 
   ShotsCollection.prototype.url = "/api/shots";
 
+  ShotsCollection.prototype.forceLoad = function() {
+    var _this = this;
+    return $.get("" + this.url + "/load").done(function() {
+      return _this.fetch();
+    }).fail(function() {});
+  };
+
   return ShotsCollection;
 
 })(Chaplin.Collection);
@@ -462,6 +469,13 @@ module.exports = Shot = (function(_super) {
 
   Shot.prototype.urlRoot = "/api/shots";
 
+  Shot.prototype.print = function() {
+    var _this = this;
+    return $.get("" + (this.url()) + "/queue").done(function() {
+      return _this.set("status", "queued");
+    });
+  };
+
   return Shot;
 
 })(Chaplin.Model);
@@ -730,6 +744,7 @@ module.exports = ShotGridItemView = (function(_super) {
   ShotGridItemView.prototype.className = "shot-grid-item";
 
   ShotGridItemView.prototype.initialize = function() {
+    ShotGridItemView.__super__.initialize.apply(this, arguments);
     this.delegate("click", ".delete-confirm", this.deleteHandler);
     return this.delegate("click", ".print-button", this.printHandler);
   };
@@ -762,7 +777,21 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div>");
+buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><span class=\"glyphicon glyphicon-map-marker\"></span>");
+switch (shot.status){
+case "failed":
+buf.push("<span>Ошибка</span>");
+  break;
+case "printed":
+buf.push("<span>Напечатана</span>");
+  break;
+case "queued":
+buf.push("<span>В очереди</span>");
+  break;
+default:
+buf.push("<span>Необработана</span>");
+  break;
+}
 if ( jade.auth())
 {
 buf.push("<div class=\"btn-group\">");
@@ -802,6 +831,14 @@ module.exports = ShotGridView = (function(_super) {
     return _ref;
   }
 
+  ShotGridView.prototype.initialize = function() {
+    var _this = this;
+    ShotGridView.__super__.initialize.apply(this, arguments);
+    return this.delegate("click", ".load-button", function() {
+      return _this.collection.forceLoad();
+    });
+  };
+
   ShotGridView.prototype.className = "shot-grid-view";
 
   ShotGridView.prototype.listSelector = ".shot-grid";
@@ -820,7 +857,12 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><h1>Фотографии</h1><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h1>Фотографии</h1>");
+if ( jade.auth())
+{
+buf.push("<button class=\"load-button btn btn-success\">Подгрузить</button>");
+}
+buf.push("<div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -975,7 +1017,7 @@ module.exports = StationCreateView = (function(_super) {
     });
   };
 
-  StationCreateView.prototype.template = require("./stationCreateViewTemplate");
+  StationCreateView.prototype.template = require("./stationCreateView_");
 
   StationCreateView.prototype.getTemplateData = function() {};
 
@@ -984,30 +1026,12 @@ module.exports = StationCreateView = (function(_super) {
 })(View);
 });
 
-;require.register("views/station/create/stationCreateViewTemplate", function(exports, require, module) {
+;require.register("views/station/create/stationCreateView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><input type=\"text\" placeholder=\"Название\" class=\"title-input form-control\"/></div><div class=\"form-group\"><input type=\"text\" placeholder=\"Подзаголовок\" class=\"subtitle-input form-control\"/></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"register-button btn btn-primary btn-lg btn-block save-button\">Зарегистрировать</div></div></div></div>");;return buf.join("");
-};
-if (typeof define === 'function' && define.amd) {
-  define([], function() {
-    return __templateData;
-  });
-} else if (typeof module === 'object' && module && module.exports) {
-  module.exports = __templateData;
-} else {
-  __templateData;
-}
-});
-
-;require.register("views/station/edit/stationEditTemplate", function(exports, require, module) {
-var __templateData = function template(locals) {
-var buf = [];
-var jade_mixins = {};
-var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Краткий адрес (URL)</label><input type=\"text\"" + (jade.attr("value", station.name, true, false)) + " class=\"name-input form-control\"/></div><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"10\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h1>Регистрация станции</h1><div role=\"form\" class=\"form\"><div class=\"form-group\"><input type=\"text\" placeholder=\"Название\" class=\"title-input form-control\"/></div><div class=\"form-group\"><input type=\"text\" placeholder=\"Подзаголовок\" class=\"subtitle-input form-control\"/></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"register-button btn btn-primary btn-lg btn-block save-button\">Зарегистрировать</div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -1039,7 +1063,7 @@ module.exports = StationEditView = (function(_super) {
 
   StationEditView.prototype.model = Station;
 
-  StationEditView.prototype.template = require("./stationEditTemplate");
+  StationEditView.prototype.template = require("./stationEditView_");
 
   StationEditView.prototype.initialize = function() {
     return this.delegate('click', '.save-button', this.save);
@@ -1074,6 +1098,24 @@ module.exports = StationEditView = (function(_super) {
   return StationEditView;
 
 })(View);
+});
+
+;require.register("views/station/edit/stationEditView_", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),station = locals_.station;
+buf.push("<div class=\"container\"><h1>Редактировать станцию</h1><div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Краткий адрес (URL)</label><input type=\"text\"" + (jade.attr("value", station.name, true, false)) + " class=\"name-input form-control\"/></div><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"12\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
 });
 
 ;require.register("views/station/list/stationListItemView", function(exports, require, module) {
@@ -1177,7 +1219,7 @@ var jade_mixins = {};
 buf.push("<div class=\"container\"><h1>Печатные Станции</h1><div class=\"row\"><div class=\"col-md-12\">");
 if ( jade.auth())
 {
-buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-default\">Зарегистрировать Станцию</a>");
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-success\">Зарегистрировать</a>");
 }
 buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div></div></div></div>");;return buf.join("");
 };

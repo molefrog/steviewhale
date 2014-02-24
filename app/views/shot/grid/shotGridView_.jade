@@ -1,5 +1,7 @@
 .container
 	h1 Фотографии
+	if jade.auth()
+		button.load-button.btn.btn-success Подгрузить
 	.row
 		.col-md-12
 

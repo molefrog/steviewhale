@@ -20,6 +20,6 @@ module.exports = class StationCreateView extends View
 
 
 
-	template : require "./stationCreateViewTemplate"
+	template : require "./stationCreateView_"
 
 	getTemplateData : ->

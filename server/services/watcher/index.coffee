@@ -32,14 +32,15 @@ processItem = (data, cb) ->
 	shot = new Shot
 		hash      : data.id
 		image     : data.images.standard_resolution.url
-		thumbnail : data.images.thumbnail.url
+		thumbnail : data.images.low_resolution.url
 		instagram : data
 
 	shot.save (err, item) ->
-		log.info "Saved new shot to db ##{item._id}"
-
 		if err 
 			log.error "Error saving new shot item #{err}" 
+			return cb null
+
+		log.info "Saved new shot to db ##{item._id}"
 
 		# The default behaviour of async.each is to stop the whole process when 
 		# even just one item has failed.
@@ -79,6 +80,19 @@ Instagram.tags.recent
 		log.info "Got initial portion: #{processed.length} media items"
 		log.info "Starting watcher. Interval: #{checkInterval}ms"
 		do checkInstagram
+
+# Force loading existing items
+module.exports.forceLoad = (cb) ->
+	Instagram.tags.recent
+		name: hashtag,
+		complete : (data) ->
+			# Add every item to the db
+			async.each data, processItem, cb 
+		error : cb
+
+
+
+
 
 
 	

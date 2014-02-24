@@ -1,6 +1,18 @@
 .polaroid
 	.polaroid-photo(style="background-image:url(#{shot.thumbnail})")
 
+	span.glyphicon.glyphicon-map-marker
+		
+	case shot.status
+		when "failed"
+			span Ошибка
+		when "printed"
+			span Напечатана
+		when "queued"
+			span В очереди
+		default 
+			span Необработана
+
 	if jade.auth()
 		.btn-group
 			if shot.status != "printed"

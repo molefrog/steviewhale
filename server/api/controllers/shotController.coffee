@@ -1,5 +1,7 @@
-queue = require "../../services/queue"
-Shot = require "../../models/shot"
+queue  = require "../../services/queue"
+Shot   = require "../../models/shot"
+
+watcher = require "../../services/watcher"
 
 log = require "../../utils/log"
 
@@ -68,4 +70,14 @@ exports.queue = (req, res, next) ->
 				item.status = "printed"
 				item.save =>
 					log.info "Shot ##{item._id} marked as complete"
-		
+
+###
+# Force load existing items from Instagram
+###
+exports.load = (req, res, next) ->
+	watcher.forceLoad (err) ->
+		return next err if err
+
+		res.json {}
+
+

@@ -4,7 +4,7 @@ Station = require "models/station"
 module.exports = class StationEditView extends View
 	model : Station
 
-	template : require "./stationEditTemplate"
+	template : require "./stationEditView_"
 
 	initialize : ->
 		@delegate 'click', '.save-button', @save 

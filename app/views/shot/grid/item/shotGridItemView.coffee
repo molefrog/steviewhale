@@ -7,6 +7,7 @@ module.exports = class ShotGridItemView extends View
 	className: "shot-grid-item"
 
 	initialize: ->
+		super
 		@delegate "click", ".delete-confirm", @deleteHandler
 		@delegate "click", ".print-button", @printHandler
 
