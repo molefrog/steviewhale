@@ -1,0 +1,21 @@
+{
+  "web" : {
+    "port" : 80,
+    "cookieSecret" : "keyboard-cat"
+  },
+
+  "streaming" : {
+    "port" : 8080
+  },
+
+  "db" : {
+    "mongo" : "<MongoDB connection string>"
+  },
+
+  "instagram" : {
+    "hashtag"  : "steviewhale",
+    "interval" : 5000,
+    "id"       : "<Instagram client id>",
+    "secret"   : "<Instagram client secret>"
+  }
+}
