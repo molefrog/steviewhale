@@ -5,7 +5,8 @@
 
 
 .how-it-works {
-	background-color: #6FB6A2;
+	background-color: #4BA58C;
+	background-image : url("/images/pattern-2.png");
 }
 
 .landing .jumbotron {
@@ -13,10 +14,11 @@
 }
 
 .super-icon {
-	color : #EB3E61;
-	font-size: 60px;
+	color : #3E6372;
+	font-size: 100px;
 	width : 100px;
 	height: 100px;
+	margin-top: 15px;
 	line-height: 100px;
 }
 
