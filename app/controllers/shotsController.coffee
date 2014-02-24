@@ -17,17 +17,4 @@ module.exports = class ShotsController extends Chaplin.Controller
 			collection : @collection
 			region : "main"
 
-		@collection.fetch().then =>
-			do @view.render
-
-	# show : (params) ->
-	# 	@model = new Shot 
-	# 		_id : params.id
-
-	# 	@view = new ShotView
-	# 		model : @model
-	# 		region : "main"
-
-	# 	@model.fetch().then =>
-	# 		do @view.render
-
+		do @collection.fetch

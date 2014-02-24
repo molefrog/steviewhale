@@ -1,4 +1,8 @@
 .polaroid
 	.polaroid-photo(style="background-image:url(#{shot.thumbnail})")
 
-	a.delete-confirm.btn.btn-default Удалить
+	if jade.auth()
+		.btn-group
+			if shot.status != "printed"
+				a.print-button.btn.btn-default.btn-sm: span.glyphicon.glyphicon-print
+			a.delete-confirm.btn.btn-default.btn-sm: span.glyphicon.glyphicon-remove

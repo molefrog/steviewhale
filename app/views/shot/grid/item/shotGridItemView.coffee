@@ -2,14 +2,20 @@ View    = require "views/base/base"
 Storage = require "storage"
 Shot    = require "models/shot"
 
-module.exports = class ShotGridItemView extends View
-	model : Shot
-	
-	className : "shot-grid-item"
 
-	events : 
-		"click" : ->
-			alert "234"
+module.exports = class ShotGridItemView extends View
+	className: "shot-grid-item"
+
+	initialize: ->
+		@delegate "click", ".delete-confirm", @deleteHandler
+		@delegate "click", ".print-button", @printHandler
+
+	deleteHandler : ->
+		@model.destroy
+			wait : true
+
+	printHandler: ->
+		do @model.print
 
 	template : require "./shotGridItemView_"
 

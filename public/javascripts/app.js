@@ -320,15 +320,12 @@ module.exports = ShotsController = (function(_super) {
   };
 
   ShotsController.prototype.index = function() {
-    var _this = this;
     this.collection = new ShotCollection;
     this.view = new ShotGridView({
       collection: this.collection,
       region: "main"
     });
-    return this.collection.fetch().then(function() {
-      return _this.view.render();
-    });
+    return this.collection.fetch();
   };
 
   return ShotsController;
@@ -464,10 +461,6 @@ module.exports = Shot = (function(_super) {
   Shot.prototype.idAttribute = "_id";
 
   Shot.prototype.urlRoot = "/api/shots";
-
-  Shot.prototype.url = function() {
-    return "/api/shots/" + this.name;
-  };
 
   return Shot;
 
@@ -734,14 +727,21 @@ module.exports = ShotGridItemView = (function(_super) {
     return _ref;
   }
 
-  ShotGridItemView.prototype.model = Shot;
-
   ShotGridItemView.prototype.className = "shot-grid-item";
 
-  ShotGridItemView.prototype.events = {
-    "click": function() {
-      return alert("234");
-    }
+  ShotGridItemView.prototype.initialize = function() {
+    this.delegate("click", ".delete-confirm", this.deleteHandler);
+    return this.delegate("click", ".print-button", this.printHandler);
+  };
+
+  ShotGridItemView.prototype.deleteHandler = function() {
+    return this.model.destroy({
+      wait: true
+    });
+  };
+
+  ShotGridItemView.prototype.printHandler = function() {
+    return this.model.print();
   };
 
   ShotGridItemView.prototype.template = require("./shotGridItemView_");
@@ -762,7 +762,17 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><a class=\"delete-confirm btn btn-default\">Удалить</a></div>");;return buf.join("");
+buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div>");
+if ( jade.auth())
+{
+buf.push("<div class=\"btn-group\">");
+if ( shot.status != "printed")
+{
+buf.push("<a class=\"print-button btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-print\"></span></a>");
+}
+buf.push("<a class=\"delete-confirm btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-remove\"></span></a></div>");
+}
+buf.push("</div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -792,9 +802,11 @@ module.exports = ShotGridView = (function(_super) {
     return _ref;
   }
 
-  ShotGridView.prototype.itemView = ShotGridItemView;
+  ShotGridView.prototype.className = "shot-grid-view";
 
   ShotGridView.prototype.listSelector = ".shot-grid";
+
+  ShotGridView.prototype.itemView = ShotGridItemView;
 
   ShotGridView.prototype.template = require("./shotGridView_");
 
@@ -808,7 +820,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><h2>sdf</h2><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h1>Фотографии</h1><div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -1162,7 +1174,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><div class=\"row\"><div class=\"col-md-12\">");
+buf.push("<div class=\"container\"><h1>Печатные Станции</h1><div class=\"row\"><div class=\"col-md-12\">");
 if ( jade.auth())
 {
 buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-default\">Зарегистрировать Станцию</a>");
