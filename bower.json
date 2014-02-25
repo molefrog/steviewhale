@@ -6,7 +6,6 @@
     "chaplin": "~1.0.0",
     "lodash": "~2.4.0",
     "jquery": "~2.0.2",
-    "bootstrap": "~3.1.0",
     "showdown": "~0.3.1"
   },
   "overrides": {

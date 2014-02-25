@@ -1,5 +1,5 @@
 .login-form {
-  max-width: 330px;
+  max-width: 350px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -10,7 +10,8 @@
 .login-form .form-control {
   text-align: center;
   position: relative;
-  font-size: 16px;
+  font-size: 1.2em;
+  font-weight: 200;
   height: auto;
   padding: 10px;
 }

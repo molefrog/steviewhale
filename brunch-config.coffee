@@ -5,6 +5,11 @@ exports.config =
       joinTo:
         'javascripts/app.js': /^app/
         'javascripts/vendor.js': /^(?!app)/
+      order:
+        before: [
+          'app/vendor/jsmpeg.js'
+          'app/vendor/bootstrap/bootstrap.min.js'
+        ]
 
     stylesheets:
       joinTo: 'stylesheets/app.css'

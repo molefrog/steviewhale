@@ -1,0 +1,8 @@
+
+@font-face {
+	font-family: 'BebasNeueCyrillic';
+	src: url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.eot?') format('eot'), 
+	     url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.woff') format('woff'), 
+	     url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.ttf')  format('truetype'),
+	     url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.svg#BebasNeueCyrillic') format('svg');
+}
