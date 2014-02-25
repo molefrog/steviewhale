@@ -1,12 +1,14 @@
 .container
-	h1 Печатные Станции
-	.row
-		.col-md-12
-			if jade.auth()
-				a.btn.btn-success(href=jade.url("station_create") ) Зарегистрировать
+  h1 Печатные Станции
+  .row
+    .col-md-12
+      if jade.auth()
+        a.btn.btn-success(href=jade.url("station_create") ) 
+          i.fa.fa-plus  
+          |  Создать
 
-			.loading-container
-				h2 Загрузка
+      .loading-container
+        h2 Загрузка
 
-			.station-list
+      .station-list
 

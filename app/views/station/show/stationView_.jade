@@ -1,69 +1,69 @@
 .container
-	.station-item
-		h1
-			=station.title 
-			| 
-			case station.online
-				when true 
-					span.label.label-success Онлайн
-				default
-					span.label.label-warning Оффлайн
-			
-		h2 
-			if jade.auth()
-				.btn-group.btn-group-sm
-					button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
-						span.glyphicon.glyphicon-cog
-						| 
-						span.caret
-					ul.dropdown-menu(role="menu")
-						li
-							a.edit-button(href=jade.url('station_edit', {name : station.name}))
-								span.glyphicon.glyphicon-pencil
-								|  Редактировать
-						li
-							a.edit-button(href=jade.url('station_rename', {name : station.name}))
-								span.glyphicon.glyphicon-pencil
-								|  Сменить URL
+  .station-item
+    h1
+      =station.title 
+      | 
+      case station.online
+        when true 
+          span.label.label-success Онлайн
+        default
+          span.label.label-warning Оффлайн
+      
+    h2 
+      if jade.auth()
+        .btn-group.btn-group-sm
+          button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
+            i.fa.fa-gear
+            | 
+            span.caret
+          ul.dropdown-menu(role="menu")
+            li
+              a.edit-button(href=jade.url('station_edit', {name : station.name}))
+                i.fa.fa-edit
+                |  Редактировать
+            li
+              a.edit-button(href=jade.url('station_rename', {name : station.name}))
+                i.fa.fa-cloud
+                |  Сменить URL
 
-						li
-							a.secret-button(href="#")
-								span.glyphicon.glyphicon-pencil
-								|  Показать пароль
+            li
+              a.secret-button(href="#")
+                i.fa.fa-asterisk
+                |  Показать пароль
 
-						li
-							a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
-								span.glyphicon.glyphicon-remove
-								|  Удалить
-			|					
-			small= station.subtitle
-		if station.streaming
-			h4 Прямой эфир
-			canvas.video-canvas(width="240" height="240")
-		h3 Как забирать фотографии с этой станции?
-		p!= jade.markdown(station.instructions)
-		p!= jade.markdown(station.description)
+            li
+              a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
+                i.fa.fa-trash-o
+                |  Удалить
+      |         
+      small= station.subtitle
+    if station.streaming
+      h4 Прямой эфир
+      canvas.video-canvas(width="240" height="240")
+    h3 Как забирать фотографии с этой станции?
+    p!= jade.markdown(station.instructions)
+    p!= jade.markdown(station.description)
 
-	.modal.delete-modal(tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true")
-		.modal-dialog.modal-sm
-			.modal-content
-				.modal-header
-					h4.modal-title Удалить станцию?
-				.modal-body
-					| Внимательно подумайте перед удалением станции, возможно, она вам 
-					| еще пригодится!	
-				.modal-footer.text-center
-					button.delete-confirm-button.btn.btn-primary Да!
-					button.btn.btn-default(data-dismiss="modal") Нет, я передумал.
+  .modal.delete-modal(tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true")
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h4.modal-title Удалить станцию?
+        .modal-body
+          | Внимательно подумайте перед удалением станции, возможно, она вам 
+          | еще пригодится! 
+        .modal-footer.text-center
+          button.delete-confirm-button.btn.btn-primary Да!
+          button.btn.btn-default(data-dismiss="modal") Нет, я передумал.
 
 
-	.modal.secret-modal
-		.modal-dialog.modal-sm
-			.modal-content
-				.modal-header
-					h4.modal-title Пароль станции
-				.modal-body.text-center
-					p Используйте этот пароль для подключения агента печатной станции:
-					h2.secret-field
-				.modal-footer.text-center
-					button.btn.btn-success(data-dismiss="modal") ОК
+  .modal.secret-modal
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          h4.modal-title Пароль станции
+        .modal-body.text-center
+          p Используйте этот пароль для подключения агента печатной станции:
+          h2.secret-field
+        .modal-footer.text-center
+          button.btn.btn-success(data-dismiss="modal") ОК

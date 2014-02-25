@@ -1,9 +1,11 @@
 .container
-	h1 Фотографии
-	if jade.auth()
-		button.load-button.btn.btn-success Подгрузить
-	.row
-		.col-md-12
+  h1 Фотографии
+  if jade.auth()
+    button.load-button.btn.btn-success 
+      i.fa.fa-cloud-download
+      |  Подгрузить
+  .row
+    .col-md-12
 
-			.shot-grid
+      .shot-grid
 

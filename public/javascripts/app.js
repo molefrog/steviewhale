@@ -2857,7 +2857,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><p class=\"stevie-header\">#steviewhale\t\t</p><img src=\"/images/stevie-kid.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.<br/>Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale</p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-camera\"></div><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-print\"></div><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><div class=\"super-icon glyphicon glyphicon-heart\"></div><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><p class=\"stevie-header\">#steviewhale\t\t</p><img src=\"/images/stevie-kid.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.<br/>Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale</p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><i class=\"super-icon fa fa-camera-retro\"></i><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-print\"></i><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-heart\"></i><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3061,7 +3061,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><span class=\"glyphicon glyphicon-map-marker\"></span>");
+buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><i class=\"fa fa-camera\"></i>");
 switch (shot.status){
 case "failed":
 buf.push("<span>Ошибка</span>");
@@ -3144,7 +3144,7 @@ var jade_mixins = {};
 buf.push("<div class=\"container\"><h1>Фотографии</h1>");
 if ( jade.auth())
 {
-buf.push("<button class=\"load-button btn btn-success\">Подгрузить</button>");
+buf.push("<button class=\"load-button btn btn-success\"><i class=\"fa fa-cloud-download\"></i> Подгрузить</button>");
 }
 buf.push("<div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
 };
@@ -3502,7 +3502,7 @@ var jade_mixins = {};
 buf.push("<div class=\"container\"><h1>Печатные Станции</h1><div class=\"row\"><div class=\"col-md-12\">");
 if ( jade.auth())
 {
-buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-success\">Зарегистрировать</a>");
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-success\"><i class=\"fa fa-plus\"> </i> Создать</a>");
 }
 buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div></div></div></div>");;return buf.join("");
 };
@@ -3673,14 +3673,14 @@ buf.push("<span class=\"label label-warning\">Оффлайн</span>");
 buf.push("</h1><h2>");
 if ( jade.auth())
 {
-buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a" + (jade.attr("href", jade.url('station_rename', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Сменить URL</a></li><li><a href=\"#\" class=\"secret-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Показать пароль</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div>");
+buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><i class=\"fa fa-gear\"></i> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><i class=\"fa fa-edit\"></i> Редактировать</a></li><li><a" + (jade.attr("href", jade.url('station_rename', {name : station.name}), true, false)) + " class=\"edit-button\"><i class=\"fa fa-cloud\"></i> Сменить URL</a></li><li><a href=\"#\" class=\"secret-button\"><i class=\"fa fa-asterisk\"></i> Показать пароль</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><i class=\"fa fa-trash-o\"></i> Удалить</a></li></ul></div>");
 }
-buf.push("\t\t\t\t\t<small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2>");
+buf.push("        <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2>");
 if ( station.streaming)
 {
 buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
 }
-buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
+buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
