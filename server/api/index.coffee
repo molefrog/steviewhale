@@ -22,7 +22,8 @@ app.get    "/stations/:station",        StationController.show
 app.delete "/stations/:station",        Authenticated, StationController.delete
 app.post   "/stations",                 Authenticated, StationController.create
 app.put    "/stations/:station",        Authenticated, StationController.update
-app.get    "/stations/:station/secret", StationController.secret
+app.post   "/stations/:station/rename", Authenticated, StationController.rename
+app.get    "/stations/:station/secret", Authenticated, StationController.secret
 
 app.get    "/shots",          ShotController.index
 app.get    "/shots/load", 	  Authenticated, ShotController.load

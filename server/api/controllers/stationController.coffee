@@ -99,5 +99,16 @@ exports.delete = (req, res, next) ->
 exports.secret = (req, res, next) ->
 	res.json _.pick req.station, "secret"
 
+###
+# Rename station (change URL)
+###
+exports.rename = (req, res, next) ->
+	Station.update { name : req.station.name }, { name : req.body.name }, (err) ->
+		if err 
+			return next err
+
+		res.json {}
+
+
 
 

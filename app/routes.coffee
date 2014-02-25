@@ -13,7 +13,13 @@ module.exports = (match) ->
 		controller : "auth/stationAuth"
 		action : "edit"
 		name : "station_edit"
+
+	match "stations/:name/rename", 
+		controller : "auth/stationAuth"
+		action : "rename"
+		name : "station_rename"
 		
+
 
 	match "auth/login", 
 		controller : "auth/login"

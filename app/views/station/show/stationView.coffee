@@ -6,12 +6,19 @@ module.exports = class StationView extends View
 
 	initialize : ->
 		@delegate "click", ".delete-confirm-button", @deleteStation
+		@delegate "click", ".secret-button", @showSecret
 	
 	deleteStation : ->
 		@$(".delete-modal").modal("hide")
 		@model.destroy
 			success : =>
 				Chaplin.utils.redirectTo "stations#index"
+
+	showSecret : ->
+		@model.secret (secret) =>	
+			@$(".secret-modal .secret-field").text(secret)
+			@$(".secret-modal").modal("show")
+
 
 	template : require "./stationView_"
 

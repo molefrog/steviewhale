@@ -2494,7 +2494,7 @@ module.exports = LoginController = (function(_super) {
 });
 
 ;require.register("controllers/auth/stationAuthController", function(exports, require, module) {
-var AuthController, SiteView, Station, StationCreateView, StationEditView, stationAuthController, _ref,
+var AuthController, SiteView, Station, StationCreateView, StationEditView, StationRenameView, stationAuthController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2505,6 +2505,8 @@ Station = require("models/station");
 StationEditView = require("views/station/edit/stationEditView");
 
 StationCreateView = require("views/station/create/stationCreateView");
+
+StationRenameView = require("views/station/rename/stationRenameView");
 
 SiteView = require("views/site/siteView");
 
@@ -2539,6 +2541,20 @@ module.exports = stationAuthController = (function(_super) {
     return this.view = new StationCreateView({
       region: "main",
       autoRender: true
+    });
+  };
+
+  stationAuthController.prototype.rename = function(params) {
+    var _this = this;
+    this.model = new Station({
+      name: params.name
+    });
+    this.view = new StationRenameView({
+      model: this.model,
+      region: "main"
+    });
+    return this.model.fetch().then(function() {
+      return _this.view.render();
     });
   };
 
@@ -2744,6 +2760,23 @@ module.exports = Station = (function(_super) {
 
   Station.prototype.urlRoot = "/api/stations";
 
+  Station.prototype.rename = function(name, cb) {
+    var _this = this;
+    return $.post("" + (this.url()) + "/rename", {
+      name: name
+    }, function() {
+      _this.set("name", name);
+      return cb();
+    });
+  };
+
+  Station.prototype.secret = function(cb) {
+    var _this = this;
+    return $.get("" + (this.url()) + "/secret", function(data) {
+      return cb(data.secret);
+    });
+  };
+
   return Station;
 
 })(Chaplin.Model);
@@ -2762,6 +2795,11 @@ module.exports = function(match) {
     controller: "auth/stationAuth",
     action: "edit",
     name: "station_edit"
+  });
+  match("stations/:name/rename", {
+    controller: "auth/stationAuth",
+    action: "rename",
+    name: "station_rename"
   });
   match("auth/login", {
     controller: "auth/login",
@@ -3479,6 +3517,76 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
+;require.register("views/station/rename/stationRenameView", function(exports, require, module) {
+var Station, StationCollection, StationRenameView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require("views/base/base");
+
+Station = require("models/station");
+
+StationCollection = require("collections/stationCollection");
+
+module.exports = StationRenameView = (function(_super) {
+  __extends(StationRenameView, _super);
+
+  function StationRenameView() {
+    _ref = StationRenameView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  StationRenameView.prototype.initialize = function() {
+    this.delegate("click", ".rename-button", this.rename);
+    return this.delegate("click", ".cancel-button", this.cancel);
+  };
+
+  StationRenameView.prototype.rename = function() {
+    var nameValue,
+      _this = this;
+    nameValue = $(".name-input").val();
+    return this.model.rename(nameValue, function(err) {
+      return _this.cancel();
+    });
+  };
+
+  StationRenameView.prototype.cancel = function() {
+    return Chaplin.utils.redirectTo("stations#show", {
+      name: this.model.get("name")
+    });
+  };
+
+  StationRenameView.prototype.template = require("./stationRenameView_");
+
+  StationRenameView.prototype.getTemplateData = function() {
+    return {
+      station: this.model.attributes
+    };
+  };
+
+  return StationRenameView;
+
+})(View);
+});
+
+;require.register("views/station/rename/stationRenameView_", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+var locals_ = (locals || {}),station = locals_.station;
+buf.push("<div class=\"container\"><div class=\"row text-center\"><h1>Сменить URL станции</h1><div class=\"col-md-4 col-md-offset-4\"><div role=\"form\" class=\"form\"><div class=\"form-group\"><input type=\"text\"" + (jade.attr("value", station.name, true, false)) + " placeholder=\"Название\" class=\"name-input form-control\"/></div><div class=\"form-group\"><div class=\"rename-button btn btn-success btn-block btn-lg\">Поменять</div><div class=\"cancel-button btn btn-default btn-block btn-lg\">Отмена</div></div></div></div></div></div>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
 ;require.register("views/station/show/stationView", function(exports, require, module) {
 var Station, StationView, View, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -3499,7 +3607,8 @@ module.exports = StationView = (function(_super) {
   StationView.prototype.model = Station;
 
   StationView.prototype.initialize = function() {
-    return this.delegate("click", ".delete-confirm-button", this.deleteStation);
+    this.delegate("click", ".delete-confirm-button", this.deleteStation);
+    return this.delegate("click", ".secret-button", this.showSecret);
   };
 
   StationView.prototype.deleteStation = function() {
@@ -3509,6 +3618,14 @@ module.exports = StationView = (function(_super) {
       success: function() {
         return Chaplin.utils.redirectTo("stations#index");
       }
+    });
+  };
+
+  StationView.prototype.showSecret = function() {
+    var _this = this;
+    return this.model.secret(function(secret) {
+      _this.$(".secret-modal .secret-field").text(secret);
+      return _this.$(".secret-modal").modal("show");
     });
   };
 
@@ -3556,14 +3673,14 @@ buf.push("<span class=\"label label-warning\">Оффлайн</span>");
 buf.push("</h1><h2>");
 if ( jade.auth())
 {
-buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div>");
+buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><span class=\"glyphicon glyphicon-cog\"></span> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Редактировать</a></li><li><a" + (jade.attr("href", jade.url('station_rename', {name : station.name}), true, false)) + " class=\"edit-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Сменить URL</a></li><li><a href=\"#\" class=\"secret-button\"><span class=\"glyphicon glyphicon-pencil\"></span> Показать пароль</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><span class=\"glyphicon glyphicon-remove\"></span> Удалить</a></li></ul></div>");
 }
-buf.push(" <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2>");
+buf.push("\t\t\t\t\t<small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2>");
 if ( station.streaming)
 {
 buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
 }
-buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div></div>");;return buf.join("");
+buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

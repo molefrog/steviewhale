@@ -21,12 +21,21 @@
 							a.edit-button(href=jade.url('station_edit', {name : station.name}))
 								span.glyphicon.glyphicon-pencil
 								|  Редактировать
+						li
+							a.edit-button(href=jade.url('station_rename', {name : station.name}))
+								span.glyphicon.glyphicon-pencil
+								|  Сменить URL
+
+						li
+							a.secret-button(href="#")
+								span.glyphicon.glyphicon-pencil
+								|  Показать пароль
 
 						li
 							a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
 								span.glyphicon.glyphicon-remove
 								|  Удалить
-			| 
+			|					
 			small= station.subtitle
 		if station.streaming
 			h4 Прямой эфир
@@ -46,3 +55,15 @@
 				.modal-footer.text-center
 					button.delete-confirm-button.btn.btn-primary Да!
 					button.btn.btn-default(data-dismiss="modal") Нет, я передумал.
+
+
+	.modal.secret-modal
+		.modal-dialog.modal-sm
+			.modal-content
+				.modal-header
+					h4.modal-title Пароль станции
+				.modal-body.text-center
+					p Используйте этот пароль для подключения агента печатной станции:
+					h2.secret-field
+				.modal-footer.text-center
+					button.btn.btn-success(data-dismiss="modal") ОК
