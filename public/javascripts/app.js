@@ -2857,7 +2857,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><p class=\"stevie-header\">#steviewhale\t\t</p><img src=\"/images/stevie-kid.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.<br/>Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale</p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><i class=\"super-icon fa fa-camera-retro\"></i><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-print\"></i><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-heart\"></i><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><p class=\"stevie-header\">#steviewhale    </p><img src=\"/images/stevie-kid.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.<br/>Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale</p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><i class=\"super-icon fa fa-camera-retro\"></i><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-print\"></i><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-heart\"></i><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3081,9 +3081,9 @@ if ( jade.auth())
 buf.push("<div class=\"btn-group\">");
 if ( shot.status != "printed")
 {
-buf.push("<a class=\"print-button btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-print\"></span></a>");
+buf.push("<a class=\"print-button btn btn-default btn-sm\"><i class=\"fa fa-print\"></i></a>");
 }
-buf.push("<a class=\"delete-confirm btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-remove\"></span></a></div>");
+buf.push("<a class=\"delete-confirm btn btn-default btn-sm\"><i class=\"fa fa-trash-o\"></i></a></div>");
 }
 buf.push("</div>");;return buf.join("");
 };
@@ -3126,6 +3126,10 @@ module.exports = ShotGridView = (function(_super) {
   ShotGridView.prototype.className = "shot-grid-view";
 
   ShotGridView.prototype.listSelector = ".shot-grid";
+
+  ShotGridView.prototype.useCssAnimation = true;
+
+  ShotGridView.prototype.animationStartClass = "animated fadeInDown";
 
   ShotGridView.prototype.itemView = ShotGridItemView;
 

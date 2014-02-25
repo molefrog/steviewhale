@@ -12,6 +12,10 @@ module.exports = class ShotGridView extends CollectionView
 
 	listSelector : ".shot-grid"
 
+	useCssAnimation : true
+
+	animationStartClass : "animated fadeInDown"
+
 	itemView : ShotGridItemView
 
 	template : require "./shotGridView_"
