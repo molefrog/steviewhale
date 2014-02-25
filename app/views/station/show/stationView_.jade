@@ -31,8 +31,9 @@
 		if station.streaming
 			h4 Прямой эфир
 			canvas.video-canvas(width="240" height="240")
-
-		p.lead!= jade.markdown(station.description)
+		h3 Как забирать фотографии с этой станции?
+		p!= jade.markdown(station.instructions)
+		p!= jade.markdown(station.description)
 
 	.modal.delete-modal(tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true")
 		.modal-dialog.modal-sm

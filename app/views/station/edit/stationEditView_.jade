@@ -1,10 +1,6 @@
 .container
 	h1 Редактировать станцию
-	.form(role="form")
-		.form-group
-			label Краткий адрес (URL)
-			input.name-input.form-control(type="text" value=station.name)
-		
+	.form(role="form")		
 		.form-group
 			label Название
 			input.title-input.form-control(type="text" value=station.title)
@@ -12,6 +8,13 @@
 		.form-group
 			label Подзаголовок
 			input.subtitle-input.form-control(type="text" value=station.subtitle)
+		
+		.form-group
+			label 
+				| Как забрать фотографию? 
+				small (Поддерживает Markdown)
+			textarea.instructions-input.form-control(rows="6" text=station.description)
+				=station.instructions
 
 		.form-group
 			label 

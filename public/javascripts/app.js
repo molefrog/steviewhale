@@ -3319,15 +3319,14 @@ module.exports = StationEditView = (function(_super) {
     var fields,
       _this = this;
     fields = {
-      name: this.$(".name-input").val(),
       title: this.$(".title-input").val(),
       subtitle: this.$(".subtitle-input").val(),
-      description: this.$(".desc-input").val()
+      description: this.$(".desc-input").val(),
+      instructions: this.$(".instructions-input").val()
     };
     console.log(fields);
     return this.model.save(fields, {
       success: function() {
-        console.log(_this.model);
         return Chaplin.utils.redirectTo("stations#show", {
           name: _this.model.attributes.name
         });
@@ -3351,7 +3350,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"container\"><h1>Редактировать станцию</h1><div role=\"form\" class=\"form\"><div class=\"form-group\"><label>Краткий адрес (URL)</label><input type=\"text\"" + (jade.attr("value", station.name, true, false)) + " class=\"name-input form-control\"/></div><div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"12\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><h1>Редактировать станцию</h1><div role=\"form\" class=\"form\">\t\t<div class=\"form-group\"><label>Название</label><input type=\"text\"" + (jade.attr("value", station.title, true, false)) + " class=\"title-input form-control\"/></div><div class=\"form-group\"><label>Подзаголовок</label><input type=\"text\"" + (jade.attr("value", station.subtitle, true, false)) + " class=\"subtitle-input form-control\"/></div><div class=\"form-group\"><label>Как забрать фотографию? <small>(Поддерживает Markdown)</small></label><textarea rows=\"6\"" + (jade.attr("text", station.description, true, false)) + " class=\"instructions-input form-control\">" + (jade.escape(null == (jade.interp = station.instructions) ? "" : jade.interp)) + "</textarea></div><div class=\"form-group\"><label>Описание <small>(Поддерживает Markdown)</small></label><textarea rows=\"12\"" + (jade.attr("text", station.description, true, false)) + " class=\"desc-input form-control\">" + (jade.escape(null == (jade.interp = station.description) ? "" : jade.interp)) + "</textarea></div><div class=\"row\"><div class=\"col-md-4 col-md-offset-4\"><div class=\"login-button btn btn-primary btn-lg btn-block save-button\">Сохранить</div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3564,7 +3563,7 @@ if ( station.streaming)
 {
 buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
 }
-buf.push("<p class=\"lead\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div></div>");;return buf.join("");
+buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится!\t</div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
