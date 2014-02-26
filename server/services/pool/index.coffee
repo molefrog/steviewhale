@@ -11,7 +11,7 @@ Station = require "../../models/station"
 # Hashing function that is used for handshake
 ###
 hashing = (random, secret) ->
-	crypto.createHash('md5').update(random + secret).digest('hex')
+  crypto.createHash('md5').update(random + secret).digest('hex')
 
 ###
 # The array of authorized and online agents
@@ -26,12 +26,12 @@ clients = require "./clients"
 # (has been authorized)
 ###
 handshaked = (station, socket) ->
-	log.info "Agent ##{station.name} connected"
-	clients[ station.name ] = socket
+  log.info "Agent ##{station.name} connected"
+  clients[ station.name ] = socket
 
-	socket.on "disconnect", ->
-		log.info "Agent #{station.name} disconnected"
-		delete clients[ station.name ]
+  socket.on "disconnect", ->
+    log.info "Agent #{station.name} disconnected"
+    delete clients[ station.name ]
 
 
 ###
@@ -43,35 +43,35 @@ pool = io.of "/pool"
 # Got new connection
 pool.on "connection", (socket) ->
 
-	# Generate some random number and send it to an agent
-	random = uid 24
+  # Generate some random number and send it to an agent
+  random = uid 24
 
-	log.info "New pool connection, sending random #{random}"
+  log.info "New pool connection, sending random #{random}"
 
-	# Agent then calculates hash based on a random number and 
-	# secret auth key
-	socket.emit "handshake", random, (name, hash) ->
-		log.info "Got answer name: #{name}, hash: #{hash}"
+  # Agent then calculates hash based on a random number and 
+  # secret auth key
+  socket.emit "handshake", random, (name, hash) ->
+    log.info "Got answer name: #{name}, hash: #{hash}"
 
-		Station.findOne { name }, (err, station) ->
-			if err
-				log.error "Database error #{err}"
-				return do socket.disconnect
+    Station.findOne { name }, (err, station) ->
+      if err
+        log.error "Database error #{err}"
+        return do socket.disconnect
 
-			if not station?
-				log.error "No such station #{name}"
-				return do socket.disconnect
+      if not station?
+        log.error "No such station #{name}"
+        return do socket.disconnect
 
-			if station.online
-				log.error "Agent ##{name} already connected"
-				return do socket.disconnect
+      if station.online
+        log.error "Agent ##{name} already connected"
+        return do socket.disconnect
 
-			originalHash = hashing random, station.secret
+      originalHash = hashing random, station.secret
 
-			if hash != originalHash
-				log.error "Handshake for ##{name} failed: wrong secret"
-				return do socket.disconnect
+      if hash != originalHash
+        log.error "Handshake for ##{name} failed: wrong secret"
+        return do socket.disconnect
 
-			# Notify agent about successful auth
-			socket.emit "handshake-success"
-			handshaked station, socket
+      # Notify agent about successful auth
+      socket.emit "handshake-success"
+      handshaked station, socket

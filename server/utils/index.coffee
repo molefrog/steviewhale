@@ -1,4 +1,4 @@
 
 module.exports = 
-	log    : require "./log"
-	config : require "./config"
+  log    : require "./log"
+  config : require "./config"
