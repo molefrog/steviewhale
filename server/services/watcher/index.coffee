@@ -40,7 +40,10 @@ processItem = (data, cb) ->
 			log.error "Error saving new shot item #{err}" 
 			return cb null
 
-		log.info "Saved new shot to db ##{item._id}"
+		log.info "Saved new shot to db ##{item._id}. Moving it to the queue"
+
+		# TODO: wait until the operation is complete
+		item.queue ->
 
 		# The default behaviour of async.each is to stop the whole process when 
 		# even just one item has failed.

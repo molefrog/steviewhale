@@ -47,29 +47,8 @@ exports.delete = (req, res, next) ->
 exports.queue = (req, res, next) ->
 	Shot.findById( req.params.id )
 	.exec (err, item) ->
-		if err 
-			return next err
-
-		if not item?
-			return next new Error "Shot not found"
-
-		item.status = "queued"
-		item.save (err, item) =>
-			job = queue.create "print", 
-				title : "Shot ##{item._id}"
-				id : item._id
-			.save ->
-				res.json {}
-
-			job.on "failed", =>
-				item.status = "failed"
-				item.save (err) =>
-					log.warn "Shot ##{item._id} marked as failed"
-
-			job.on "complete", =>
-				item.status = "printed"
-				item.save =>
-					log.info "Shot ##{item._id} marked as complete"
+		item.queue ->
+			res.json {}
 
 ###
 # Force load existing items from Instagram

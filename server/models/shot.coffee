@@ -38,5 +38,6 @@ shotSchema = new Schema
 	# Instagram field
 	instagram : Schema.Types.Mixed
 
+shotSchema.methods.queue = require "./shotQueue"
 
 module.exports = mongoose.model "Shot", shotSchema
