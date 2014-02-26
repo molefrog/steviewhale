@@ -2,13 +2,13 @@ View = require 'views/base/base'
  
 # Site view is a top-level view which is bound to body.
 module.exports = class SiteView extends View
-	container: 'body'
+  container: 'body'
 
-	id: 'site-container'
-	
-	regions:
-		url: '#page-url'
-		main: '#main-container'
-		navigation: '#nav-container'
+  id: 'site-container'
+  
+  regions:
+    url: '#page-url'
+    main: '#main-container'
+    navigation: '#nav-container'
 
-	template: require './siteView_'
+  template: require './siteView_'

@@ -1,14 +1,14 @@
 .station-item
-	h3
-		a(href=jade.url('stations#show', { name : station.name }) )
-			= station.title 
-		| 
+  h3
+    a(href=jade.url('stations#show', { name : station.name }) )
+      = station.title 
+    | 
 
-		case station.online
-			when true 
-				span.label.label-success Онлайн
-			default
-				span.label.label-warning Оффлайн
+    case station.online
+      when true 
+        span.label.label-success Онлайн
+      default
+        span.label.label-warning Оффлайн
 
 
-	p.lead= station.subtitle
+  p.lead= station.subtitle

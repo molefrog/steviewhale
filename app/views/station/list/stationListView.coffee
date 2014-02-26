@@ -1,16 +1,16 @@
 StationListItemView = require "./stationListItemView"
 
 module.exports = class StationListView extends Chaplin.CollectionView
-	animationDuration : 300
-	itemView : StationListItemView
+  animationDuration : 300
+  itemView : StationListItemView
 
-	listSelector : ".station-list"
+  listSelector : ".station-list"
 
-	loadingSelector : ".loading-container"
+  loadingSelector : ".loading-container"
 
-	template : require "./stationListView_"
+  template : require "./stationListView_"
 
 
-	getTemplateData : ->
-	getTemplateFunction: ->
-		@template
+  getTemplateData : ->
+  getTemplateFunction: ->
+    @template

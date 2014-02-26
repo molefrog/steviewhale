@@ -4,21 +4,21 @@ Shot    = require "models/shot"
 
 
 module.exports = class ShotGridItemView extends View
-	className: "shot-grid-item"
+  className: "shot-grid-item"
 
-	initialize: ->
-		super
-		@delegate "click", ".delete-confirm", @deleteHandler
-		@delegate "click", ".print-button", @printHandler
+  initialize: ->
+    super
+    @delegate "click", ".delete-confirm", @deleteHandler
+    @delegate "click", ".print-button", @printHandler
 
-	deleteHandler : ->
-		@model.destroy
-			wait : true
+  deleteHandler : ->
+    @model.destroy
+      wait : true
 
-	printHandler: ->
-		do @model.print
+  printHandler: ->
+    do @model.print
 
-	template : require "./shotGridItemView_"
+  template : require "./shotGridItemView_"
 
-	getTemplateData : ->
-		shot : @model.attributes
+  getTemplateData : ->
+    shot : @model.attributes

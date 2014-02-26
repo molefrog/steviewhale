@@ -1,28 +1,28 @@
 nav.navbar.navbar-default.navbar-static-top(role="navigation")
-	.container
-		ul.nav.navbar-nav
-			li
-				a(href=jade.url("static#about"))
-					//- span.glyphicon.glyphicon-home
-					|  О Проекте
-			li 
-				a(href="#{jade.url('stations#index')}")
-					//- span.glyphicon.glyphicon-print 
-					|  Печатные Станции
-			li 
-				a(href="#{jade.url('shots#index')}")
-					//- span.glyphicon.glyphicon-camera
-					|  Фотографии
+  .container
+    ul.nav.navbar-nav
+      li
+        a(href=jade.url("static#about"))
+          //- span.glyphicon.glyphicon-home
+          |  О Проекте
+      li 
+        a(href="#{jade.url('stations#index')}")
+          //- span.glyphicon.glyphicon-print 
+          |  Печатные Станции
+      li 
+        a(href="#{jade.url('shots#index')}")
+          //- span.glyphicon.glyphicon-camera
+          |  Фотографии
 
-		ul.nav.navbar-nav.navbar-right
-			if !jade.auth()
-				li 
-					a(href="#{jade.url('auth_login')}")
-						|  Войти
-			else
-				li 
-					a(href="#{jade.url('auth_logout')}")
-						|  Выйти
-						
+    ul.nav.navbar-nav.navbar-right
+      if !jade.auth()
+        li 
+          a(href="#{jade.url('auth_login')}")
+            |  Войти
+      else
+        li 
+          a(href="#{jade.url('auth_logout')}")
+            |  Выйти
+            
 .container-fluid.site-container
-	#main-container 
+  #main-container 

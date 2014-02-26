@@ -1,52 +1,52 @@
 .landing {
-	background-image : url("/images/wave.svg");
-	background-color : #E0D6AD;
+  background-image : url("/images/wave.svg");
+  background-color : #E0D6AD;
 }
 
 .stevie-header {
-	font-family: 'BebasNeueCyrillic';
-	font-size: 5em;
-	font-weight: 800;
-	padding: 10px;
-	margin: 0;
-	color: #EC7085;
+  font-family: 'BebasNeueCyrillic';
+  font-size: 5em;
+  font-weight: 800;
+  padding: 10px;
+  margin: 0;
+  color: #EC7085;
 
-	text-shadow: 0px 3px #56AFD1;
+  text-shadow: 0px 3px #56AFD1;
 }
 img.stevie {
 }
 
 .stevie-subheader {
-	font-size: 1.3em;
-	font-weight: 200;
+  font-size: 1.3em;
+  font-weight: 200;
 }
 
 
 .how-it-works {
-	background-color: #2c3e50;
+  background-color: #2c3e50;
 
-	color:#DADADA;
+  color:#DADADA;
 }
 
 h1.hipster-header {
-	font-weight: 800;
-	color:#DADADA;
-	font-size: 3em;
+  font-weight: 800;
+  color:#DADADA;
+  font-size: 3em;
 }
 
 .how-it-works .lead {
-	font-size: 1.2em;
+  font-size: 1.2em;
 }
 
 .super-icon {
-	color : rgba(228, 88, 122, 1);
-	font-size: 100px;
-	width : 100px;
-	height: 100px;
-	margin-top: 15px;
-	line-height: 100px;
+  color : rgba(228, 88, 122, 1);
+  font-size: 100px;
+  width : 100px;
+  height: 100px;
+  margin-top: 15px;
+  line-height: 100px;
 }
 
 .landing img {
-	margin: 0 auto;
+  margin: 0 auto;
 }
