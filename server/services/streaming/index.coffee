@@ -28,8 +28,6 @@ socketServer = new ws.Server
 socketServer.on "connection", (socket) ->
   stationName = socket.upgradeReq.url.substring(1)
 
-  log.info "New streaming connection #{stationName}"
-
   station = streams[ stationName ]
   if not station?
     log.warn "The station #{stationName} isn't streaming"
@@ -86,7 +84,12 @@ app.all "/:name/:secret/:width/:height", (req, res, next) ->
           socket.send data,
             binary : true
 
-    req.on "end", ->
+    # Close the connection when it's not active during the timeout
+    req.setTimeout config.get("streaming:timeout"), ->
+      log.warn "Timeout event for streaming client ##{station.name} fired"
+      do req.socket.end 
+
+    req.on "close", ->
       log.info "Streaming client ##{station.name} disconnected"
       delete streams[ station.name ]
       do res.end

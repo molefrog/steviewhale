@@ -14,3 +14,10 @@ MongoDB = mongoose.connect config.get("db:mongo"), (err) ->
 MongoDB.connection.on "error", (err) ->
   log.error "MongoDB connection error #{err}"
 
+Shot = require "./models/shot"
+_ = require "lodash"
+Shot.find { status : "queued"}, (err, items) ->
+  _.each items, (shot) ->
+    shot.status = "initial"
+    shot.save (err) ->
+      console.log "saved"
