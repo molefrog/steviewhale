@@ -1,4 +1,5 @@
 mongoose = require "mongoose"
+_ = require "lodash"
 
 # Utilities
 { config, log } = require "./utils"
@@ -14,10 +15,10 @@ MongoDB = mongoose.connect config.get("db:mongo"), (err) ->
 MongoDB.connection.on "error", (err) ->
   log.error "MongoDB connection error #{err}"
 
-Shot = require "./models/shot"
-_ = require "lodash"
-Shot.find { status : "queued"}, (err, items) ->
-  _.each items, (shot) ->
-    shot.status = "initial"
-    shot.save (err) ->
-      console.log "saved"
+##
+# Pre init routines
+##
+{ Shot } = require "./models"
+
+Shot.update { status: "queued" }, { status : "failed" }, { multi: true }, (err, numberAffected) ->
+  log.info "Marked #{numberAffected} queued shots as failed"
