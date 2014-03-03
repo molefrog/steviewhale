@@ -33,4 +33,9 @@ jobs.process "print", (job, done) ->
       return done "Wrong element"
 
     # Call 'print' function
-    agent.emit "print", item.image, done
+    agent.print( item.image )
+    .then ->
+      done null
+    .fail (err) ->
+      done err
+

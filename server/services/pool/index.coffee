@@ -21,13 +21,15 @@ hashing = (random, secret) ->
 ###
 clients = require "./clients"
 
+Client = require "./client"
+
 ###
 # This function is called when the agent has passed the handshake 
 # (has been authorized)
 ###
 handshaked = (station, socket) ->
   log.info "Agent ##{station.name} connected"
-  clients[ station.name ] = socket
+  clients[ station.name ] = new Client( socket )
 
   socket.on "disconnect", ->
     log.info "Agent #{station.name} disconnected"
