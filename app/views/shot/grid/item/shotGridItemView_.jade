@@ -1,21 +1,31 @@
 .polaroid
-  .polaroid-photo(style="background-image:url(#{shot.thumbnail})")
+  img.polaroid-photo.img-responsive(src="#{shot.thumbnail}")
 
-  i.fa.fa-camera
-
-  case shot.status
-    when "failed"
-      span Ошибка
-    when "printed"
-      span Напечатана
-    when "queued"
-      span В очереди
-    default 
-      span Необработана
-
-  if jade.auth()
-    .btn-group
-      if shot.status != "printed"
-        a.print-button.btn.btn-default.btn-sm: i.fa.fa-print
-      a.delete-confirm.btn.btn-default.btn-sm: i.fa.fa-trash-o
-        
+  .photo-user
+    b
+      a(href="http://instagram.com/"+shot.instagram.user.username target="_blank")
+        |@
+        = shot.instagram.user.username
+        | 
+        br
+        small
+          | (
+          = shot.instagram.user.full_name
+          | )
+  .photo-status      
+    case shot.status
+      when "failed"
+        span.label.label-danger Ошибка
+      when "printed"
+        span.label.label-success Напечатана
+      when "queued"
+        span.label.label-info В очереди
+      default 
+        span.label.label-default Необработана
+  .photo-control
+    if jade.auth()
+      .btn-group.btn-group-sm
+        if shot.status != "printed"
+          a.print-button.btn.btn-default: i.fa.fa-print
+        a.delete-confirm.btn.btn-default: i.fa.fa-trash-o
+          

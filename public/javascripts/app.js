@@ -3055,7 +3055,7 @@ module.exports = ShotGridItemView = (function(_super) {
     return _ref;
   }
 
-  ShotGridItemView.prototype.className = "shot-grid-item";
+  ShotGridItemView.prototype.className = "shot-grid-item col-lg-2 col-md-3 col-sm-4 col-xs-6";
 
   ShotGridItemView.prototype.initialize = function() {
     ShotGridItemView.__super__.initialize.apply(this, arguments);
@@ -3091,31 +3091,32 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><i class=\"fa fa-camera\"></i>");
+buf.push("<div class=\"polaroid\"><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><b><a" + (jade.attr("href", "http://instagram.com/"+shot.instagram.user.username, true, false)) + " target=\"_blank\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + " <br/><small>(" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></a></b></div><div class=\"photo-status\">     ");
 switch (shot.status){
 case "failed":
-buf.push("<span>Ошибка</span>");
+buf.push("<span class=\"label label-danger\">Ошибка</span>");
   break;
 case "printed":
-buf.push("<span>Напечатана</span>");
+buf.push("<span class=\"label label-success\">Напечатана</span>");
   break;
 case "queued":
-buf.push("<span>В очереди</span>");
+buf.push("<span class=\"label label-info\">В очереди</span>");
   break;
 default:
-buf.push("<span>Необработана</span>");
+buf.push("<span class=\"label label-default\">Необработана</span>");
   break;
 }
+buf.push("</div><div class=\"photo-control\">");
 if ( jade.auth())
 {
-buf.push("<div class=\"btn-group\">");
+buf.push("<div class=\"btn-group btn-group-sm\">");
 if ( shot.status != "printed")
 {
-buf.push("<a class=\"print-button btn btn-default btn-sm\"><i class=\"fa fa-print\"></i></a>");
+buf.push("<a class=\"print-button btn btn-default\"><i class=\"fa fa-print\"></i></a>");
 }
-buf.push("<a class=\"delete-confirm btn btn-default btn-sm\"><i class=\"fa fa-trash-o\"></i></a></div>");
+buf.push("<a class=\"delete-confirm btn btn-default\"><i class=\"fa fa-trash-o\"></i></a></div>");
 }
-buf.push("</div>");;return buf.join("");
+buf.push("</div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3145,6 +3146,8 @@ module.exports = ShotGridView = (function(_super) {
     return _ref;
   }
 
+  ShotGridView.prototype.animationDuration = 300;
+
   ShotGridView.prototype.initialize = function() {
     var _this = this;
     ShotGridView.__super__.initialize.apply(this, arguments);
@@ -3156,10 +3159,6 @@ module.exports = ShotGridView = (function(_super) {
   ShotGridView.prototype.className = "shot-grid-view";
 
   ShotGridView.prototype.listSelector = ".shot-grid";
-
-  ShotGridView.prototype.useCssAnimation = true;
-
-  ShotGridView.prototype.animationStartClass = "animated fadeInDown";
 
   ShotGridView.prototype.itemView = ShotGridItemView;
 
@@ -3180,7 +3179,7 @@ if ( jade.auth())
 {
 buf.push("<button class=\"load-button btn btn-success\"><i class=\"fa fa-cloud-download\"></i> Подгрузить</button>");
 }
-buf.push("<div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row shot-grid\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

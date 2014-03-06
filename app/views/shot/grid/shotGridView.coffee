@@ -3,6 +3,7 @@ CollectionView   = require "views/base/collectionView"
 
 
 module.exports = class ShotGridView extends CollectionView
+  animationDuration : 300
   initialize : ->
     super
     @delegate "click", ".load-button", =>
@@ -11,10 +12,6 @@ module.exports = class ShotGridView extends CollectionView
   className : "shot-grid-view"
 
   listSelector : ".shot-grid"
-
-  useCssAnimation : true
-
-  animationStartClass : "animated fadeInDown"
 
   itemView : ShotGridItemView
 
