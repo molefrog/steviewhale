@@ -1,4 +1,6 @@
+require "utils/analytics/yandexMetrika"
 Application = require "application"
+
 
 ###
  Application's initialization routine 

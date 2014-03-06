@@ -1,6 +1,7 @@
 .landing {
   background-image : url("/images/wave.svg");
-  background-color : #E0D6AD;
+  background-color : #8FC9BD;
+  padding: 1.5em;
 }
 
 .stevie-header {
@@ -21,6 +22,10 @@ img.stevie {
   font-weight: 200;
 }
 
+.icon-content {
+  padding: 1em;
+}
+
 
 .how-it-works {
   background-color: #2c3e50;
@@ -29,9 +34,8 @@ img.stevie {
 }
 
 h1.hipster-header {
-  font-weight: 800;
   color:#DADADA;
-  font-size: 3em;
+  font-family: 'BebasNeueCyrillic';
 }
 
 .how-it-works .lead {
@@ -39,12 +43,9 @@ h1.hipster-header {
 }
 
 .super-icon {
-  color : rgba(228, 88, 122, 1);
-  font-size: 100px;
   width : 100px;
   height: 100px;
-  margin-top: 15px;
-  line-height: 100px;
+  margin: 0 auto;
 }
 
 .landing img {
