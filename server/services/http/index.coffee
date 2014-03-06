@@ -37,7 +37,8 @@ app.configure ->
   app.get "*", (req, res) ->
     res.sendfile path.join publicPath, "index.html"
 
-  app.use express.errorHandler()
+  # Error handler
+  app.use require "./errorHandler"
 
 
 # Start express http server
