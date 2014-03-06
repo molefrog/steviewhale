@@ -2807,6 +2807,7 @@ h1.hipster-header {
 
 .how-it-works .lead {
   font-size: 1.2em;
+  color : #c4c4c4;
 }
 
 .super-icon {
@@ -2846,7 +2847,13 @@ h1.hipster-header {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-top-width: 1px;
 }
+
+.login-form input[type="password"]:not(:focus)  {
+  border-top-color : rgba(0,0,0,0);
+
+} 
 
 .shot-grid-item {
   padding: 5px;
@@ -2895,6 +2902,11 @@ h1.hipster-header {
 
 .video-canvas {
   border-radius : 240px;
+}
+
+.station-item .markdown img {
+	max-width: 100%;
+	height: auto;
 }
 
 

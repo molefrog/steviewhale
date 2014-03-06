@@ -4,7 +4,7 @@ Storage = require "storage"
 
 module.exports = class LoginView extends View
   initialize : ->
-    @delegate "click", ".login-button", @login
+    @delegate "submit", ".login-form", @login
 
   loginSuccess : (user) ->
     Storage.user = user
@@ -14,7 +14,9 @@ module.exports = class LoginView extends View
     else
       Chaplin.utils.redirectTo "static#about"
 
-  login : -> 
+  login : (evt) ->
+    evt.preventDefault()
+
     data = 
       username : @$(".login-field").val()
       password : @$(".password-field").val()
@@ -23,7 +25,13 @@ module.exports = class LoginView extends View
     .done (data) =>
       @loginSuccess data.user
     .fail =>
-      alert "fail"
+      @$(".login-form").addClass("animated shake")
+      @$(".login-form input").prop("disabled", true)
+      setTimeout =>
+        @$(".login-form").removeClass("animated shake")
+        @$(".login-form input").prop("disabled", false)
+      , 1000
+     
 
   template : require "./loginView_"
 

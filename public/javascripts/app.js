@@ -2483,6 +2483,7 @@ module.exports = LoginController = (function(_super) {
   LoginController.prototype.logout = function() {
     var _this = this;
     return $.post("/api/auth/logout").then(function() {
+      console.log("sdf");
       Storage.user = null;
       return _this.redirectTo("static#about");
     });
@@ -2934,7 +2935,7 @@ module.exports = LoginView = (function(_super) {
   }
 
   LoginView.prototype.initialize = function() {
-    return this.delegate("click", ".login-button", this.login);
+    return this.delegate("submit", ".login-form", this.login);
   };
 
   LoginView.prototype.loginSuccess = function(user) {
@@ -2948,9 +2949,10 @@ module.exports = LoginView = (function(_super) {
     }
   };
 
-  LoginView.prototype.login = function() {
+  LoginView.prototype.login = function(evt) {
     var data,
       _this = this;
+    evt.preventDefault();
     data = {
       username: this.$(".login-field").val(),
       password: this.$(".password-field").val()
@@ -2958,7 +2960,12 @@ module.exports = LoginView = (function(_super) {
     return $.post('/api/auth/login', data).done(function(data) {
       return _this.loginSuccess(data.user);
     }).fail(function() {
-      return alert("fail");
+      _this.$(".login-form").addClass("animated shake");
+      _this.$(".login-form input").prop("disabled", true);
+      return setTimeout(function() {
+        _this.$(".login-form").removeClass("animated shake");
+        return _this.$(".login-form input").prop("disabled", false);
+      }, 1000);
     });
   };
 
@@ -2976,7 +2983,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<form role=\"form\" class=\"text-center login-form\"><h2>Вумпс! Авторизуйтесь</h2><div class=\"logo-container\"><img src=\"/images/stevie-kid.svg\" class=\"img-responsive\"/></div><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-success btn-block\">Войти</div></form>");;return buf.join("");
+buf.push("<form role=\"form\" class=\"text-center login-form\"><h2>Вумпс! Авторизуйтесь</h2><div class=\"logo-container\"><img src=\"/images/stevie-kid.svg\" class=\"img-responsive\"/></div><form action=\"javascript:void(0)\"><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><button type=\"submit\" class=\"login-button btn btn-lg btn-success btn-block\">Войти</button></form></form>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3729,7 +3736,7 @@ if ( station.streaming)
 {
 buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
 }
-buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
+buf.push("<h3>Как забирать фотографии с этой станции?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</div><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</div></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
