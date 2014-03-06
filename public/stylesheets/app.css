@@ -2764,6 +2764,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   padding: 1.5em;
 }
 
+.footer {
+    background-color : #34495e;
+    color : #C0c0c0;
+    padding: 1em;
+    font-size: 0.9em;
+}
+
 .stevie-header {
   font-family: 'BebasNeueCyrillic';
   font-size: 5em;
