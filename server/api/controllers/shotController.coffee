@@ -10,7 +10,8 @@ log = require "../../utils/log"
 ###
 exports.index = (req, res, next) ->
   Shot.find({})
-  .populate('printedOn')
+  .sort("-created")
+  .populate("printedOn")
   .exec (err, items) ->
     if err 
       return next err

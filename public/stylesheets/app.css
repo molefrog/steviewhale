@@ -2873,13 +2873,16 @@ h1.hipster-header {
 }
 
 .photo-status {
-
-  margin: 0.3em 0;
+  margin: 0.4em 0;
 }
 
 .polaroid-photo {
   width: 100%;
   margin-bottom: 5px;
+}
+
+.shot-image {
+	margin: 2em auto;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Istok+Web:400,700|Russo+One|Exo+2:400,900,800,600,700,500,200,100,300);

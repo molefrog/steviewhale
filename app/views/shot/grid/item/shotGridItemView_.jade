@@ -1,5 +1,6 @@
 .polaroid
-  img.polaroid-photo.img-responsive(src="#{shot.thumbnail}")
+  a(href=jade.url('shots#show', {id : shot._id}))
+    img.polaroid-photo.img-responsive(src="#{shot.thumbnail}")
 
   .photo-user
     b
@@ -15,7 +16,7 @@
   .photo-status      
     case shot.status
       when "failed"
-        span.label.label-danger Ошибка
+        span.label.label-danger Не напечатана
       when "printed"
         span.label.label-success Напечатана
       when "queued"

@@ -2564,7 +2564,7 @@ module.exports = stationAuthController = (function(_super) {
 });
 
 ;require.register("controllers/shotsController", function(exports, require, module) {
-var Shot, ShotCollection, ShotGridView, ShotsController, SiteView, _ref,
+var Shot, ShotCollection, ShotGridView, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2575,6 +2575,8 @@ Shot = require("models/shot");
 ShotCollection = require("collections/shotCollection");
 
 ShotGridView = require("views/shot/grid/shotGridView");
+
+ShotView = require("views/shot/show/shotView");
 
 module.exports = ShotsController = (function(_super) {
   __extends(ShotsController, _super);
@@ -2595,6 +2597,20 @@ module.exports = ShotsController = (function(_super) {
       region: "main"
     });
     return this.collection.fetch();
+  };
+
+  ShotsController.prototype.show = function(params) {
+    var _this = this;
+    this.model = new Shot({
+      "_id": params.id
+    });
+    this.view = new ShotView({
+      model: this.model,
+      region: "main"
+    });
+    return this.model.fetch().then(function() {
+      return _this.view.render();
+    });
   };
 
   return ShotsController;
@@ -3091,10 +3107,10 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><b><a" + (jade.attr("href", "http://instagram.com/"+shot.instagram.user.username, true, false)) + " target=\"_blank\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + " <br/><small>(" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></a></b></div><div class=\"photo-status\">     ");
+buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><b><a" + (jade.attr("href", "http://instagram.com/"+shot.instagram.user.username, true, false)) + " target=\"_blank\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + " <br/><small>(" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></a></b></div><div class=\"photo-status\">     ");
 switch (shot.status){
 case "failed":
-buf.push("<span class=\"label label-danger\">Ошибка</span>");
+buf.push("<span class=\"label label-danger\">Не напечатана</span>");
   break;
 case "printed":
 buf.push("<span class=\"label label-success\">Напечатана</span>");
@@ -3211,7 +3227,7 @@ module.exports = ShotView = (function(_super) {
 
   ShotView.prototype.getTemplateData = function() {
     return {
-      shot: this.model
+      shot: this.model.attributes
     };
   };
 
@@ -3225,7 +3241,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.attributes.image ) + "", true, false)) + " width=\"400\" height=\"400\" class=\"img-rounded\"/><p class=\"lead\">Опубликовано " + (jade.escape((jade.interp = shot.attributes.instagram.user.username) == null ? '' : jade.interp)) + "</p></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.image ) + "", true, false)) + " class=\"img-responsive img-rounded shot-image\"/></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
