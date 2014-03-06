@@ -18,7 +18,7 @@ MongoDB.connection.on "error", (err) ->
 ##
 # Pre init routines
 ##
-{ Shot } = require "./models"
+{ Shot, Station } = require "./models"
 
 Shot.update { status: "queued" }, { status : "failed" }, { multi: true }, (err, numberAffected) ->
   log.info "Marked #{numberAffected} queued shots as failed"

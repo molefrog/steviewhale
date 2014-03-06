@@ -5,7 +5,7 @@ Q = require "q"
 # The instances of that class are stored inside agent pool
 ### 
 module.exports = class Client 
-  constructor : (@socket) ->
+  constructor : (@socket, @station) ->
 
   print : ( url ) ->
     deferred = do Q.defer

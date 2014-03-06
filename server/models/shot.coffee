@@ -26,7 +26,7 @@ shotSchema = new Schema
     type : String
 
   # Printer
-  printed_on : 
+  printedOn : 
     type : Schema.Types.ObjectId
     ref : "Station"
 
