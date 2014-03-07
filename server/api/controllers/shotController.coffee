@@ -5,13 +5,26 @@ watcher = require "../../services/watcher"
 
 log = require "../../utils/log"
 
+# Fields that are used for population of the 
+# 'printedOn' field
+populatedFields = [ 
+  "_id" 
+  "name" 
+  "title"
+  "subtitle"
+  "instructions" 
+  "created" 
+  "online"
+  "streaming"
+]
+
 ###
 # Get all shots
 ###
 exports.index = (req, res, next) ->
   Shot.find({})
   .sort("-created")
-  .populate("printedOn")
+  .populate("printedOn", populatedFields.join " ")
   .exec (err, items) ->
     if err 
       return next err
@@ -23,7 +36,7 @@ exports.index = (req, res, next) ->
 ###
 exports.show = (req, res, next) ->
   Shot.findById( req.params.id )
-  .populate('printedOn')
+  .populate("printedOn", populatedFields.join " ")
   .exec (err, item) ->
     if err 
       return next err

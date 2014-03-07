@@ -27,7 +27,7 @@ app.get    "/stations/:station/secret", Authenticated, StationController.secret
 
 app.get    "/shots",          ShotController.index
 app.get    "/shots/load",     Authenticated, ShotController.load
-app.get    "/shots/:id",    ShotController.show
+app.get    "/shots/:id",      ShotController.show
 app.delete "/shots/:id",      Authenticated, ShotController.delete
 app.get    "/shots/:id/queue",Authenticated, ShotController.queue
 
