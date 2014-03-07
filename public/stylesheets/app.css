@@ -3013,6 +3013,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     color : #D1DAE4;
     padding: 1em;
     font-size: 0.9em;
+    font-weight: 100;
 }
 
 .stevie-header {
@@ -3142,7 +3143,7 @@ h1.hipster-header {
 .navbar {
   font-size : 1.15em;
   letter-spacing: 0.5px;
-  font-weight: 100;
+  font-weight: 200;
   margin-bottom: 0 !important;
 }
 
