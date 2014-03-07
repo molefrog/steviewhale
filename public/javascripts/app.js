@@ -3298,7 +3298,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav role=\"navigation\" class=\"navbar navbar-default navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav role=\"navigation\" class=\"site-navigation navbar navbar-default navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О Проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные Станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> Войти</a></li>");
