@@ -1,11 +1,11 @@
 .shot-grid-item {
   padding: 5px;
+  overflow: hidden;
 }
 
 .polaroid {
   margin: 0;
   margin-bottom: 5px;
-  
   padding: 5%;
   border-radius: 3px;
   border: 1px solid #BDC2CC;
@@ -13,6 +13,7 @@
 
 .photo-user {
   font-size: 0.85em;
+  white-space: nowrap;
 }
 
 .photo-user a {

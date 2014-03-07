@@ -18,7 +18,8 @@
       when "failed"
         span.label.label-danger Не напечатана
       when "printed"
-        span.label.label-success Напечатана
+        a(href=jade.url('stations#show', { name : shot.printedOn.name }))
+          span.label.label-success= shot.printedOn.title
       when "queued"
         span.label.label-info В очереди
       default 

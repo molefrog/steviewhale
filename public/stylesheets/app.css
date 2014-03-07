@@ -2760,13 +2760,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 .landing {
   background-image : url("/images/wave.svg");
-  background-color : #8FC9BD;
+  background-color : #97C4D3;//#afd9dd;//#8FC9BD;
   padding: 1.5em;
 }
 
 .footer {
     background-color : #34495e;
-    color : #C0c0c0;
+    color : #D1DAE4;
     padding: 1em;
     font-size: 0.9em;
 }
@@ -2781,6 +2781,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
   text-shadow: 0px 3px #56AFD1;
 }
+
 img.stevie {
 }
 
@@ -2801,13 +2802,14 @@ img.stevie {
 }
 
 h1.hipster-header {
-  color:#DADADA;
+  color: #F3F3F3;
   font-family: 'BebasNeueCyrillic';
 }
 
 .how-it-works .lead {
   font-size: 1.2em;
-  color : #c4c4c4;
+  font-weight: 100;
+  color : #eeeeee;
 }
 
 .super-icon {
@@ -2857,12 +2859,12 @@ h1.hipster-header {
 
 .shot-grid-item {
   padding: 5px;
+  overflow: hidden;
 }
 
 .polaroid {
   margin: 0;
   margin-bottom: 5px;
-  
   padding: 5%;
   border-radius: 3px;
   border: 1px solid #BDC2CC;
@@ -2870,6 +2872,7 @@ h1.hipster-header {
 
 .photo-user {
   font-size: 0.85em;
+  white-space: nowrap;
 }
 
 .photo-user a {
@@ -2895,8 +2898,9 @@ h1.hipster-header {
 @import url(http://fonts.googleapis.com/css?family=Istok+Web:400,700|Russo+One|Exo+2:400,900,800,600,700,500,200,100,300);
 
 .navbar {
-  font-size : 1.25em;
-  font-weight: 200;
+  font-size : 1.15em;
+  letter-spacing: 0.5px;
+  font-weight: 100;
   margin-bottom: 0 !important;
 }
 

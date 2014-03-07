@@ -9,7 +9,7 @@ module.exports = class ShotGridItemView extends View
   initialize: ->
     super
     @delegate "click", ".delete-confirm", @deleteHandler
-    @delegate "click", ".print-button", @printHandler
+    @delegate "click", ".print-button",   @printHandler
 
   deleteHandler : ->
     @model.destroy

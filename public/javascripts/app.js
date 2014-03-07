@@ -3120,7 +3120,7 @@ case "failed":
 buf.push("<span class=\"label label-danger\">Не напечатана</span>");
   break;
 case "printed":
-buf.push("<span class=\"label label-success\">Напечатана</span>");
+buf.push("<a" + (jade.attr("href", jade.url('stations#show', { name : shot.printedOn.name }), true, false)) + "><span class=\"label label-success\">" + (jade.escape(null == (jade.interp = shot.printedOn.title) ? "" : jade.interp)) + "</span></a>");
   break;
 case "queued":
 buf.push("<span class=\"label label-info\">В очереди</span>");
