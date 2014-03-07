@@ -87,7 +87,7 @@ app.all "/:name/:secret/:width/:height", (req, res, next) ->
     # Close the connection when it's not active during the timeout
     req.setTimeout config.get("streaming:timeout"), ->
       log.warn "Timeout event for streaming client ##{station.name} fired"
-      do req.socket.end 
+      do req.socket.destroy 
 
     req.on "close", ->
       log.info "Streaming client ##{station.name} disconnected"
