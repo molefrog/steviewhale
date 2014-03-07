@@ -25,7 +25,8 @@
     "uid": "0.0.2",
     "ws": "~0.4.31",
     "mongoose-multi-set": "~0.1.0",
-    "q": "^1.0.0"
+    "q": "^1.0.0",
+    "moment": "~2.5.1"
   },
   "devDependencies": {
     "coffee-script-brunch": "~1.7.3",
@@ -35,7 +36,7 @@
     "clean-css-brunch": "~1.7.1",
     "stylus-brunch": "~1.8.0",
     "auto-reload-brunch": "~1.7.1",
-    "jade-brunch": "~1.8.0",
+    "jade-brunch": "1.8.0",
     "forever": "^0.10.11"
   },
   "scripts": {

@@ -1,34 +1,37 @@
 .row.landing.text-center
   .col-md-12
-    p.stevie-header #steviewhale    
-    img.stevie.img-responsive(src="/images/stevie-kid.svg")
+    img.stevie.img-responsive(src="/images/stevie-circle.svg")
     
     p.lead 
-      | Меня зовут Стиви! Я большой фиолетовый кит.
-      br
-      | Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale
+      | Печать фотографий из 
+      b Instagram
 .row.how-it-works.text-center
   .col-md-12
     .container
       h1.hipster-header Как это работает?
       .row
-        .col-md-4
-          i.super-icon.fa.fa-camera-retro
+        .col-md-4.icon-content
+          img.super-icon.img-responsive(src="/images/photo.svg")
           h3 Публикуйте
           p.lead
-            | Опубликуйте фотографию в Instagram
-            | с хештегом #steviewhale
-        .col-md-4
-          i.super-icon.fa.fa-print
+            | Выложите фотографию в Instagram
+            | с хештегом 
+            a(href=jade.url('shots#index')) #steviewhale
+        .col-md-4.icon-content
+          img.super-icon.img-responsive(src="/images/print.svg")
           h3 Печатайте
           p.lead
-            | Фотография сразу же напечатается на одной
-            | из печатных станций, которые предоставляются
-            | добряками.
-        .col-md-4
-          i.super-icon.fa.fa-heart
+            | Фотография напечатается на одной из 
+            a(href=jade.url('stations#index')) печатных станций
+        .col-md-4.icon-content
+          img.super-icon.img-responsive(src="/images/heart.svg")
           h3 Забирайте
           p.lead
-            | Заберите фотографию с печатной станции. Не забудьте поблагодарить
-            | владельца! Можно сказать "спасибо", спеть песенку, а можно просто душевно
-            | обнять этого благородного человека!  
+            | Свяжитесь с владельцем станции, чтобы забрать фотографию
+.row.footer
+  .col-md-12.text-center
+    | Проект &laquo;StevieWhale&raquo;, 2014
+    br 
+    small Свяжитесь с 
+      a(href="http://molefrog.com") Лешей
+      | , если у вас возникли вопросы

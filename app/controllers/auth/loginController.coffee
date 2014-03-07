@@ -16,5 +16,6 @@ module.exports = class LoginController extends Chaplin.Controller
   logout : ->
     $.post("/api/auth/logout")
     .then =>
+      console.log "sdf"
       Storage.user = null
       @redirectTo "static#about"

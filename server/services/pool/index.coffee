@@ -29,7 +29,7 @@ Client = require "./client"
 ###
 handshaked = (station, socket) ->
   log.info "Agent ##{station.name} connected"
-  clients[ station.name ] = new Client( socket )
+  clients[ station.name ] = new Client( socket, station )
 
   socket.on "disconnect", ->
     log.info "Agent #{station.name} disconnected"

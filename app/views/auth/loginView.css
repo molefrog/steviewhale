@@ -25,4 +25,10 @@
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-top-width: 1px;
 }
+
+.login-form input[type="password"]:not(:focus)  {
+  border-top-color : rgba(0,0,0,0);
+
+} 

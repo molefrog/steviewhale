@@ -2483,6 +2483,7 @@ module.exports = LoginController = (function(_super) {
   LoginController.prototype.logout = function() {
     var _this = this;
     return $.post("/api/auth/logout").then(function() {
+      console.log("sdf");
       Storage.user = null;
       return _this.redirectTo("static#about");
     });
@@ -2564,7 +2565,7 @@ module.exports = stationAuthController = (function(_super) {
 });
 
 ;require.register("controllers/shotsController", function(exports, require, module) {
-var Shot, ShotCollection, ShotGridView, ShotsController, SiteView, _ref,
+var Shot, ShotCollection, ShotGridView, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2575,6 +2576,8 @@ Shot = require("models/shot");
 ShotCollection = require("collections/shotCollection");
 
 ShotGridView = require("views/shot/grid/shotGridView");
+
+ShotView = require("views/shot/show/shotView");
 
 module.exports = ShotsController = (function(_super) {
   __extends(ShotsController, _super);
@@ -2595,6 +2598,20 @@ module.exports = ShotsController = (function(_super) {
       region: "main"
     });
     return this.collection.fetch();
+  };
+
+  ShotsController.prototype.show = function(params) {
+    var _this = this;
+    this.model = new Shot({
+      "_id": params.id
+    });
+    this.view = new ShotView({
+      model: this.model,
+      region: "main"
+    });
+    return this.model.fetch().then(function() {
+      return _this.view.render();
+    });
   };
 
   return ShotsController;
@@ -2697,6 +2714,8 @@ module.exports = StationsController = (function(_super) {
 
 ;require.register("initialize", function(exports, require, module) {
 var Application;
+
+require("utils/analytics/yandexMetrika");
 
 Application = require("application");
 
@@ -2885,7 +2904,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><p class=\"stevie-header\">#steviewhale    </p><img src=\"/images/stevie-kid.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Меня зовут Стиви! Я большой фиолетовый кит.<br/>Я печатаю фотографии в Ростове-на-Дону с хештегом #steviewhale</p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4\"><i class=\"super-icon fa fa-camera-retro\"></i><h3>Публикуйте</h3><p class=\"lead\">Опубликуйте фотографию в Instagram\nс хештегом #steviewhale</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-print\"></i><h3>Печатайте</h3><p class=\"lead\">Фотография сразу же напечатается на одной\nиз печатных станций, которые предоставляются\nдобряками.</p></div><div class=\"col-md-4\"><i class=\"super-icon fa fa-heart\"></i><h3>Забирайте</h3><p class=\"lead\">Заберите фотографию с печатной станции. Не забудьте поблагодарить\nвладельца! Можно сказать \"спасибо\", спеть песенку, а можно просто душевно\nобнять этого благородного человека!  </p></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row landing text-center\"><div class=\"col-md-12\"><img src=\"/images/stevie-circle.svg\" class=\"stevie img-responsive\"/><p class=\"lead\">Печать фотографий из <b>Instagram</b></p></div></div><div class=\"row how-it-works text-center\"><div class=\"col-md-12\"><div class=\"container\"><h1 class=\"hipster-header\">Как это работает?</h1><div class=\"row\"><div class=\"col-md-4 icon-content\"><img src=\"/images/photo.svg\" class=\"super-icon img-responsive\"/><h3>Публикуйте</h3><p class=\"lead\">Выложите фотографию в Instagram\nс хештегом <a" + (jade.attr("href", jade.url('shots#index'), true, false)) + ">#steviewhale</a></p></div><div class=\"col-md-4 icon-content\"><img src=\"/images/print.svg\" class=\"super-icon img-responsive\"/><h3>Печатайте</h3><p class=\"lead\">Фотография напечатается на одной из <a" + (jade.attr("href", jade.url('stations#index'), true, false)) + ">печатных станций</a></p></div><div class=\"col-md-4 icon-content\"><img src=\"/images/heart.svg\" class=\"super-icon img-responsive\"/><h3>Забирайте</h3><p class=\"lead\">Свяжитесь с владельцем станции, чтобы забрать фотографию</p></div></div></div></div></div><div class=\"row footer\"><div class=\"col-md-12 text-center\">Проект &laquo;StevieWhale&raquo;, 2014<br/><small>Свяжитесь с <a href=\"http://molefrog.com\">Лешей</a>, если у вас возникли вопросы</small></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -2916,7 +2935,7 @@ module.exports = LoginView = (function(_super) {
   }
 
   LoginView.prototype.initialize = function() {
-    return this.delegate("click", ".login-button", this.login);
+    return this.delegate("submit", ".login-form", this.login);
   };
 
   LoginView.prototype.loginSuccess = function(user) {
@@ -2930,9 +2949,10 @@ module.exports = LoginView = (function(_super) {
     }
   };
 
-  LoginView.prototype.login = function() {
+  LoginView.prototype.login = function(evt) {
     var data,
       _this = this;
+    evt.preventDefault();
     data = {
       username: this.$(".login-field").val(),
       password: this.$(".password-field").val()
@@ -2940,7 +2960,12 @@ module.exports = LoginView = (function(_super) {
     return $.post('/api/auth/login', data).done(function(data) {
       return _this.loginSuccess(data.user);
     }).fail(function() {
-      return alert("fail");
+      _this.$(".login-form").addClass("animated shake");
+      _this.$(".login-form input").prop("disabled", true);
+      return setTimeout(function() {
+        _this.$(".login-form").removeClass("animated shake");
+        return _this.$(".login-form input").prop("disabled", false);
+      }, 1000);
     });
   };
 
@@ -2958,7 +2983,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<form role=\"form\" class=\"text-center login-form\"><h2>Вумпс! Авторизуйтесь</h2><div class=\"logo-container\"><img src=\"/images/stevie-kid.svg\" class=\"img-responsive\"/></div><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><div class=\"login-button btn btn-lg btn-success btn-block\">Войти</div></form>");;return buf.join("");
+buf.push("<form role=\"form\" class=\"text-center login-form\"><h2>Вумпс! Авторизуйтесь</h2><div class=\"logo-container\"><img src=\"/images/stevie-kid.svg\" class=\"img-responsive\"/></div><form action=\"javascript:void(0)\"><div class=\"form-group form-group-lg\"><input type=\"text\" placeholder=\"Логин\" class=\"login-field form-control\"/><input type=\"password\" placeholder=\"Пароль\" class=\"password-field form-control\"/></div><button type=\"submit\" class=\"login-button btn btn-lg btn-success btn-block\">Войти</button></form></form>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3053,7 +3078,7 @@ module.exports = ShotGridItemView = (function(_super) {
     return _ref;
   }
 
-  ShotGridItemView.prototype.className = "shot-grid-item";
+  ShotGridItemView.prototype.className = "shot-grid-item col-lg-2 col-md-3 col-sm-4 col-xs-6";
 
   ShotGridItemView.prototype.initialize = function() {
     ShotGridItemView.__super__.initialize.apply(this, arguments);
@@ -3089,31 +3114,32 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><div" + (jade.attr("style", "background-image:url(" + (shot.thumbnail) + ")", true, false)) + " class=\"polaroid-photo\"></div><i class=\"fa fa-camera\"></i>");
+buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><b><a" + (jade.attr("href", "http://instagram.com/"+shot.instagram.user.username, true, false)) + " target=\"_blank\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + " <br/><small>(" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></a></b></div><div class=\"photo-status\">     ");
 switch (shot.status){
 case "failed":
-buf.push("<span>Ошибка</span>");
+buf.push("<span class=\"label label-danger\">Не напечатана</span>");
   break;
 case "printed":
-buf.push("<span>Напечатана</span>");
+buf.push("<span class=\"label label-success\">Напечатана</span>");
   break;
 case "queued":
-buf.push("<span>В очереди</span>");
+buf.push("<span class=\"label label-info\">В очереди</span>");
   break;
 default:
-buf.push("<span>Необработана</span>");
+buf.push("<span class=\"label label-default\">Необработана</span>");
   break;
 }
+buf.push("</div><div class=\"photo-control\">");
 if ( jade.auth())
 {
-buf.push("<div class=\"btn-group\">");
+buf.push("<div class=\"btn-group btn-group-sm\">");
 if ( shot.status != "printed")
 {
-buf.push("<a class=\"print-button btn btn-default btn-sm\"><i class=\"fa fa-print\"></i></a>");
+buf.push("<a class=\"print-button btn btn-default\"><i class=\"fa fa-print\"></i></a>");
 }
-buf.push("<a class=\"delete-confirm btn btn-default btn-sm\"><i class=\"fa fa-trash-o\"></i></a></div>");
+buf.push("<a class=\"delete-confirm btn btn-default\"><i class=\"fa fa-trash-o\"></i></a></div>");
 }
-buf.push("</div>");;return buf.join("");
+buf.push("</div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3143,6 +3169,8 @@ module.exports = ShotGridView = (function(_super) {
     return _ref;
   }
 
+  ShotGridView.prototype.animationDuration = 300;
+
   ShotGridView.prototype.initialize = function() {
     var _this = this;
     ShotGridView.__super__.initialize.apply(this, arguments);
@@ -3154,10 +3182,6 @@ module.exports = ShotGridView = (function(_super) {
   ShotGridView.prototype.className = "shot-grid-view";
 
   ShotGridView.prototype.listSelector = ".shot-grid";
-
-  ShotGridView.prototype.useCssAnimation = true;
-
-  ShotGridView.prototype.animationStartClass = "animated fadeInDown";
 
   ShotGridView.prototype.itemView = ShotGridItemView;
 
@@ -3178,7 +3202,7 @@ if ( jade.auth())
 {
 buf.push("<button class=\"load-button btn btn-success\"><i class=\"fa fa-cloud-download\"></i> Подгрузить</button>");
 }
-buf.push("<div class=\"row\"><div class=\"col-md-12\"><div class=\"shot-grid\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row shot-grid\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3210,7 +3234,7 @@ module.exports = ShotView = (function(_super) {
 
   ShotView.prototype.getTemplateData = function() {
     return {
-      shot: this.model
+      shot: this.model.attributes
     };
   };
 
@@ -3224,7 +3248,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.attributes.image ) + "", true, false)) + " width=\"400\" height=\"400\" class=\"img-rounded\"/><p class=\"lead\">Опубликовано " + (jade.escape((jade.interp = shot.attributes.instagram.user.username) == null ? '' : jade.interp)) + "</p></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><div class=\"row\"><img" + (jade.attr("src", "" + ( shot.image ) + "", true, false)) + " class=\"img-responsive img-rounded shot-image\"/></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3712,7 +3736,7 @@ if ( station.streaming)
 {
 buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
 }
-buf.push("<h3>Как забирать фотографии с этой станции?</h3><p>" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</p><p>" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</p></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
+buf.push("<h3>Как забирать фотографии с этой станции?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</div><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</div></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

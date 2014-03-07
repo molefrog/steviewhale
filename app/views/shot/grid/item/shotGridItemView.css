@@ -1,20 +1,32 @@
 .shot-grid-item {
-  display: inline-block;
+  padding: 5px;
 }
 
 .polaroid {
-  margin: 10px 5px 10px 10px;
-  padding: 15px;
-  width : 280px;
-  height : 320px;
+  margin: 0;
+  margin-bottom: 5px;
+  
+  padding: 5%;
+  border-radius: 3px;
+  border: 1px solid #BDC2CC;
+}
 
-  box-shadow: 0px 1px 5px #888888;
+.photo-user {
+  font-size: 0.85em;
+}
+
+.photo-user a {
+  color : #555555;
+}
+.photo-user small {
+  color : #888888;
+}
+
+.photo-status {
+  margin: 0.4em 0;
 }
 
 .polaroid-photo {
-  width : 250px;
-  height : 250px;
-  background-size: cover;
-  margin-bottom: 15px;
-
+  width: 100%;
+  margin-bottom: 5px;
 }
