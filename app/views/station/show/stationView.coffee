@@ -24,13 +24,20 @@ module.exports = class StationView extends View
 
   render : ->
     super
+    canvas = @$(".video-canvas")[0]
+    ctx = canvas.getContext '2d'
+
+    streamingText = "Прямой эфир выключен"
+    if @model.get "streaming"
+      streamingText = "Живая трансляция станции"
+
+    @$('.tooltip-button').tooltip
+      placement : 'top'
+      title : streamingText
 
     if @model.get "streaming"
-      canvas = @$(".video-canvas")[0]
-
       wsAddress = "ws://#{window.location.hostname}:3030/#{@model.attributes.name}"
 
-      console.log wsAddress
       @client = new WebSocket( wsAddress )
       @player = new jsmpeg @client, 
         canvas : canvas

@@ -3688,12 +3688,20 @@ module.exports = StationView = (function(_super) {
   StationView.prototype.template = require("./stationView_");
 
   StationView.prototype.render = function() {
-    var canvas, wsAddress;
+    var canvas, ctx, streamingText, wsAddress;
     StationView.__super__.render.apply(this, arguments);
+    canvas = this.$(".video-canvas")[0];
+    ctx = canvas.getContext('2d');
+    streamingText = "Прямой эфир выключен";
     if (this.model.get("streaming")) {
-      canvas = this.$(".video-canvas")[0];
+      streamingText = "Живая трансляция станции";
+    }
+    this.$('.tooltip-button').tooltip({
+      placement: 'top',
+      title: streamingText
+    });
+    if (this.model.get("streaming")) {
       wsAddress = "ws://" + window.location.hostname + ":3030/" + this.model.attributes.name;
-      console.log(wsAddress);
       this.client = new WebSocket(wsAddress);
       return this.player = new jsmpeg(this.client, {
         canvas: canvas
@@ -3717,7 +3725,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),station = locals_.station;
-buf.push("<div class=\"container\"><div class=\"station-item\"><h1>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + " ");
+buf.push("<div class=\"container\"><div class=\"station-item\"><h1>" + (jade.escape(null == (jade.interp = station.title ) ? "" : jade.interp)) + "&nbsp;");
 switch (station.online){
 case true :
 buf.push("<span class=\"label label-success\">Онлайн</span>");
@@ -3726,17 +3734,12 @@ default:
 buf.push("<span class=\"label label-warning\">Оффлайн</span>");
   break;
 }
-buf.push("</h1><h2>");
+buf.push("<h2>");
 if ( jade.auth())
 {
 buf.push("<div class=\"btn-group btn-group-sm\"><button type=\"button\" data-toggle=\"dropdown\" class=\"btn btn-default dropdown-toggle\"><i class=\"fa fa-gear\"></i> <span class=\"caret\"></span></button><ul role=\"menu\" class=\"dropdown-menu\"><li><a" + (jade.attr("href", jade.url('station_edit', {name : station.name}), true, false)) + " class=\"edit-button\"><i class=\"fa fa-edit\"></i> Редактировать</a></li><li><a" + (jade.attr("href", jade.url('station_rename', {name : station.name}), true, false)) + " class=\"edit-button\"><i class=\"fa fa-cloud\"></i> Сменить URL</a></li><li><a href=\"#\" class=\"secret-button\"><i class=\"fa fa-asterisk\"></i> Показать пароль</a></li><li><a href=\"#\" data-toggle=\"modal\" data-target=\".delete-modal\" class=\"delete-button\"><i class=\"fa fa-trash-o\"></i> Удалить</a></li></ul></div>");
 }
-buf.push("        <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2>");
-if ( station.streaming)
-{
-buf.push("<h4>Прямой эфир</h4><canvas width=\"240\" height=\"240\" class=\"video-canvas\"></canvas>");
-}
-buf.push("<h3>Как забирать фотографии с этой станции?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</div><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</div></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
+buf.push("        <small>" + (jade.escape(null == (jade.interp = station.subtitle) ? "" : jade.interp)) + "</small></h2></h1><div class=\"station-info row\"><div class=\"video-streaming col-md-4\"><canvas width=\"240\" height=\"240\" data-toggle=\"tooltip\" class=\"video-canvas tooltip-button\"></canvas></div><div class=\"station-title col-md-8\"><h3>Как забирать фотографии с этой станции?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.instructions)) ? "" : jade.interp) + "</div></div></div><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(station.description)) ? "" : jade.interp) + "</div></div><div tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"mySmallModalLabel\" aria-hidden=\"true\" class=\"modal delete-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Удалить станцию?</h4></div><div class=\"modal-body\">Внимательно подумайте перед удалением станции, возможно, она вам \nеще пригодится! </div><div class=\"modal-footer text-center\"><button class=\"delete-confirm-button btn btn-primary\">Да!</button><button data-dismiss=\"modal\" class=\"btn btn-default\">Нет, я передумал.</button></div></div></div></div><div class=\"modal secret-modal\"><div class=\"modal-dialog modal-sm\"><div class=\"modal-content\"><div class=\"modal-header\"><h4 class=\"modal-title\">Пароль станции</h4></div><div class=\"modal-body text-center\"><p>Используйте этот пароль для подключения агента печатной станции:</p><h2 class=\"secret-field\"></h2></div><div class=\"modal-footer text-center\"><button data-dismiss=\"modal\" class=\"btn btn-success\">ОК</button></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

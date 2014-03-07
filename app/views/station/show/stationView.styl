@@ -1,0 +1,26 @@
+@import 'nib'
+
+.station-item
+  .station-info
+    .video-streaming
+      padding 1em
+      text-align left
+      max-width 280px
+
+      .video-canvas 
+        cursor pointer
+        display inline-block
+        width 240px
+        height 240px
+        border-radius 240px
+        // Uncomment this line if noise is too annoying
+        // background-color black
+        background-image url('/images/tvnoise.gif')
+
+
+  // Make all image inside markdown blocks responsive
+  .markdown 
+    img
+      max-width 100%
+      height auto
+

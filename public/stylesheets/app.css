@@ -3147,13 +3147,23 @@ h1.hipster-header {
   margin-bottom: 0 !important;
 }
 
-.video-canvas {
-  border-radius : 240px;
+.station-item .station-info .video-streaming {
+  padding: 1em;
+  text-align: left;
+  max-width: 280px;
 }
-
+.station-item .station-info .video-streaming .video-canvas {
+  cursor: pointer;
+  display: inline-block;
+  width: 240px;
+  height: 240px;
+  -webkit-border-radius: 240px;
+  border-radius: 240px;
+  background-image: url("/images/tvnoise.gif");
+}
 .station-item .markdown img {
-	max-width: 100%;
-	height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 
