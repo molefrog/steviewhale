@@ -1,7 +1,7 @@
 # StevieWhale
 ### What is StevieWhale?
 
-![](https://rawgithub.com/molefrog/steviewhale/master/app/assets/images/stevie.svg)
+![](https://rawgithub.com/molefrog/steviewhale/master/app/assets/images/stevie-kid.svg)
 
 StevieWhale - is a web-application the main feature of which is to print tagged photos from Instagram in real-time. The application looks for a photos tagged with special tag and then prints it using one of the connected print stations. The Print Station - is a printer connected through **socket.io** to the main server. Print Station basically holds connection and waits for the print job to arrive.
 
