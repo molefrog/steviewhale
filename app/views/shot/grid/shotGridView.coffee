@@ -7,7 +7,8 @@ module.exports = class ShotGridView extends CollectionView
   initialize : ->
     super
     @delegate "click", ".load-button", =>
-      do @collection.forceLoad
+      # Disable this feature
+      # do @collection.forceLoad
 
   className : "shot-grid-view"
 

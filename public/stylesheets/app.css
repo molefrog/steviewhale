@@ -3099,8 +3099,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin: 0.4em 0;
 }
 
-.shot-image {
-  margin: 2em auto;
+.shot-single-view {
+  margin-top: 1em;
 }
 
 .site-navigation.navbar {
