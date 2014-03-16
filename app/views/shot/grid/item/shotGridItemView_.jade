@@ -27,7 +27,6 @@
   .photo-control
     if jade.auth()
       .btn-group.btn-group-sm
-        if shot.status != "printed"
-          a.print-button.btn.btn-default: i.fa.fa-print
+        a.print-button.btn.btn-default: i.fa.fa-print
         a.delete-confirm.btn.btn-default: i.fa.fa-trash-o
           

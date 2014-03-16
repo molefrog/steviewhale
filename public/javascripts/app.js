@@ -3132,12 +3132,7 @@ buf.push("<span class=\"label label-default\">Необработана</span>");
 buf.push("</div><div class=\"photo-control\">");
 if ( jade.auth())
 {
-buf.push("<div class=\"btn-group btn-group-sm\">");
-if ( shot.status != "printed")
-{
-buf.push("<a class=\"print-button btn btn-default\"><i class=\"fa fa-print\"></i></a>");
-}
-buf.push("<a class=\"delete-confirm btn btn-default\"><i class=\"fa fa-trash-o\"></i></a></div>");
+buf.push("<div class=\"btn-group btn-group-sm\"><a class=\"print-button btn btn-default\"><i class=\"fa fa-print\"></i></a><a class=\"delete-confirm btn btn-default\"><i class=\"fa fa-trash-o\"></i></a></div>");
 }
 buf.push("</div></div>");;return buf.join("");
 };
