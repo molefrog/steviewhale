@@ -40,7 +40,7 @@
     "forever": "^0.10.11"
   },
   "scripts": {
-    "start": "forever start -o steviewhale.log -a --pidFile steviewhale.pid -c coffee server/index.coffee",
+    "start": "forever start -o steviewhale.log -a --pidFile steviewhale.pid -c coffee server/index.coffee --env=production",
     "stop": "forever stop --pidFile steviewhale.pid",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

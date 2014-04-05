@@ -22,5 +22,3 @@ node_modules
 ### Bower ###
 bower_components
 
-### Application ###
-server/config.json

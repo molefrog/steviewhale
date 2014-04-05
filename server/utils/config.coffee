@@ -1,9 +1,25 @@
+fs   = require "fs"
+path = require "path"
+
+# Local modules
+log  = require "./log"
+
 module.exports = config = require "nconf"
 
 config.argv()
   .env()
 
-config.defaults 
-  "config-file" : "./server/config.json"
+config.defaults
+  'env' : 'development'
 
-config.file({ file: config.get "config-file" })
+log.info "Environment: #{config.get('env')}"
+
+configFile = path.resolve "./server/config/#{config.get('env')}.json"
+
+log.info "Config file: #{configFile}"
+
+# Check if config file exists
+if not fs.existsSync configFile
+  log.warn "Config file #{configFile} doesn't exist. Default values will be used!"
+
+config.file({ file: configFile })
