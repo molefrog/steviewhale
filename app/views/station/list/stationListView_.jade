@@ -1,10 +1,9 @@
-.container
-  h1 Печатные Станции
+.container.navbar-shift
   .row
     .col-md-12
       if jade.auth()
-        a.btn.btn-success(href=jade.url("station_create") ) 
-          i.fa.fa-plus  
+        a.btn.btn-success(href=jade.url("station_create") )
+          i.fa.fa-plus
           |  Создать
 
       .loading-container
