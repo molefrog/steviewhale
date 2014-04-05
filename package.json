@@ -9,7 +9,7 @@
     "instagram-node-lib": "~0.1.1",
     "socket.io": "~0.9.16",
     "lodash": "~2.4.1",
-    "request": "~2.30.0",
+    "request": "^2.30.0",
     "nconf": "~0.6.9",
     "winston": "~0.7.2",
     "mongoose": "~3.8.6",
@@ -26,7 +26,8 @@
     "ws": "~0.4.31",
     "mongoose-multi-set": "~0.1.0",
     "q": "^1.0.0",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "twilio": "^1.6.0"
   },
   "devDependencies": {
     "coffee-script-brunch": "~1.7.3",

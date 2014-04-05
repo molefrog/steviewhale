@@ -18,5 +18,22 @@
     "interval" : 10000,
     "id"       : "<Instagram client id>",
     "secret"   : "<Instagram client secret>"
+  },
+
+  "sms" : {
+    "provider" : "nexmo",
+    "toNumber" : "",
+
+    "twilio" : {
+      "apiKey"     : "",
+      "apiSecret"  : "",
+      "fromNumber" : ""
+    },
+
+    "nexmo" : {
+      "apiKey"     : "",
+      "apiSecret"  : "",
+      "fromNumber" : ""
+    }
   }
 }
