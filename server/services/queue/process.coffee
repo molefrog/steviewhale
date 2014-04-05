@@ -23,7 +23,7 @@ jobs.process "print", (job, done) ->
   # Check if the station pool is empty
   if _.isEmpty pool
     logEvent  "The pool is empty"
-    
+
     return done "No available agents!"
 
   # Take random station
@@ -31,7 +31,7 @@ jobs.process "print", (job, done) ->
   agent = pool[ idx ]
 
   logEvent "Selected station ##{agent.station.name}"
-  
+
   # Take shot instance from database
   Shot.findById( job.data.id )
   .exec (err, item) ->
@@ -49,11 +49,11 @@ jobs.process "print", (job, done) ->
       logEvent "Shot printed on station ##{agent.station.name}"
 
       item.printedOn = agent.station
-      item.printed = new Date 
+      item.printed = new Date
 
-      item.save (err) -> 
+      item.save (err) ->
         if err
-          logEvent "Error updating printed shot's properties #{err}" 
+          logEvent "Error updating printed shot's properties #{err}"
 
         done null
     .fail (err) ->
