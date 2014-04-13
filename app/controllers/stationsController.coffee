@@ -8,11 +8,11 @@ StationListView   = require "/views/station/list/stationListView"
 StationEditView = require "/views/station/edit/stationEditView"
 StationView     = require "/views/station/show/stationView"
 
+BaseController = require "controllers/base/baseController"
 
-module.exports = class StationsController extends Chaplin.Controller
+module.exports = class StationsController extends BaseController
   beforeAction: ->
-    # Site view declares “main” region.
-    @reuse 'site', SiteView
+    super
 
   # Index action. Will just display a list of users.
   index: (params) ->
@@ -25,7 +25,7 @@ module.exports = class StationsController extends Chaplin.Controller
       do @view.render
 
   show : (params) ->
-    @model = new Station 
+    @model = new Station
       name : params.name
 
     @view = new StationView

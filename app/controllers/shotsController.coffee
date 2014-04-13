@@ -7,10 +7,11 @@ ShotCollection = require "collections/shotCollection"
 ShotGridView   = require "views/shot/grid/shotGridView"
 ShotView       = require "views/shot/show/shotView"
 
-module.exports = class ShotsController extends Chaplin.Controller
+BaseController = require "controllers/base/baseController"
+
+module.exports = class ShotsController extends BaseController
   beforeAction : ->
-    # Site view declares “main” region.
-    @reuse 'site', SiteView
+    super
 
   index : ->
     @collection = new ShotCollection
@@ -21,7 +22,7 @@ module.exports = class ShotsController extends Chaplin.Controller
     do @collection.fetch
 
   show : (params) ->
-    @model = new Shot 
+    @model = new Shot
       "_id" : params.id
 
     @view = new ShotView

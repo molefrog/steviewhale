@@ -2424,11 +2424,13 @@ module.exports = StationCollection = (function(_super) {
 });
 
 ;require.register("controllers/auth/authController", function(exports, require, module) {
-var AuthController, Storage, _ref,
+var AuthController, BaseController, Storage, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 Storage = require("storage");
+
+BaseController = require("controllers/base/baseController");
 
 module.exports = AuthController = (function(_super) {
   __extends(AuthController, _super);
@@ -2439,6 +2441,7 @@ module.exports = AuthController = (function(_super) {
   }
 
   AuthController.prototype.beforeAction = function(params, route) {
+    AuthController.__super__.beforeAction.apply(this, arguments);
     if (Storage.user == null) {
       Storage.redirectUrl = window.location.pathname;
       return this.redirectTo('auth_login');
@@ -2447,11 +2450,11 @@ module.exports = AuthController = (function(_super) {
 
   return AuthController;
 
-})(Chaplin.Controller);
+})(BaseController);
 });
 
 ;require.register("controllers/auth/loginController", function(exports, require, module) {
-var LoginController, LoginView, SiteView, Storage, _ref,
+var BaseController, LoginController, LoginView, SiteView, Storage, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2461,6 +2464,8 @@ SiteView = require("views/site/siteView");
 
 Storage = require("storage");
 
+BaseController = require("controllers/base/baseController");
+
 module.exports = LoginController = (function(_super) {
   __extends(LoginController, _super);
 
@@ -2468,10 +2473,6 @@ module.exports = LoginController = (function(_super) {
     _ref = LoginController.__super__.constructor.apply(this, arguments);
     return _ref;
   }
-
-  LoginController.prototype.beforeAction = function() {
-    return this.reuse('site', SiteView);
-  };
 
   LoginController.prototype.login = function() {
     return this.view = new LoginView({
@@ -2491,7 +2492,7 @@ module.exports = LoginController = (function(_super) {
 
   return LoginController;
 
-})(Chaplin.Controller);
+})(BaseController);
 });
 
 ;require.register("controllers/auth/stationAuthController", function(exports, require, module) {
@@ -2564,8 +2565,38 @@ module.exports = stationAuthController = (function(_super) {
 })(AuthController);
 });
 
+;require.register("controllers/base/baseController", function(exports, require, module) {
+var BaseController, HeaderView, SiteView, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+SiteView = require("views/site/siteView");
+
+HeaderView = require("views/site/header/headerView");
+
+module.exports = BaseController = (function(_super) {
+  __extends(BaseController, _super);
+
+  function BaseController() {
+    _ref = BaseController.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  BaseController.prototype.beforeAction = function() {
+    BaseController.__super__.beforeAction.apply(this, arguments);
+    this.reuse('site', SiteView);
+    return this.reuse('header', HeaderView, {
+      region: 'header'
+    });
+  };
+
+  return BaseController;
+
+})(Chaplin.Controller);
+});
+
 ;require.register("controllers/shotsController", function(exports, require, module) {
-var Shot, ShotCollection, ShotGridView, ShotView, ShotsController, SiteView, _ref,
+var BaseController, Shot, ShotCollection, ShotGridView, ShotView, ShotsController, SiteView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2579,6 +2610,8 @@ ShotGridView = require("views/shot/grid/shotGridView");
 
 ShotView = require("views/shot/show/shotView");
 
+BaseController = require("controllers/base/baseController");
+
 module.exports = ShotsController = (function(_super) {
   __extends(ShotsController, _super);
 
@@ -2588,7 +2621,7 @@ module.exports = ShotsController = (function(_super) {
   }
 
   ShotsController.prototype.beforeAction = function() {
-    return this.reuse('site', SiteView);
+    return ShotsController.__super__.beforeAction.apply(this, arguments);
   };
 
   ShotsController.prototype.index = function() {
@@ -2616,17 +2649,19 @@ module.exports = ShotsController = (function(_super) {
 
   return ShotsController;
 
-})(Chaplin.Controller);
+})(BaseController);
 });
 
 ;require.register("controllers/staticController", function(exports, require, module) {
-var AboutView, SiteView, StaticController, _ref,
+var AboutView, BaseController, SiteView, StaticController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 SiteView = require("views/site/siteView");
 
 AboutView = require("views/about/aboutView");
+
+BaseController = require("controllers/base/baseController");
 
 module.exports = StaticController = (function(_super) {
   __extends(StaticController, _super);
@@ -2637,7 +2672,7 @@ module.exports = StaticController = (function(_super) {
   }
 
   StaticController.prototype.beforeAction = function() {
-    return this.reuse('site', SiteView);
+    return StaticController.__super__.beforeAction.apply(this, arguments);
   };
 
   StaticController.prototype.about = function(params) {
@@ -2649,11 +2684,11 @@ module.exports = StaticController = (function(_super) {
 
   return StaticController;
 
-})(Chaplin.Controller);
+})(BaseController);
 });
 
 ;require.register("controllers/stationsController", function(exports, require, module) {
-var SiteView, Station, StationCollection, StationEditView, StationListView, StationView, StationsController, _ref,
+var BaseController, SiteView, Station, StationCollection, StationEditView, StationListView, StationView, StationsController, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -2669,6 +2704,8 @@ StationEditView = require("/views/station/edit/stationEditView");
 
 StationView = require("/views/station/show/stationView");
 
+BaseController = require("controllers/base/baseController");
+
 module.exports = StationsController = (function(_super) {
   __extends(StationsController, _super);
 
@@ -2678,7 +2715,7 @@ module.exports = StationsController = (function(_super) {
   }
 
   StationsController.prototype.beforeAction = function() {
-    return this.reuse('site', SiteView);
+    return StationsController.__super__.beforeAction.apply(this, arguments);
   };
 
   StationsController.prototype.index = function(params) {
@@ -2709,7 +2746,7 @@ module.exports = StationsController = (function(_super) {
 
   return StationsController;
 
-})(Chaplin.Controller);
+})(BaseController);
 });
 
 ;require.register("initialize", function(exports, require, module) {
@@ -3259,59 +3296,56 @@ if (typeof define === 'function' && define.amd) {
 }
 });
 
-;require.register("views/site/siteView", function(exports, require, module) {
-var SiteView, View, _ref,
+;require.register("views/site/header/headerView", function(exports, require, module) {
+var HeaderView, View, _ref,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 View = require('views/base/base');
 
-module.exports = SiteView = (function(_super) {
-  __extends(SiteView, _super);
+module.exports = HeaderView = (function(_super) {
+  __extends(HeaderView, _super);
 
-  function SiteView() {
+  function HeaderView() {
     this.onDispatch = __bind(this.onDispatch, this);
     this.onLoginChanged = __bind(this.onLoginChanged, this);
-    _ref = SiteView.__super__.constructor.apply(this, arguments);
+    _ref = HeaderView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  SiteView.prototype.container = 'body';
+  HeaderView.prototype.template = require('./headerView_');
 
-  SiteView.prototype.id = 'site-container';
+  HeaderView.prototype.className = 'header-view';
 
-  SiteView.prototype.regions = {
-    url: '#page-url',
-    main: '#main-container',
-    navigation: '#nav-container'
-  };
-
-  SiteView.prototype.template = require('./siteView_');
-
-  SiteView.prototype.initialize = function() {
+  HeaderView.prototype.initialize = function() {
     Chaplin.mediator.subscribe('dispatcher:dispatch', this.onDispatch);
     Chaplin.mediator.subscribe('loginState', this.onLoginChanged);
-    return SiteView.__super__.initialize.apply(this, arguments);
+    return HeaderView.__super__.initialize.apply(this, arguments);
   };
 
-  SiteView.prototype.onLoginChanged = function(user) {
+  HeaderView.prototype.onLoginChanged = function(user) {
     return this.render();
   };
 
-  SiteView.prototype.onDispatch = function(currentController, params, route, options) {
+  HeaderView.prototype.onDispatch = function(currentController, params, route, options) {
     var action;
     action = route.controller.split('/')[0];
     this.$('.site-navigation li.selected').removeClass('selected');
-    return this.$(".site-navigation li.nav-" + action).addClass('selected');
+    this.$(".site-navigation li.nav-" + action).addClass('selected');
+    if (action === 'static') {
+      return this.$el.addClass('floating');
+    } else {
+      return this.$el.removeClass('floating');
+    }
   };
 
-  return SiteView;
+  return HeaderView;
 
 })(View);
 });
 
-;require.register("views/site/siteView_", function(exports, require, module) {
+;require.register("views/site/header/headerView_", function(exports, require, module) {
 var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
@@ -3325,7 +3359,56 @@ else
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> выйти</a></li>");
 }
-buf.push("</ul></div></nav><div class=\"container-fluid site-container\"><div id=\"main-container\"></div></div>");;return buf.join("");
+buf.push("</ul></div></nav>");;return buf.join("");
+};
+if (typeof define === 'function' && define.amd) {
+  define([], function() {
+    return __templateData;
+  });
+} else if (typeof module === 'object' && module && module.exports) {
+  module.exports = __templateData;
+} else {
+  __templateData;
+}
+});
+
+;require.register("views/site/siteView", function(exports, require, module) {
+var SiteView, View, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+View = require('views/base/base');
+
+module.exports = SiteView = (function(_super) {
+  __extends(SiteView, _super);
+
+  function SiteView() {
+    _ref = SiteView.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  SiteView.prototype.container = 'body';
+
+  SiteView.prototype.id = 'site-container';
+
+  SiteView.prototype.regions = {
+    main: '#main-container',
+    header: '#header-container'
+  };
+
+  SiteView.prototype.template = require('./siteView_');
+
+  return SiteView;
+
+})(View);
+});
+
+;require.register("views/site/siteView_", function(exports, require, module) {
+var __templateData = function template(locals) {
+var buf = [];
+var jade_mixins = {};
+
+buf.push("<div id=\"header-container\"></div><div class=\"container-fluid site-container\"><div id=\"main-container\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3436,7 +3519,6 @@ module.exports = StationEditView = (function(_super) {
       description: this.$(".desc-input").val(),
       instructions: this.$(".instructions-input").val()
     };
-    console.log(fields);
     return this.model.save(fields, {
       success: function() {
         return Chaplin.utils.redirectTo("stations#show", {

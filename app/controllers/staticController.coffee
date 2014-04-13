@@ -1,11 +1,13 @@
 SiteView  = require "views/site/siteView"
 AboutView = require "views/about/aboutView"
 
-module.exports = class StaticController extends Chaplin.Controller
-  beforeAction: ->
-    @reuse 'site', SiteView
+BaseController = require "controllers/base/baseController"
 
-  about: (params) -> 
+module.exports = class StaticController extends BaseController
+  beforeAction: ->
+    super
+
+  about: (params) ->
     @view = new AboutView
       autoRender : true
       region : "main"

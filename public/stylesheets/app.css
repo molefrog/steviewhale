@@ -2845,6 +2845,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin-top: 1em;
 }
 
+.header-view .site-navigation.navbar {
+  background: none !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.header-view .site-navigation.navbar ul.nav.navbar-nav li a {
+  -webkit-transition: color 0.3s ease;
+  -moz-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  -ms-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+  border: 2px solid rgba(0,0,0,0);
+  padding: 5px;
+  margin: 10px;
+  font-family: "PT Sans Narrow";
+  font-weight: 600;
+  font-size: 22px;
+}
+.header-view .site-navigation.navbar ul.nav.navbar-nav li a:not(:hover) {
+  color: #000 !important;
+}
+.header-view .site-navigation.navbar ul.nav.navbar-nav li.selected a {
+  background: none !important;
+  border-color: #000;
+}
+
 body,
 input,
 textarea,
@@ -2862,32 +2889,6 @@ h4,
 h5,
 h6 {
   font-family: "PT Sans";
-}
-.site-navigation.navbar {
-  background: none !important;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-.site-navigation.navbar ul.nav.navbar-nav li a {
-  -webkit-transition: color 0.3s ease;
-  -moz-transition: color 0.3s ease;
-  -o-transition: color 0.3s ease;
-  -ms-transition: color 0.3s ease;
-  transition: color 0.3s ease;
-  border: 2px solid rgba(0,0,0,0);
-  padding: 5px;
-  margin: 10px;
-  font-family: "PT Sans Narrow";
-  font-weight: 600;
-  font-size: 22px;
-}
-.site-navigation.navbar ul.nav.navbar-nav li a:not(:hover) {
-  color: #000 !important;
-}
-.site-navigation.navbar ul.nav.navbar-nav li.selected a {
-  background: none !important;
-  border-color: #000;
 }
 
 .station-item .station-info .video-streaming {

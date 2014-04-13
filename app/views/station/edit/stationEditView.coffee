@@ -7,18 +7,16 @@ module.exports = class StationEditView extends View
   template : require "./stationEditView_"
 
   initialize : ->
-    @delegate 'click', '.save-button', @save 
+    @delegate 'click', '.save-button', @save
 
   save : ->
-    fields =  
+    fields =
       title       : @$(".title-input").val()
       subtitle    : @$(".subtitle-input").val()
       description : @$(".desc-input").val()
       instructions: @$(".instructions-input").val()
 
-    console.log fields
-
-    @model.save fields, 
+    @model.save fields,
       success : =>
         Chaplin.utils.redirectTo "stations#show",
           name : @model.attributes.name

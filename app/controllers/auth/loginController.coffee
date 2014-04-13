@@ -3,11 +3,9 @@ SiteView = require "views/site/siteView"
 
 Storage = require "storage"
 
-module.exports = class LoginController extends Chaplin.Controller
-  beforeAction : ->
-    # Site view declares “main” region.
-    @reuse 'site', SiteView
+BaseController = require "controllers/base/baseController"
 
+module.exports = class LoginController extends BaseController
   login : ->
     @view = new LoginView
       region : "main"

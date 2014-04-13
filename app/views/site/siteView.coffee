@@ -7,22 +7,7 @@ module.exports = class SiteView extends View
   id: 'site-container'
 
   regions:
-    url: '#page-url'
-    main: '#main-container'
-    navigation: '#nav-container'
+    main:   '#main-container'
+    header: '#header-container'
 
   template: require './siteView_'
-
-  initialize : ->
-    Chaplin.mediator.subscribe 'dispatcher:dispatch', @onDispatch
-    Chaplin.mediator.subscribe 'loginState', @onLoginChanged
-    super
-
-  onLoginChanged : (user) =>
-    do @render
-
-  onDispatch : (currentController, params, route, options) =>
-    # Make active navigation links
-    action = route.controller.split('/')[0]
-    @$('.site-navigation li.selected').removeClass('selected')
-    @$(".site-navigation li.nav-#{action}").addClass('selected')
