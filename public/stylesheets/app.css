@@ -2763,7 +2763,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   background-image: url("/images/landing-bg.png");
   background-size: cover;
   background-color: #000;
-  padding-top: 150px;
   color: #fff;
   height: 100%;
 }
@@ -2772,7 +2771,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   font-family: "PT Sans Narrow";
   font-size: 70px;
   font-weight: bold;
-  line-height: 65px;
+  line-height: 70px;
 }
 .landing .big-header-subtitle {
   font-size: 24px;
@@ -2846,32 +2845,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin-top: 1em;
 }
 
-body {
-  font-family: 'Roboto';
-  font-weight: 100;
-}
+body,
+input,
+textarea,
 button {
-  font-family: 'Roboto';
-  font-weight: 100 !important;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: 'PT Sans';
+  font-weight: 200;
 }
 h1,
 h2,
 h3,
 h4,
-h5 {
-  font-family: "PT Sans Caption";
-}
-.navbar-shift {
-  margin-top: 61px;
+h5,
+h6 {
+  font-family: "PT Sans";
 }
 .site-navigation.navbar {
-  font-family: "PT Sans Narrow";
-  font-weight: 400;
   background: none !important;
-  border: none !important;
-  font-size: 1.5em;
-  letter-spacing: 1px;
-  margin-bottom: -61px !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.site-navigation.navbar ul.nav.navbar-nav li a {
+  -webkit-transition: color 0.3s ease;
+  -moz-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  -ms-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+  border: 2px solid rgba(0,0,0,0);
+  padding: 5px;
+  margin: 10px;
+  font-family: "PT Sans Narrow";
+  font-weight: 600;
+  font-size: 22px;
+}
+.site-navigation.navbar ul.nav.navbar-nav li a:not(:hover) {
+  color: #000 !important;
+}
+.site-navigation.navbar ul.nav.navbar-nav li.selected a {
+  background: none !important;
+  border-color: #000;
 }
 
 .station-item .station-info .video-streaming {

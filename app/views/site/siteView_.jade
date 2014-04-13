@@ -1,25 +1,25 @@
-nav.site-navigation.navbar.navbar-default.navbar-static-top(role="navigation")
+nav.site-navigation.navbar.navbar-default.navbar-static-top
   .container
-    ul.nav.navbar-nav
-      li
+    ul.nav.navbar-nav.navbar-left
+      li.nav-static
         a(href=jade.url("static#about"))
-          |  О проекте
-      li 
+          |  о проекте
+      li.nav-stations
         a(href="#{jade.url('stations#index')}")
-          |  Печатные станции
-      li 
+          |  печатные станции
+      li.nav-shots
         a(href="#{jade.url('shots#index')}")
-          |  Фотографии
+          |  фотографии
 
     ul.nav.navbar-nav.navbar-right
       if !jade.auth()
-        li 
+        li
           a(href="#{jade.url('auth_login')}")
-            |  Войти
+            |  войти
       else
-        li 
+        li
           a(href="#{jade.url('auth_logout')}")
-            |  Выйти
-            
+            |  выйти
+
 .container-fluid.site-container
-  #main-container 
+  #main-container

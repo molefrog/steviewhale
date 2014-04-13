@@ -1,22 +1,38 @@
+@import 'nib'
+
+// Site-wide styling
+body, input, textarea, button
+  -webkit-font-smoothing antialiased
+
 body
-  font-family: 'Roboto'
-  font-weight: 100
+  font-family: 'PT Sans'
+  font-weight: 200
 
-button
-  font-family 'Roboto'
-  font-weight 100 !important
-h1, h2, h3, h4, h5
-  font-family "PT Sans Caption"
+h1, h2, h3, h4, h5, h6
+  font-family "PT Sans"
 
-.navbar-shift
-  margin-top 61px
 
+// Navigation bar
 .site-navigation.navbar
-  font-family "PT Sans Narrow"
-  font-weight 400
   background none !important
-  border none !important
+  border none
+  padding 0
+  margin 0
 
-  font-size 1.5em
-  letter-spacing 1px
-  margin-bottom -61px !important
+  ul.nav.navbar-nav
+    li a
+      transition color 0.3s ease
+      border 2px solid rgba(0,0,0,0)
+      padding 5px
+      margin 10px
+      font-family "PT Sans Narrow"
+      font-weight 600
+      font-size 22px
+
+    li a:not(:hover)
+      color black !important
+
+    li.selected a
+      background none !important
+      border-color black
+

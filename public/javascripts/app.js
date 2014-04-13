@@ -2483,8 +2483,8 @@ module.exports = LoginController = (function(_super) {
   LoginController.prototype.logout = function() {
     var _this = this;
     return $.post("/api/auth/logout").then(function() {
-      console.log("sdf");
       Storage.user = null;
+      Chaplin.mediator.publish('loginState', null);
       return _this.redirectTo("static#about");
     });
   };
@@ -2904,7 +2904,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row landing background-scroll text-center\"><div class=\"col-md-12\"><div class=\"big-header\">Снимайте, печатайте,<br/>радуйтесь!</div><div class=\"row\"><div class=\"col-md-2\"></div><div class=\"col-md-8\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; StevieWhale</div><button class=\"btn btn-lg btn-success\">Ух ты, как интересно!</button></div><div class=\"col-md-2\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"row landing background-scroll text-center\"><div class=\"col-md-12\"><div class=\"big-header\">Снимайте,<br/>печатайте,<br/>делитесь!</div><div class=\"row\"><div class=\"col-md-2\"></div><div class=\"col-md-8\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; StevieWhale</div><button class=\"btn btn-lg btn-success\">Ух ты, как интересно!</button></div><div class=\"col-md-2\"></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -2940,6 +2940,7 @@ module.exports = LoginView = (function(_super) {
 
   LoginView.prototype.loginSuccess = function(user) {
     Storage.user = user;
+    Chaplin.mediator.publish('loginState', user);
     if (Storage.redirectUrl != null) {
       return Chaplin.utils.redirectTo({
         url: Storage.redirectUrl
@@ -3190,12 +3191,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><h1>Фотографии</h1>");
-if ( jade.auth())
-{
-buf.push("<button class=\"load-button btn btn-success\"><i class=\"fa fa-cloud-download\"></i> Подгрузить</button>");
-}
-buf.push("<div class=\"row shot-grid\"></div></div>");;return buf.join("");
+buf.push("<div class=\"container\"><div class=\"row shot-grid\"></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3265,6 +3261,7 @@ if (typeof define === 'function' && define.amd) {
 
 ;require.register("views/site/siteView", function(exports, require, module) {
 var SiteView, View, _ref,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -3274,6 +3271,8 @@ module.exports = SiteView = (function(_super) {
   __extends(SiteView, _super);
 
   function SiteView() {
+    this.onDispatch = __bind(this.onDispatch, this);
+    this.onLoginChanged = __bind(this.onLoginChanged, this);
     _ref = SiteView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
@@ -3290,6 +3289,23 @@ module.exports = SiteView = (function(_super) {
 
   SiteView.prototype.template = require('./siteView_');
 
+  SiteView.prototype.initialize = function() {
+    Chaplin.mediator.subscribe('dispatcher:dispatch', this.onDispatch);
+    Chaplin.mediator.subscribe('loginState', this.onLoginChanged);
+    return SiteView.__super__.initialize.apply(this, arguments);
+  };
+
+  SiteView.prototype.onLoginChanged = function(user) {
+    return this.render();
+  };
+
+  SiteView.prototype.onDispatch = function(currentController, params, route, options) {
+    var action;
+    action = route.controller.split('/')[0];
+    this.$('.site-navigation li.selected').removeClass('selected');
+    return this.$(".site-navigation li.nav-" + action).addClass('selected');
+  };
+
   return SiteView;
 
 })(View);
@@ -3300,14 +3316,14 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav role=\"navigation\" class=\"site-navigation navbar navbar-default navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav\"><li><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav class=\"site-navigation navbar navbar-default navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> о проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
-buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> Войти</a></li>");
+buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");
 }
 else
 {
-buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> Выйти</a></li>");
+buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> выйти</a></li>");
 }
 buf.push("</ul></div></nav><div class=\"container-fluid site-container\"><div id=\"main-container\"></div></div>");;return buf.join("");
 };
@@ -3560,7 +3576,7 @@ var jade_mixins = {};
 buf.push("<div class=\"container navbar-shift\"><div class=\"row\"><div class=\"col-md-12\">");
 if ( jade.auth())
 {
-buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-success\"><i class=\"fa fa-plus\"></i> Создать</a>");
+buf.push("<a" + (jade.attr("href", jade.url("station_create"), true, false)) + " class=\"btn btn-success\"><i class=\"fa fa-plus\"></i> Зарегистрировать</a>");
 }
 buf.push("<div class=\"loading-container\"><h2>Загрузка</h2></div><div class=\"station-list\"></div></div></div></div>");;return buf.join("");
 };

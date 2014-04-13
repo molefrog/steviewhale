@@ -8,16 +8,17 @@ module.exports = class LoginView extends View
 
   loginSuccess : (user) ->
     Storage.user = user
+    Chaplin.mediator.publish 'loginState', user
     if Storage.redirectUrl?
-      Chaplin.utils.redirectTo 
-        url : Storage.redirectUrl 
+      Chaplin.utils.redirectTo
+        url : Storage.redirectUrl
     else
       Chaplin.utils.redirectTo "static#about"
 
   login : (evt) ->
     evt.preventDefault()
 
-    data = 
+    data =
       username : @$(".login-field").val()
       password : @$(".password-field").val()
 
@@ -31,8 +32,8 @@ module.exports = class LoginView extends View
         @$(".login-form").removeClass("animated shake")
         @$(".login-form input").prop("disabled", false)
       , 1000
-     
+
 
   template : require "./loginView_"
 
-  getTemplateData : -> 
+  getTemplateData : ->

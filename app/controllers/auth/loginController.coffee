@@ -11,11 +11,11 @@ module.exports = class LoginController extends Chaplin.Controller
   login : ->
     @view = new LoginView
       region : "main"
-      autoRender : true 
+      autoRender : true
 
   logout : ->
     $.post("/api/auth/logout")
     .then =>
-      console.log "sdf"
       Storage.user = null
+      Chaplin.mediator.publish 'loginState', null
       @redirectTo "static#about"
