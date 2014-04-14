@@ -1,36 +1,29 @@
 @import 'nib'
 
-// .header-view.floating
-//   position absolute
-//   .site-navigation.navbar
-//     ul.nav.navbar-nav
-//       li a
-//         transition color 0.3s ease
-//         border 2px solid rgba(0,0,0,0)
-//         padding 5px
-//         margin 10px
-//         font-family "PT Sans Narrow"
-//         font-weight 600
-//         font-size 22px
+ 
+.header-view-container
+  &.static-page
+    position absolute
+    top 0
+    left 0 
+    right 0
+    .site-navigation
+      ul li a:not(:hover)
+        color white !important
+      ul li.selected a
+        border-color white
 
-//       li a:not(:hover)
-//         color white !important
-
-//       li.selected a
-//         background none !important
-//         border-color white
-
-
-.header-view
   // Navigation bar
-  .site-navigation.navbar
-    background none !important
+  .site-navigation
+    * 
+      background none !important
     border none
     padding 0
     margin 0
 
-    ul.nav.navbar-nav
-      li a
+    ul li 
+      a
+        box-sizing: border-box
         transition color 0.3s ease
         border 2px solid rgba(0,0,0,0)
         padding 5px
@@ -39,10 +32,9 @@
         font-weight 600
         font-size 22px
 
-      li a:not(:hover)
-        color black !important
+        &:not(:hover)
+          color black !important
 
-      li.selected a
-        background none !important
+      &.selected a
         border-color black
 

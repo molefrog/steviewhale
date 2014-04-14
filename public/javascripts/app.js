@@ -3316,7 +3316,7 @@ module.exports = HeaderView = (function(_super) {
 
   HeaderView.prototype.template = require('./headerView_');
 
-  HeaderView.prototype.className = 'header-view';
+  HeaderView.prototype.className = 'header-view-container';
 
   HeaderView.prototype.initialize = function() {
     Chaplin.mediator.subscribe('dispatcher:dispatch', this.onDispatch);
@@ -3334,9 +3334,9 @@ module.exports = HeaderView = (function(_super) {
     this.$('.site-navigation li.selected').removeClass('selected');
     this.$(".site-navigation li.nav-" + action).addClass('selected');
     if (action === 'static') {
-      return this.$el.addClass('floating');
+      return this.$el.addClass('static-page');
     } else {
-      return this.$el.removeClass('floating');
+      return this.$el.removeClass('static-page');
     }
   };
 
@@ -3350,7 +3350,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav class=\"site-navigation navbar navbar-default navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> о проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> о проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");

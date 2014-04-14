@@ -2764,7 +2764,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   background-size: cover;
   background-color: #000;
   color: #fff;
-  height: 100%;
 }
 .landing .big-header {
   margin: 50px;
@@ -2845,13 +2844,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin-top: 1em;
 }
 
-.header-view .site-navigation.navbar {
-  background: none !important;
+.header-view-container.static-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.header-view-container.static-page .site-navigation ul li a:not(:hover) {
+  color: #fff !important;
+}
+.header-view-container.static-page .site-navigation ul li.selected a {
+  border-color: #fff;
+}
+.header-view-container .site-navigation {
   border: none;
   padding: 0;
   margin: 0;
 }
-.header-view .site-navigation.navbar ul.nav.navbar-nav li a {
+.header-view-container .site-navigation * {
+  background: none !important;
+}
+.header-view-container .site-navigation ul li a {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-transition: color 0.3s ease;
   -moz-transition: color 0.3s ease;
   -o-transition: color 0.3s ease;
@@ -2864,11 +2880,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   font-weight: 600;
   font-size: 22px;
 }
-.header-view .site-navigation.navbar ul.nav.navbar-nav li a:not(:hover) {
+.header-view-container .site-navigation ul li a:not(:hover) {
   color: #000 !important;
 }
-.header-view .site-navigation.navbar ul.nav.navbar-nav li.selected a {
-  background: none !important;
+.header-view-container .site-navigation ul li.selected a {
   border-color: #000;
 }
 
@@ -2888,7 +2903,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Sans";
+  font-family: "PT Sans Narrow";
 }
 
 .station-item .station-info .video-streaming {

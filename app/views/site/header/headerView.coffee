@@ -4,7 +4,7 @@ View = require 'views/base/base'
 module.exports = class HeaderView extends View
   template: require './headerView_'
 
-  className : 'header-view'
+  className : 'header-view-container'
 
   initialize : ->
     Chaplin.mediator.subscribe 'dispatcher:dispatch', @onDispatch
@@ -21,7 +21,7 @@ module.exports = class HeaderView extends View
     @$(".site-navigation li.nav-#{action}").addClass('selected')
 
     if action is 'static'
-      @$el.addClass('floating')
+      @$el.addClass('static-page')
     else
-      @$el.removeClass('floating')
+      @$el.removeClass('static-page')
 
