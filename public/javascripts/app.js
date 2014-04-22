@@ -2762,10 +2762,13 @@ Application = require("application");
 
 
 $(function() {
-  return new Application({
+  new Application({
     controllerSuffix: 'Controller',
     pushState: true,
     routes: require("routes")
+  });
+  return $(window).resize(function(e) {
+    return Chaplin.mediator.publish('window-resized', $(window).width(), $(window).height());
   });
 });
 });
@@ -2927,6 +2930,22 @@ module.exports = AboutView = (function(_super) {
     return _ref;
   }
 
+  _.extend(AboutView.prototype, Chaplin.EventBroker);
+
+  AboutView.prototype.initialize = function() {
+    this.subscribeEvent('window-resized', this.onResize);
+    return AboutView.__super__.initialize.apply(this, arguments);
+  };
+
+  AboutView.prototype.onResize = function(w, h) {
+    return this.$('.landing').height(h);
+  };
+
+  AboutView.prototype.render = function() {
+    AboutView.__super__.render.apply(this, arguments);
+    return this.$('.landing').height($(window).height());
+  };
+
   AboutView.prototype.template = require("./aboutView_");
 
   AboutView.prototype.getTemplateData = function() {};
@@ -2941,7 +2960,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"row landing background-scroll text-center\"><div class=\"col-md-12\"><div class=\"big-header\">Снимайте,<br/>печатайте,<br/>делитесь!</div><div class=\"row\"><div class=\"col-md-2\"></div><div class=\"col-md-8\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; StevieWhale</div><button class=\"btn btn-lg btn-success\">Ух ты, как интересно!</button></div><div class=\"col-md-2\"></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"landing text-center\"><div class=\"fade-overlay\"><div class=\"fake-offset\"></div><div class=\"centered-container\"><div class=\"centered\"><div class=\"container\"><h1 class=\"big-header\">Снимайте,\nпечатайте,<br/>делитесь!</h1><div class=\"row\"><div class=\"col-md-1\"></div><div class=\"col-md-10\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; <b>StevieWhale</b></div><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + " class=\"wow-button btn btn-lg\">Ух ты, как интересно!</a></div><div class=\"col-md-1\"></div></div></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

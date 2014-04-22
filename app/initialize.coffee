@@ -3,7 +3,7 @@ Application = require "application"
 
 
 ###
- Application's initialization routine 
+ Application's initialization routine
 ###
 $ ->
   # Initialize new Chaplin application.
@@ -12,3 +12,8 @@ $ ->
     controllerSuffix: 'Controller'
     pushState: true
     routes: require "routes"
+
+  $(window).resize (e) ->
+    Chaplin.mediator.publish 'window-resized', $(window).width(), $(window).height()
+
+

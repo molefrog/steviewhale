@@ -1,50 +1,46 @@
+.landing.text-center
+  .fade-overlay
+    .fake-offset
 
-.row.landing.background-scroll.text-center
-  .col-md-12
-    .big-header
-      | Снимайте,
-      br
-      | печатайте,
-      br
-      | делитесь!
-    .row
-      .col-md-2
-      .col-md-8
-        .big-header-subtitle
-          | Представляем независимый проект по печати фотографий из Instagram
-          | &mdash; StevieWhale
-        button.btn.btn-lg.btn-success Ух ты, как интересно!
-      .col-md-2
+    .centered-container
+      .centered
+        .container
+
+          h1.big-header
+            | Снимайте,
+            | печатайте,
+            br
+            | делитесь!
+          .row
+            .col-md-1
+            .col-md-10
+              .big-header-subtitle
+                | Представляем независимый проект по печати фотографий из Instagram
+                | &mdash; <b>StevieWhale</b>
+               a.wow-button.btn.btn-lg(href="#{jade.url('shots#index')}") Ух ты, как интересно!
+            .col-md-1
 
 
 
-//- .row.how-it-works.text-center
-//-   .col-md-12
-//-     .container
-//-       h1.hipster-header Как это работает?
-//-       .row
-//-         .col-md-4.icon-content
-//-           img.super-icon.img-responsive(src="/images/photo.svg")
-//-           h3 Публикуйте
-//-           p.lead
-//-             | Выложите фотографию в Instagram
-//-             | с хештегом
-//-             a(href=jade.url('shots#index')) #steviewhale
-//-         .col-md-4.icon-content
-//-           img.super-icon.img-responsive(src="/images/print.svg")
-//-           h3 Печатайте
-//-           p.lead
-//-             | Фотография напечатается на одной из
-//-             a(href=jade.url('stations#index')) печатных станций
-//-         .col-md-4.icon-content
-//-           img.super-icon.img-responsive(src="/images/heart.svg")
-//-           h3 Забирайте
-//-           p.lead
-//-             | Свяжитесь с владельцем станции, чтобы забрать фотографию
-//- .row.footer
-//-   .col-md-12.text-center
-//-     | Проект &laquo;StevieWhale&raquo;, 2014
-//-     br
-//-     | Свяжитесь с
-//-     a(href="http://molefrog.com") Лешей
-//-     | , если у вас возникли вопросы
+          //- .how-it-works.text-center
+          //-     h1.hipster-header Как это работает?
+          //-     .row
+          //-       .col-md-4.icon-content
+          //-         img.super-icon.img-responsive(src="/images/photo.svg")
+          //-         h3 Публикуйте
+          //-         p.lead
+          //-           | Выложите фотографию в Instagram
+          //-           | с хештегом&nbsp;
+          //-           a(href=jade.url('shots#index')) #steviewhale
+          //-       .col-md-4.icon-content
+          //-         img.super-icon.img-responsive(src="/images/print.svg")
+          //-         h3 Печатайте
+          //-         p.lead
+          //-           | Фотография напечатается на одной из&nbsp;
+          //-           a(href=jade.url('stations#index')) печатных станций
+          //-       .col-md-4.icon-content
+          //-         img.super-icon.img-responsive(src="/images/heart.svg")
+          //-         h3 Забирайте
+          //-         p.lead
+          //-           | Свяжитесь с владельцем станции, чтобы забрать фотографию
+

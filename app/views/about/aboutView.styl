@@ -1,31 +1,61 @@
+@import 'nib'
 
 .landing
-  background-image  url("/images/landing-bg.png")
+  transition: background-image 0.3s ease
+
+  background-image  url("/images/slideshow/landing-bg-5.png")
   background-size   cover
   background-color  black
-  // padding-top 150px
+  background-position center center
 
   color white
+  overflow hidden
 
-  // height 100%
+  .fade-overlay
+    background url("/images/dotted-pattern.png"), rgba(0,0,0,0.3)
+    height 100%
+
+    .fake-offset
+      height 0px
+
+    .centered-container
+      height 100%
+      margin 0
+      position relative
+
+      .centered
+        width 100%
+        position absolute
+
+        left 50%
+        top  50%
+        transform: translate(-50%, -50%)
 
   .big-header
-    margin 50px
     font-family "PT Sans Narrow"
-    font-size 70px
+    font-size 64px
     font-weight bold
-    line-height 70px
 
   .big-header-subtitle
-    font-size 24px
+    font-size 20px
     font-weight 100
     font-family 'PT Sans'
+    margin-top 50px
     margin-bottom 50px
 
+  .wow-button
+    border 1px solid white
+    color white
+    letter-spacing 1px
 
+    transition background-color 0.3s ease, color 0.3s ease
+
+    &:hover
+      background-color white
+      color black
 
 // .how-it-works
-//   background-color black
+
 //   color white
 
 //   .lead
@@ -33,7 +63,6 @@
 //     font-weight 100
 
 //   h1.hipster-header
-//     font-family 'PT Sans Narrow'
 //     font-weight bold
 
 //   .icon-content
@@ -42,18 +71,10 @@
 //     .super-icon
 //       // border-radius 9999px
 //       // background-color red
-//       width  150px
-//       height 150px
+//       width  100px
+//       height 100px
 //       // padding 50px
 //       margin 0 auto
-
-
-// .footer
-//   background-color  #34495e
-//   color  #D1DAE4
-//   padding 1em
-//   font-size 0.9em
-//   font-weight 100
 
 
 

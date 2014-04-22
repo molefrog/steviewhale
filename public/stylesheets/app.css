@@ -2758,25 +2758,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	     url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.svg#BebasNeueCyrillic') format('svg');
 }
 
-
 .landing {
-  background-image: url("/images/landing-bg.png");
+  -webkit-transition: background-image 0.3s ease;
+  -moz-transition: background-image 0.3s ease;
+  -o-transition: background-image 0.3s ease;
+  -ms-transition: background-image 0.3s ease;
+  transition: background-image 0.3s ease;
+  background-image: url("/images/slideshow/landing-bg-5.png");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
   background-size: cover;
   background-color: #000;
+  background-position: center center;
   color: #fff;
+  overflow: hidden;
+}
+.landing .fade-overlay {
+  background: url("/images/dotted-pattern.png"), rgba(0,0,0,0.3);
+  height: 100%;
+}
+.landing .fade-overlay .fake-offset {
+  height: 0px;
+}
+.landing .fade-overlay .centered-container {
+  height: 100%;
+  margin: 0;
+  position: relative;
+}
+.landing .fade-overlay .centered-container .centered {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .landing .big-header {
-  margin: 50px;
   font-family: "PT Sans Narrow";
-  font-size: 70px;
+  font-size: 64px;
   font-weight: bold;
-  line-height: 70px;
 }
 .landing .big-header-subtitle {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 100;
   font-family: 'PT Sans';
+  margin-top: 50px;
   margin-bottom: 50px;
+}
+.landing .wow-button {
+  border: 1px solid #fff;
+  color: #fff;
+  letter-spacing: 1px;
+  -webkit-transition: background-color 0.3s ease, color 0.3s ease;
+  -moz-transition: background-color 0.3s ease, color 0.3s ease;
+  -o-transition: background-color 0.3s ease, color 0.3s ease;
+  -ms-transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.landing .wow-button:hover {
+  background-color: #fff;
+  color: #000;
 }
 
 .login-form {
@@ -2868,11 +2912,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-transition: color 0.3s ease;
-  -moz-transition: color 0.3s ease;
-  -o-transition: color 0.3s ease;
-  -ms-transition: color 0.3s ease;
-  transition: color 0.3s ease;
+  -webkit-transition: color 0.3s ease, border-color 0.3s ease;
+  -moz-transition: color 0.3s ease, border-color 0.3s ease;
+  -o-transition: color 0.3s ease, border-color 0.3s ease;
+  -ms-transition: color 0.3s ease, border-color 0.3s ease;
+  transition: color 0.3s ease, border-color 0.3s ease;
   border: 2px solid rgba(0,0,0,0);
   padding: 5px;
   margin: 10px;
@@ -2903,7 +2947,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "PT Sans Narrow";
+  font-family: 'PT Sans Narrow';
+}
+.site-container {
+  padding: 0;
 }
 
 .station-item .station-info .video-streaming {
