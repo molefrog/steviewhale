@@ -1,19 +1,34 @@
 @import 'nib'
 
 .landing
-  transition: background-image 0.3s ease
-
-  background-image  url("/images/slideshow/landing-bg-5.png")
-  background-size   cover
-  background-color  black
-  background-position center center
-
   color white
   overflow hidden
+  background-color black
+
+  .slide
+    position: absolute
+    z-index: 2
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background-color #000
+    background-size   cover
+    background-position center center
+    opacity 0.0
+    transition opacity 0.4s ease-out
+
+    &.active
+      opacity 1.0
 
   .fade-overlay
+    position: absolute
+    z-index: 3
+    top 0
+    left 0
+    right 0
+    bottom 0
     background url("/images/dotted-pattern.png"), rgba(0,0,0,0.3)
-    height 100%
 
     .fake-offset
       height 0px
@@ -54,27 +69,26 @@
       background-color white
       color black
 
-// .how-it-works
+.how-it-works
+  color white
 
-//   color white
+  .lead
+    font-size 1.2em
+    font-weight 100
 
-//   .lead
-//     font-size 1.2em
-//     font-weight 100
+  h1.hipster-header
+    font-weight bold
 
-//   h1.hipster-header
-//     font-weight bold
+  .icon-content
+    padding 1em
 
-//   .icon-content
-//     padding 1em
-
-//     .super-icon
-//       // border-radius 9999px
-//       // background-color red
-//       width  100px
-//       height 100px
-//       // padding 50px
-//       margin 0 auto
+    .super-icon
+      // border-radius 9999px
+      // background-color red
+      width  100px
+      height 100px
+      // padding 50px
+      margin 0 auto
 
 
 

@@ -2759,23 +2759,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 .landing {
-  -webkit-transition: background-image 0.3s ease;
-  -moz-transition: background-image 0.3s ease;
-  -o-transition: background-image 0.3s ease;
-  -ms-transition: background-image 0.3s ease;
-  transition: background-image 0.3s ease;
-  background-image: url("/images/slideshow/landing-bg-5.png");
+  color: #fff;
+  overflow: hidden;
+  background-color: #000;
+}
+.landing .slide {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
-  background-color: #000;
   background-position: center center;
-  color: #fff;
-  overflow: hidden;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transition: opacity 0.4s ease-out;
+  -moz-transition: opacity 0.4s ease-out;
+  -o-transition: opacity 0.4s ease-out;
+  -ms-transition: opacity 0.4s ease-out;
+  transition: opacity 0.4s ease-out;
+}
+.landing .slide.active {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 .landing .fade-overlay {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: url("/images/dotted-pattern.png"), rgba(0,0,0,0.3);
-  height: 100%;
 }
 .landing .fade-overlay .fake-offset {
   height: 0px;
@@ -2821,6 +2842,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .landing .wow-button:hover {
   background-color: #fff;
   color: #000;
+}
+.how-it-works {
+  color: #fff;
+}
+.how-it-works .lead {
+  font-size: 1.2em;
+  font-weight: 100;
+}
+.how-it-works h1.hipster-header {
+  font-weight: bold;
+}
+.how-it-works .icon-content {
+  padding: 1em;
+}
+.how-it-works .icon-content .super-icon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
 }
 
 .login-form {

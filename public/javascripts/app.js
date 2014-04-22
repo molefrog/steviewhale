@@ -2937,12 +2937,72 @@ module.exports = AboutView = (function(_super) {
     return AboutView.__super__.initialize.apply(this, arguments);
   };
 
+  AboutView.prototype.dispose = function() {
+    this.turnSlideshowOff();
+    return AboutView.__super__.dispose.apply(this, arguments);
+  };
+
+  /*
+  # Slideshow-related methods
+  */
+
+
+  AboutView.prototype.numberOfSlides = 5;
+
+  AboutView.prototype.slideshowInterval = 5000;
+
+  AboutView.prototype.slideshowStopped = false;
+
+  AboutView.prototype.slideshowHandler = function() {
+    var imageUrl, nextSlide, prevSlide, self;
+    if (!this.currentSlide) {
+      this.currentSlide = _.sample(_.range(1, this.numberOfSlides + 1));
+    } else {
+      this.currentSlide = (this.currentSlide + 1) % this.numberOfSlides + 1;
+    }
+    prevSlide = this.$('.slide.active');
+    nextSlide = this.$('.slide:not(.active)');
+    imageUrl = "/images/slideshow/landing-bg-" + this.currentSlide + ".png";
+    nextSlide.css({
+      'background-image': "url('" + imageUrl + "')"
+    });
+    self = this;
+    return $('<img/>').attr('src', imageUrl).load(function() {
+      $(this).remove();
+      prevSlide.removeClass('active');
+      nextSlide.addClass('active');
+      if (!self.slideshowStopped) {
+        return self.timeoutHandle = setTimeout(_.bind(self.slideshowHandler, self), self.slideshowInterval);
+      }
+    });
+  };
+
+  AboutView.prototype.turnSlideshowOff = function() {
+    if (this.timeoutHandle) {
+      clearTimeout(this.timeoutHandle);
+      this.intervalHandle = null;
+    }
+    return this.slideshowStopped = true;
+  };
+
+  AboutView.prototype.turnSlideshowOn = function() {
+    this.turnSlideshowOff();
+    this.slideshowStopped = false;
+    return this.slideshowHandler();
+  };
+
+  /*
+  # Resize and render
+  */
+
+
   AboutView.prototype.onResize = function(w, h) {
     return this.$('.landing').height(h);
   };
 
   AboutView.prototype.render = function() {
     AboutView.__super__.render.apply(this, arguments);
+    this.turnSlideshowOn();
     return this.$('.landing').height($(window).height());
   };
 
@@ -2960,7 +3020,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"landing text-center\"><div class=\"fade-overlay\"><div class=\"fake-offset\"></div><div class=\"centered-container\"><div class=\"centered\"><div class=\"container\"><h1 class=\"big-header\">Снимайте,\nпечатайте,<br/>делитесь!</h1><div class=\"row\"><div class=\"col-md-1\"></div><div class=\"col-md-10\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; <b>StevieWhale</b></div><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + " class=\"wow-button btn btn-lg\">Ух ты, как интересно!</a></div><div class=\"col-md-1\"></div></div></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"landing text-center\"><div class=\"slide first active\"></div><div class=\"slide second\"></div><div class=\"fade-overlay\"><div class=\"fake-offset\"></div><div class=\"centered-container\"><div class=\"centered\"><div class=\"container\"><h1 class=\"big-header\">Снимайте,\nпечатайте,<br/>делитесь!</h1><div class=\"row\"><div class=\"col-md-1\"></div><div class=\"col-md-10\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; <b>StevieWhale</b></div><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + " class=\"wow-button btn btn-lg\">Ух ты, как интересно!</a></div><div class=\"col-md-1\"></div></div></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
