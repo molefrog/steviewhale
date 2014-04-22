@@ -2895,20 +2895,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   overflow: hidden;
 }
 .shot-grid-item .polaroid {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
   margin: 0;
-  margin-bottom: 5px;
-  padding: 5%;
+  padding: 0;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  border: 1px solid #bdc2cc;
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.1);
 }
 .shot-grid-item .polaroid-photo {
   width: 100%;
-  margin-bottom: 5px;
 }
 .shot-grid-item .photo-user {
-  font-size: 0.85em;
+  padding: 10px 10px;
   white-space: nowrap;
+}
+.shot-grid-item .photo-user .media {
+  margin-top: 1px;
 }
 .shot-grid-item .photo-user a {
   color: #555;
@@ -2916,8 +2921,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .shot-grid-item .photo-user small {
   color: #888;
 }
-.shot-grid-item .photo-status {
-  margin: 0.4em 0;
+
+.shot-grid-view {
+  padding-top: 10px;
+  height: 100%;
 }
 
 .shot-single-view {
@@ -2954,7 +2961,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -ms-transition: color 0.3s ease, border-color 0.3s ease;
   transition: color 0.3s ease, border-color 0.3s ease;
   border: 2px solid rgba(0,0,0,0);
-  padding: 5px;
+  padding: 10px;
   margin: 10px;
   font-family: "PT Sans Narrow";
   font-weight: 600;
@@ -2976,6 +2983,7 @@ button {
 body {
   font-family: 'PT Sans';
   font-weight: 200;
+  background-color: #f3f3f3;
 }
 h1,
 h2,

@@ -3195,7 +3195,7 @@ module.exports = ShotGridItemView = (function(_super) {
     return _ref;
   }
 
-  ShotGridItemView.prototype.className = "shot-grid-item col-lg-2 col-md-3 col-sm-4 col-xs-6";
+  ShotGridItemView.prototype.className = "shot-grid-item col-lg-3 col-md-3 col-sm-4 col-xs-6";
 
   ShotGridItemView.prototype.initialize = function() {
     ShotGridItemView.__super__.initialize.apply(this, arguments);
@@ -3231,27 +3231,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><b><a" + (jade.attr("href", "http://instagram.com/"+shot.instagram.user.username, true, false)) + " target=\"_blank\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + " <br/><small>(" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></a></b></div><div class=\"photo-status\">     ");
-switch (shot.status){
-case "failed":
-buf.push("<span class=\"label label-danger\">Не напечатана</span>");
-  break;
-case "printed":
-buf.push("<a" + (jade.attr("href", jade.url('stations#show', { name : shot.printedOn.name }), true, false)) + "><span class=\"label label-success\">" + (jade.escape(null == (jade.interp = shot.printedOn.title) ? "" : jade.interp)) + "</span></a>");
-  break;
-case "queued":
-buf.push("<span class=\"label label-info\">В очереди</span>");
-  break;
-default:
-buf.push("<span class=\"label label-default\">Необработана</span>");
-  break;
-}
-buf.push("</div><div class=\"photo-control\">");
-if ( jade.auth())
-{
-buf.push("<div class=\"btn-group btn-group-sm\"><a class=\"print-button btn btn-default\"><i class=\"fa fa-print\"></i></a><a class=\"delete-confirm btn btn-default\"><i class=\"fa fa-trash-o\"></i></a></div>");
-}
-buf.push("</div></div>");;return buf.join("");
+buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div></a></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3307,7 +3287,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"container\"><div class=\"row shot-grid\"></div></div>");;return buf.join("");
+buf.push("<div class=\"shot-grid-view\"><div class=\"container\"><div class=\"shot-grid\"></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -3353,7 +3333,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"container\"><div class=\"row shot-single-view\"><div class=\"col-lg-4 col-md-5 col-xs-8\"><div class=\"shot-grid-item\"><div class=\"polaroid\"><a" + (jade.attr("href", shot.instagram.link, true, false)) + " target=\"_blank\"><img" + (jade.attr("src", "" + (shot.image) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ") </small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div></div></div><div class=\"col-lg-8 col-md-7 col-xs-12\">");
+buf.push("<div class=\"container\"><div class=\"row shot-single-view\"><div class=\"col-lg-4 col-md-5 col-xs-8\"><div class=\"shot-grid-item\"><div class=\"polaroid\"><a" + (jade.attr("href", shot.instagram.link, true, false)) + " target=\"_blank\"><img" + (jade.attr("src", "" + (shot.image) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div></div></div></div><div class=\"col-lg-8 col-md-7 col-xs-12\">");
 switch (shot.status){
 case "printed":
 buf.push("<h3>Как забрать фотографию со станции &laquo;<a" + (jade.attr("href", jade.url('stations#show', { name : shot.printedOn.name}), true, false)) + ">" + (jade.escape(null == (jade.interp = shot.printedOn.title) ? "" : jade.interp)) + "</a>&raquo;?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(shot.printedOn.instructions)) ? "" : jade.interp) + "</div>");
@@ -3429,7 +3409,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> о проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");
