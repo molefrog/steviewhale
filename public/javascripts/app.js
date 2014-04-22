@@ -2997,13 +2997,13 @@ module.exports = AboutView = (function(_super) {
 
 
   AboutView.prototype.onResize = function(w, h) {
-    return this.$('.landing').height(h);
+    return this.$('.full-height').height(h);
   };
 
   AboutView.prototype.render = function() {
     AboutView.__super__.render.apply(this, arguments);
     this.turnSlideshowOn();
-    return this.$('.landing').height($(window).height());
+    return this.$('.full-height').height($(window).height());
   };
 
   AboutView.prototype.template = require("./aboutView_");
@@ -3020,7 +3020,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"landing text-center\"><div class=\"slide first active\"></div><div class=\"slide second\"></div><div class=\"fade-overlay\"><div class=\"fake-offset\"></div><div class=\"centered-container\"><div class=\"centered\"><div class=\"container\"><h1 class=\"big-header\">Снимайте,\nпечатайте,<br/>делитесь!</h1><div class=\"row\"><div class=\"col-md-1\"></div><div class=\"col-md-10\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; <b>StevieWhale</b></div><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + " class=\"wow-button btn btn-lg\">Ух ты, как интересно!</a></div><div class=\"col-md-1\"></div></div></div></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"about-view\"><div class=\"fullpage-layer bottommost\"></div><div class=\"fullpage-layer slide first active\"></div><div class=\"fullpage-layer slide second\"></div><div class=\"fullpage-layer fade-overlay\"></div><div class=\"landing text-center\"><div class=\"fake-offset\"></div><div class=\"full-height centered-container\"><div class=\"centered container\"><h1 class=\"big-header\">Снимайте,\nпечатайте,<br/>делитесь!</h1><div class=\"row\"><div class=\"col-md-1\"></div><div class=\"col-md-10\"><div class=\"big-header-subtitle\">Представляем независимый проект по печати фотографий из Instagram\n&mdash; <b>StevieWhale</b></div><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + " class=\"wow-button btn btn-lg\">Ух ты, как интересно!</a></div><div class=\"col-md-1\"></div></div></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

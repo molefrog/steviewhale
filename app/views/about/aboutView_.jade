@@ -1,48 +1,47 @@
-.landing.text-center
-  .slide.first.active
-  .slide.second
+.about-view
+  .fullpage-layer.bottommost
+  .fullpage-layer.slide.first.active
+  .fullpage-layer.slide.second
+  .fullpage-layer.fade-overlay
 
-  .fade-overlay
+  .landing.text-center
     .fake-offset
-    .centered-container
-      .centered
-        .container
+    .full-height.centered-container
+      .centered.container
+        h1.big-header
+          | Снимайте,
+          | печатайте,
+          br
+          | делитесь!
+        .row
+          .col-md-1
+          .col-md-10
+            .big-header-subtitle
+              | Представляем независимый проект по печати фотографий из Instagram
+              | &mdash; <b>StevieWhale</b>
+             a.wow-button.btn.btn-lg(href="#{jade.url('shots#index')}") Ух ты, как интересно!
+          .col-md-1
 
-          h1.big-header
-            | Снимайте,
-            | печатайте,
-            br
-            | делитесь!
-          .row
-            .col-md-1
-            .col-md-10
-              .big-header-subtitle
-                | Представляем независимый проект по печати фотографий из Instagram
-                | &mdash; <b>StevieWhale</b>
-               a.wow-button.btn.btn-lg(href="#{jade.url('shots#index')}") Ух ты, как интересно!
-            .col-md-1
-
-
-
-          //- .how-it-works.text-center
-          //-     h1.hipster-header Как это работает?
-          //-     .row
-          //-       .col-md-4.icon-content
-          //-         img.super-icon.img-responsive(src="/images/photo.svg")
-          //-         h3 Публикуйте
-          //-         p.lead
-          //-           | Выложите фотографию в Instagram
-          //-           | с хештегом&nbsp;
-          //-           a(href=jade.url('shots#index')) #steviewhale
-          //-       .col-md-4.icon-content
-          //-         img.super-icon.img-responsive(src="/images/print.svg")
-          //-         h3 Печатайте
-          //-         p.lead
-          //-           | Фотография напечатается на одной из&nbsp;
-          //-           a(href=jade.url('stations#index')) печатных станций
-          //-       .col-md-4.icon-content
-          //-         img.super-icon.img-responsive(src="/images/heart.svg")
-          //-         h3 Забирайте
-          //-         p.lead
-          //-           | Свяжитесь с владельцем станции, чтобы забрать фотографию
+    //- .container
+    //-     .how-it-works.text-center
+    //-         h1.hipster-header Как это работает?
+    //-         .row
+    //-           .col-md-4.icon-content
+    //-             img.super-icon.img-responsive(src="/images/photo.svg")
+    //-             h3 Публикуйте
+    //-             p.lead
+    //-               | Выложите фотографию в Instagram
+    //-               | с хештегом&nbsp;
+    //-               a(href=jade.url('shots#index')) #steviewhale
+    //-           .col-md-4.icon-content
+    //-             img.super-icon.img-responsive(src="/images/print.svg")
+    //-             h3 Печатайте
+    //-             p.lead
+    //-               | Фотография напечатается на одной из&nbsp;
+    //-               a(href=jade.url('stations#index')) печатных станций
+    //-           .col-md-4.icon-content
+    //-             img.super-icon.img-responsive(src="/images/heart.svg")
+    //-             h3 Забирайте
+    //-             p.lead
+    //-               | Свяжитесь с владельцем станции, чтобы забрать фотографию
 

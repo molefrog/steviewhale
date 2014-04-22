@@ -1,17 +1,19 @@
 @import 'nib'
 
-.landing
-  color white
-  overflow hidden
-  background-color black
+// Layers
+.fullpage-layer
+  position: fixed
+  top 0
+  left 0
+  right 0
+  bottom 0
 
-  .slide
-    position: absolute
-    z-index: 2
-    top 0
-    left 0
-    right 0
-    bottom 0
+  &.bottommost
+    z-index -3
+    background-color #000
+
+  &.slide
+    z-index -2
     background-color #000
     background-size   cover
     background-position center center
@@ -21,30 +23,32 @@
     &.active
       opacity 1.0
 
-  .fade-overlay
-    position: absolute
-    z-index: 3
-    top 0
-    left 0
-    right 0
-    bottom 0
+  &.fade-overlay
+    z-index: -1
     background url("/images/dotted-pattern.png"), rgba(0,0,0,0.3)
 
-    .fake-offset
-      height 0px
+// Main area
+.landing
+  color white
+  // background-color black
 
-    .centered-container
-      height 100%
-      margin 0
-      position relative
+  .fake-offset
+    // height 200px
 
-      .centered
-        width 100%
-        position absolute
+  .centered-container
+    height 100%
+    margin 0
+    position relative
 
-        left 50%
-        top  50%
-        transform: translate(-50%, -50%)
+    .centered
+      width 100%
+      overflow: hidden
+
+      position absolute
+
+      left 50%
+      top  50%
+      transform: translate(-50%, -50%)
 
   .big-header
     font-family "PT Sans Narrow"

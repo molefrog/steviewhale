@@ -57,12 +57,12 @@ module.exports = class AboutView extends View
   # Resize and render
   ###
   onResize : (w, h) ->
-    @$('.landing').height(h)
+    @$('.full-height').height(h)
 
   render : ->
     super
     do @turnSlideshowOn
-    @$('.landing').height( $(window).height() )
+    @$('.full-height').height( $(window).height() )
 
   template : require "./aboutView_"
 

@@ -2758,18 +2758,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	     url('/fonts/BebasNeueCyrillic/BebasNeueCyrillic.svg#BebasNeueCyrillic') format('svg');
 }
 
-.landing {
-  color: #fff;
-  overflow: hidden;
-  background-color: #000;
-}
-.landing .slide {
-  position: absolute;
-  z-index: 2;
+.fullpage-layer {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+}
+.fullpage-layer.bottommost {
+  z-index: -3;
+  background-color: #000;
+}
+.fullpage-layer.slide {
+  z-index: -2;
   background-color: #000;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -2784,30 +2785,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   -ms-transition: opacity 0.4s ease-out;
   transition: opacity 0.4s ease-out;
 }
-.landing .slide.active {
+.fullpage-layer.slide.active {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
-.landing .fade-overlay {
-  position: absolute;
-  z-index: 3;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.fullpage-layer.fade-overlay {
+  z-index: -1;
   background: url("/images/dotted-pattern.png"), rgba(0,0,0,0.3);
 }
-.landing .fade-overlay .fake-offset {
-  height: 0px;
+.landing {
+  color: #fff;
 }
-.landing .fade-overlay .centered-container {
+.landing .centered-container {
   height: 100%;
   margin: 0;
   position: relative;
 }
-.landing .fade-overlay .centered-container .centered {
+.landing .centered-container .centered {
   width: 100%;
+  overflow: hidden;
   position: absolute;
   left: 50%;
   top: 50%;
