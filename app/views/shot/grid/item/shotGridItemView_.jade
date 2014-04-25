@@ -18,20 +18,20 @@
                 | )
           = shot.instagram.caption.text
 
-    //- .photo-info
-    //-   case shot.status
-    //-     when "failed"
-    //-       span.label.label-danger Не напечатана
-    //-     when "printed"
-    //-       a(href=jade.url('stations#show', { name : shot.printedOn.name }))
-    //-         span.label.label-success= shot.printedOn.title
-    //-     when "queued"
-    //-       span.label.label-info В очереди
-    //-     default
-    //-       span.label.label-default Необработана
+    .photo-info
+      if jade.auth()
+        span.action-button.print-button.ion-ios7-printer-outline
+        span.action-button.delete-button.ion-ios7-trash-outline
 
-    //- if jade.auth()
-    //-   .btn-group.btn-group-sm
-    //-     a.print-button.btn.btn-default: i.fa.fa-print
-    //-     a.delete-confirm.btn.btn-default: i.fa.fa-trash-o
+      case shot.status
+        when "failed"
+          span.label.label-danger Не напечатана
+        when "printed"
+          a(href=jade.url('stations#show', { name : shot.printedOn.name }))
+            span.label.label-success= shot.printedOn.title
+        when "queued"
+          span.label.label-info В очереди
+        default
+          span.label.label-default Необработана
+
 

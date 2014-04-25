@@ -3199,18 +3199,22 @@ module.exports = ShotGridItemView = (function(_super) {
 
   ShotGridItemView.prototype.initialize = function() {
     ShotGridItemView.__super__.initialize.apply(this, arguments);
-    this.delegate("click", ".delete-confirm", this.deleteHandler);
+    this.delegate("click", ".delete-button", this.deleteHandler);
     return this.delegate("click", ".print-button", this.printHandler);
   };
 
   ShotGridItemView.prototype.deleteHandler = function() {
-    return this.model.destroy({
-      wait: true
-    });
+    if (confirm('Удалить фотографию?')) {
+      return this.model.destroy({
+        wait: true
+      });
+    }
   };
 
   ShotGridItemView.prototype.printHandler = function() {
-    return this.model.print();
+    if (confirm('Напечатать фотографию?')) {
+      return this.model.print();
+    }
   };
 
   ShotGridItemView.prototype.template = require("./shotGridItemView_");
@@ -3231,7 +3235,26 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div></a></div>");;return buf.join("");
+buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div><div class=\"photo-info\">");
+if ( jade.auth())
+{
+buf.push("<span class=\"action-button print-button ion-ios7-printer-outline\"></span><span class=\"action-button delete-button ion-ios7-trash-outline\"></span>");
+}
+switch (shot.status){
+case "failed":
+buf.push("<span class=\"label label-danger\">Не напечатана</span>");
+  break;
+case "printed":
+buf.push("<a" + (jade.attr("href", jade.url('stations#show', { name : shot.printedOn.name }), true, false)) + "><span class=\"label label-success\">" + (jade.escape(null == (jade.interp = shot.printedOn.title) ? "" : jade.interp)) + "</span></a>");
+  break;
+case "queued":
+buf.push("<span class=\"label label-info\">В очереди</span>");
+  break;
+default:
+buf.push("<span class=\"label label-default\">Необработана</span>");
+  break;
+}
+buf.push("</div></a></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

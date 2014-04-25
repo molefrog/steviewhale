@@ -8,15 +8,17 @@ module.exports = class ShotGridItemView extends View
 
   initialize: ->
     super
-    @delegate "click", ".delete-confirm", @deleteHandler
+    @delegate "click", ".delete-button", @deleteHandler
     @delegate "click", ".print-button",   @printHandler
 
   deleteHandler : ->
-    @model.destroy
-      wait : true
+    if confirm 'Удалить фотографию?'
+      @model.destroy
+        wait : true
 
   printHandler: ->
-    do @model.print
+    if confirm 'Напечатать фотографию?'
+      do @model.print
 
   template : require "./shotGridItemView_"
 
