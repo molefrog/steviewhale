@@ -9,6 +9,10 @@ module.exports = class HeaderView extends View
   initialize : ->
     Chaplin.mediator.subscribe 'dispatcher:dispatch', @onDispatch
     Chaplin.mediator.subscribe 'loginState', @onLoginChanged
+
+    @delegate 'click', 'li a', =>
+      @$('.navbar-collapse').collapse('hide')
+      
     super
 
   onLoginChanged : (user) =>

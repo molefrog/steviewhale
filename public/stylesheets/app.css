@@ -2816,15 +2816,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 .landing .big-header {
   font-family: "PT Sans Narrow";
+  -webkit-transition: font-size 0.3s ease;
+  -moz-transition: font-size 0.3s ease;
+  -o-transition: font-size 0.3s ease;
+  -ms-transition: font-size 0.3s ease;
+  transition: font-size 0.3s ease;
   font-size: 64px;
   font-weight: bold;
+}
+@media (max-width: 768px) {
+  .landing .big-header {
+    font-size: 44px;
+  }
 }
 .landing .big-header-subtitle {
   font-size: 20px;
   font-weight: 100;
   font-family: 'PT Sans';
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 .landing .wow-button {
   border: 1px solid #fff;
@@ -2938,7 +2948,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   left: 0;
   right: 0;
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .header-view-container.static-page .site-navigation .container {
     background-color: rgba(0,0,0,0.5);
   }
@@ -2957,13 +2967,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .header-view-container .site-navigation * {
   background: none;
 }
+.header-view-container .site-navigation .container {
+  -webkit-transition: background-color 0.3s ease;
+  -moz-transition: background-color 0.3s ease;
+  -o-transition: background-color 0.3s ease;
+  -ms-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
 .header-view-container .site-navigation .container .navbar-header button.navbar-toggle {
   padding: 0;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 .header-view-container .site-navigation .container .navbar-header button.navbar-toggle span.navicon {
   font-size: 24px;
+}
+.header-view-container .site-navigation .container .navbar-collapse {
+  -webkit-transition: height 0s;
+  -moz-transition: height 0s;
+  -o-transition: height 0s;
+  -ms-transition: height 0s;
+  transition: height 0s;
 }
 .header-view-container .site-navigation ul li a {
   background: none;

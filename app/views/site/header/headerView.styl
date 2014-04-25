@@ -13,7 +13,7 @@ $color-light = #fff
     right 0
     .site-navigation
       .container
-        @media (max-width: 768px)
+        @media (max-width: 767px)
           background-color rgba(0,0,0,0.5)
         ul li a:not(:hover)
           color $color-light !important
@@ -29,16 +29,18 @@ $color-light = #fff
     margin 0
 
     .container
+      transition background-color 0.3s ease
       .navbar-header
         button.navbar-toggle
           padding 0
-          margin-top 5px
-          margin-bottom 5px
+          margin-top 8px
+          margin-bottom 8px
 
           span.navicon
             font-size 24px
 
-
+      .navbar-collapse
+        transition: height 0.0s
     ul li
       a
         background none

@@ -1,11 +1,11 @@
 nav.site-navigation.navbar.navbar-static-top
   .container
     .navbar-header
-      button.navbar-toggle(data-toggle="collapse" data-target="#navbar-collapse-toggle")
+      button.navbar-toggle(data-toggle="collapse" data-target="#navbar-collapsing-menu")
         span.navicon.ion-navicon-round
         span.sr-only Toggle navigation
       
-    .collapse.navbar-collapse#navbar-collapse-toggle
+    .collapse.navbar-collapse#navbar-collapsing-menu
       ul.nav.navbar-nav.navbar-left
         li.nav-static
           a(href=jade.url("static#about"))
@@ -20,7 +20,7 @@ nav.site-navigation.navbar.navbar-static-top
       ul.nav.navbar-nav.navbar-right
         if !jade.auth()
           li
-            a(href="#{jade.url('auth_login')}")
+            a(data-toggle="collapse" data-target="#navbar-collapse-toggle" href="#{jade.url('auth_login')}")
               |  войти
         else
           li

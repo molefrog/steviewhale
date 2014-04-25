@@ -3378,8 +3378,12 @@ module.exports = HeaderView = (function(_super) {
   HeaderView.prototype.className = 'header-view-container';
 
   HeaderView.prototype.initialize = function() {
+    var _this = this;
     Chaplin.mediator.subscribe('dispatcher:dispatch', this.onDispatch);
     Chaplin.mediator.subscribe('loginState', this.onLoginChanged);
+    this.delegate('click', 'li a', function() {
+      return _this.$('.navbar-collapse').collapse('hide');
+    });
     return HeaderView.__super__.initialize.apply(this, arguments);
   };
 
@@ -3409,10 +3413,10 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><div class=\"navbar-header\"><button data-toggle=\"collapse\" data-target=\"#navbar-collapse-toggle\" class=\"navbar-toggle\"><span class=\"navicon ion-navicon-round\"></span><span class=\"sr-only\">Toggle navigation</span></button></div><div id=\"navbar-collapse-toggle\" class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><div class=\"navbar-header\"><button data-toggle=\"collapse\" data-target=\"#navbar-collapsing-menu\" class=\"navbar-toggle\"><span class=\"navicon ion-navicon-round\"></span><span class=\"sr-only\">Toggle navigation</span></button></div><div id=\"navbar-collapsing-menu\" class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
-buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");
+buf.push("<li><a data-toggle=\"collapse\" data-target=\"#navbar-collapse-toggle\"" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");
 }
 else
 {
