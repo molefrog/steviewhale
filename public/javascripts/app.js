@@ -3235,7 +3235,12 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div><div class=\"photo-info\">");
+buf.push("<div class=\"polaroid\"><a" + (jade.attr("href", jade.url('shots#show', {id : shot._id}), true, false)) + "><img" + (jade.attr("src", "" + (shot.thumbnail) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>");
+if ( shot.instagram.caption)
+{
+buf.push(jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp));
+}
+buf.push("</div></div></div><div class=\"photo-info\">");
 if ( jade.auth())
 {
 buf.push("<span class=\"action-button print-button ion-ios7-printer-outline\"></span><span class=\"action-button delete-button ion-ios7-trash-outline\"></span>");
@@ -3356,7 +3361,12 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 var locals_ = (locals || {}),shot = locals_.shot;
-buf.push("<div class=\"container\"><div class=\"row shot-single-view\"><div class=\"col-lg-4 col-md-5 col-xs-8\"><div class=\"shot-grid-item\"><div class=\"polaroid\"><a" + (jade.attr("href", shot.instagram.link, true, false)) + " target=\"_blank\"><img" + (jade.attr("src", "" + (shot.image) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>" + (jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp)) + "</div></div></div></div></div></div><div class=\"col-lg-8 col-md-7 col-xs-12\">");
+buf.push("<div class=\"container\"><div class=\"row shot-single-view\"><div class=\"col-lg-4 col-md-5 col-xs-8\"><div class=\"shot-grid-item\"><div class=\"polaroid\"><a" + (jade.attr("href", shot.instagram.link, true, false)) + " target=\"_blank\"><img" + (jade.attr("src", "" + (shot.image) + "", true, false)) + " class=\"polaroid-photo img-responsive\"/></a><div class=\"photo-user\"><div class=\"media\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\" class=\"pull-left\"><img" + (jade.attr("src", shot.instagram.user.profile_picture, true, false)) + " width=\"48\" height=\"48\" class=\"img-circle media-object\"/></a><div class=\"media-body\"><a" + (jade.attr("href", "http://instagram.com/" + shot.instagram.user.username, true, false)) + " target=\"_blank\"><h4 class=\"media-heading\">@" + (jade.escape(null == (jade.interp = shot.instagram.user.username) ? "" : jade.interp)) + "<small> (" + (jade.escape(null == (jade.interp = shot.instagram.user.full_name) ? "" : jade.interp)) + ")</small></h4></a>");
+if ( shot.instagram.caption)
+{
+buf.push(jade.escape(null == (jade.interp = shot.instagram.caption.text) ? "" : jade.interp));
+}
+buf.push("</div></div></div></div></div></div><div class=\"col-lg-8 col-md-7 col-xs-12\">");
 switch (shot.status){
 case "printed":
 buf.push("<h3>Как забрать фотографию со станции &laquo;<a" + (jade.attr("href", jade.url('stations#show', { name : shot.printedOn.name}), true, false)) + ">" + (jade.escape(null == (jade.interp = shot.printedOn.title) ? "" : jade.interp)) + "</a>&raquo;?</h3><div class=\"markdown\">" + (null == (jade.interp = jade.markdown(shot.printedOn.instructions)) ? "" : jade.interp) + "</div>");
@@ -3404,9 +3414,7 @@ module.exports = HeaderView = (function(_super) {
     var _this = this;
     Chaplin.mediator.subscribe('dispatcher:dispatch', this.onDispatch);
     Chaplin.mediator.subscribe('loginState', this.onLoginChanged);
-    this.delegate('click', 'li a', function() {
-      return _this.$('.navbar-collapse').collapse('hide');
-    });
+    this.delegate('click', 'li a', function() {});
     return HeaderView.__super__.initialize.apply(this, arguments);
   };
 

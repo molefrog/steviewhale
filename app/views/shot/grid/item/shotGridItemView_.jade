@@ -16,7 +16,8 @@
                 |  (
                 = shot.instagram.user.full_name
                 | )
-          = shot.instagram.caption.text
+          if shot.instagram.caption
+            = shot.instagram.caption.text
 
     .photo-info
       if jade.auth()

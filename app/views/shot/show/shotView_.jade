@@ -20,7 +20,8 @@
                       |  (
                       = shot.instagram.user.full_name
                       | )
-                = shot.instagram.caption.text
+                if shot.instagram.caption
+                  = shot.instagram.caption.text
 
     .col-lg-8.col-md-7.col-xs-12
       case shot.status

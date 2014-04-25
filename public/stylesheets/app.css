@@ -3026,11 +3026,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   font-size: 24px;
 }
 .header-view-container .site-navigation .container .navbar-collapse {
-  -webkit-transition: height 0s;
-  -moz-transition: height 0s;
-  -o-transition: height 0s;
-  -ms-transition: height 0s;
-  transition: height 0s;
+  -webkit-transition: height 0s !important;
+  -moz-transition: height 0s !important;
+  -o-transition: height 0s !important;
+  -ms-transition: height 0s !important;
+  transition: height 0s !important;
 }
 .header-view-container .site-navigation ul li a {
   background: none;

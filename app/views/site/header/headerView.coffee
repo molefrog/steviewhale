@@ -11,8 +11,8 @@ module.exports = class HeaderView extends View
     Chaplin.mediator.subscribe 'loginState', @onLoginChanged
 
     @delegate 'click', 'li a', =>
-      @$('.navbar-collapse').collapse('hide')
-      
+      # @$('.navbar-collapse').collapse('hide')
+
     super
 
   onLoginChanged : (user) =>
