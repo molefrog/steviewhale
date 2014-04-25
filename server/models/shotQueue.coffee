@@ -21,10 +21,6 @@ module.exports = (cb) ->
         log.warn "Shot ##{@_id} marked as failed"
 
     job.on "complete", =>
-      sms
-        to   : config.get 'sms:toNumber'
-        body : "Леша, я напечатал фото для @#{@instagram.user.username}."
-
       @status = "printed"
       @save =>
         log.info "Shot ##{@_id} marked as complete"
