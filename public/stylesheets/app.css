@@ -2932,15 +2932,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 .header-view-container.static-page {
+  color: #fff;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
 }
-.header-view-container.static-page .site-navigation ul li a:not(:hover) {
+@media (max-width: 768px) {
+  .header-view-container.static-page .site-navigation .container {
+    background-color: rgba(0,0,0,0.5);
+  }
+}
+.header-view-container.static-page .site-navigation .container ul li a:not(:hover) {
   color: #fff !important;
 }
-.header-view-container.static-page .site-navigation ul li.selected a {
+.header-view-container.static-page .site-navigation .container ul li.selected a {
   border-color: #fff;
 }
 .header-view-container .site-navigation {
@@ -2949,9 +2955,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   margin: 0;
 }
 .header-view-container .site-navigation * {
-  background: none !important;
+  background: none;
+}
+.header-view-container .site-navigation .container .navbar-header button.navbar-toggle {
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.header-view-container .site-navigation .container .navbar-header button.navbar-toggle span.navicon {
+  font-size: 24px;
 }
 .header-view-container .site-navigation ul li a {
+  background: none;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;

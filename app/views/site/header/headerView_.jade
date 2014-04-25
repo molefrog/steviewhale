@@ -1,22 +1,28 @@
 nav.site-navigation.navbar.navbar-static-top
   .container
-    ul.nav.navbar-nav.navbar-left
-      li.nav-static
-        a(href=jade.url("static#about"))
-          |  О проекте
-      li.nav-stations
-        a(href="#{jade.url('stations#index')}")
-          |  Печатные станции
-      li.nav-shots
-        a(href="#{jade.url('shots#index')}")
-          |  Фотографии
+    .navbar-header
+      button.navbar-toggle(data-toggle="collapse" data-target="#navbar-collapse-toggle")
+        span.navicon.ion-navicon-round
+        span.sr-only Toggle navigation
+      
+    .collapse.navbar-collapse#navbar-collapse-toggle
+      ul.nav.navbar-nav.navbar-left
+        li.nav-static
+          a(href=jade.url("static#about"))
+            |  О проекте
+        li.nav-stations
+          a(href="#{jade.url('stations#index')}")
+            |  Печатные станции
+        li.nav-shots
+          a(href="#{jade.url('shots#index')}")
+            |  Фотографии
 
-    ul.nav.navbar-nav.navbar-right
-      if !jade.auth()
-        li
-          a(href="#{jade.url('auth_login')}")
-            |  войти
-      else
-        li
-          a(href="#{jade.url('auth_logout')}")
-            |  выйти
+      ul.nav.navbar-nav.navbar-right
+        if !jade.auth()
+          li
+            a(href="#{jade.url('auth_login')}")
+              |  войти
+        else
+          li
+            a(href="#{jade.url('auth_logout')}")
+              |  выйти

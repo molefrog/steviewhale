@@ -3409,7 +3409,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
+buf.push("<nav class=\"site-navigation navbar navbar-static-top\"><div class=\"container\"><div class=\"navbar-header\"><button data-toggle=\"collapse\" data-target=\"#navbar-collapse-toggle\" class=\"navbar-toggle\"><span class=\"navicon ion-navicon-round\"></span><span class=\"sr-only\">Toggle navigation</span></button></div><div id=\"navbar-collapse-toggle\" class=\"collapse navbar-collapse\"><ul class=\"nav navbar-nav navbar-left\"><li class=\"nav-static\"><a" + (jade.attr("href", jade.url("static#about"), true, false)) + "> О проекте</a></li><li class=\"nav-stations\"><a" + (jade.attr("href", "" + (jade.url('stations#index')) + "", true, false)) + "> Печатные станции</a></li><li class=\"nav-shots\"><a" + (jade.attr("href", "" + (jade.url('shots#index')) + "", true, false)) + "> Фотографии</a></li></ul><ul class=\"nav navbar-nav navbar-right\">");
 if ( !jade.auth())
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_login')) + "", true, false)) + "> войти</a></li>");
@@ -3418,7 +3418,7 @@ else
 {
 buf.push("<li><a" + (jade.attr("href", "" + (jade.url('auth_logout')) + "", true, false)) + "> выйти</a></li>");
 }
-buf.push("</ul></div></nav>");;return buf.join("");
+buf.push("</ul></div></div></nav>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

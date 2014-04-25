@@ -1,28 +1,47 @@
 @import 'nib'
 
+$color-dark  = #000
+$color-light = #fff
+
 
 .header-view-container
   &.static-page
+    color $color-light
     position absolute
     top 0
     left 0
     right 0
     .site-navigation
-      ul li a:not(:hover)
-        color white !important
-      ul li.selected a
-        border-color white
+      .container
+        @media (max-width: 768px)
+          background-color rgba(0,0,0,0.5)
+        ul li a:not(:hover)
+          color $color-light !important
+        ul li.selected a
+          border-color $color-light
 
   // Navigation bar
   .site-navigation
     *
-      background none !important
+      background none 
     border none
     padding 0
     margin 0
 
+    .container
+      .navbar-header
+        button.navbar-toggle
+          padding 0
+          margin-top 5px
+          margin-bottom 5px
+
+          span.navicon
+            font-size 24px
+
+
     ul li
       a
+        background none
         box-sizing border-box
         transition color 0.3s ease, border-color 0.3s ease
 
@@ -34,8 +53,8 @@
         font-size 22px
 
         &:not(:hover)
-          color black !important
+          color $color-dark !important
 
       &.selected a
-        border-color black
+        border-color $color-dark
 
