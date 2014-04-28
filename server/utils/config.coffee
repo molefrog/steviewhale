@@ -10,7 +10,12 @@ config.argv()
   .env()
 
 config.defaults
-  'env' : 'development'
+  env : 'development'
+  web :
+    port   : 8080
+    cookieSecret : 'keyboard-cat'
+  db :
+    mongo : 'mongodb://localhost'
 
 log.info "Environment: #{config.get('env')}"
 

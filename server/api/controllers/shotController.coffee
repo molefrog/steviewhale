@@ -2,15 +2,15 @@ Shot   = require "../../models/shot"
 
 log = require "../../utils/log"
 
-# Fields that are used for population of the 
+# Fields that are used for population of the
 # 'printedOn' field
-populatedFields = [ 
-  "_id" 
-  "name" 
+populatedFields = [
+  "_id"
+  "name"
   "title"
   "subtitle"
-  "instructions" 
-  "created" 
+  "instructions"
+  "created"
   "online"
   "streaming"
 ]
@@ -23,19 +23,19 @@ exports.index = (req, res, next) ->
   .sort("-created")
   .populate("printedOn", populatedFields.join " ")
   .exec (err, items) ->
-    if err 
+    if err
       return next err
 
     res.json items
 
 ###
-# Get specified shot 
+# Get specified shot
 ###
 exports.show = (req, res, next) ->
   Shot.findById( req.params.id )
   .populate("printedOn", populatedFields.join " ")
   .exec (err, item) ->
-    if err 
+    if err
       return next err
 
     if not item?
@@ -49,7 +49,7 @@ exports.show = (req, res, next) ->
 exports.delete = (req, res, next) ->
   Shot.remove({ _id : req.params.id })
   .exec (err) ->
-    if err 
+    if err
       return next err
 
     res.json {}
