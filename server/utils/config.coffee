@@ -14,7 +14,7 @@ config.defaults
 
 log.info "Environment: #{config.get('env')}"
 
-configFile = path.resolve "./server/config/#{config.get('env')}.json"
+configFile = path.resolve "#{__dirname}/../config/#{config.get('env')}.json"
 
 log.info "Config file: #{configFile}"
 

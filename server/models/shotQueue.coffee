@@ -1,7 +1,9 @@
-queue  = require "../services/queue/jobs"
-
 # Utilities
 { config, log, sms } = require "../utils"
+
+return if config.get('env') is 'testing'
+
+queue = require "../services/queue/jobs"
 
 module.exports = (cb) ->
   @status = "queued"
