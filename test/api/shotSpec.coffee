@@ -30,7 +30,6 @@ module.exports = (app) ->
             do done
 
       it "returns 200", (done) ->
-        console.log @shots
         request(app)
           .get("/api/shots")
           .expect(200)
