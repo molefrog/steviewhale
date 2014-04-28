@@ -1,7 +1,11 @@
-express    = require "express"
-multiparty = require "connect-multiparty"
-passport   = require "passport"
-path       = require "path"
+express        = require "express"
+bodyParser     = require "body-parser"
+expressSession = require "express-session"
+cookieParser   = require "cookie-parser"
+multiparty     = require "connect-multiparty"
+staticFiles    = require "st"
+passport       = require "passport"
+path           = require "path"
 
 http = require "http"
 
@@ -10,48 +14,36 @@ http = require "http"
 module.exports.app    = app    = do express
 module.exports.server = server = http.createServer app
 
-switch config.get "env"
-  when "testing"
-    app.use express.cookieParser()  
-    app.use multiparty()
-    app.use express.json()
-    app.use express.urlencoded()
-    app.use express.session
-      secret : config.get "web:cookieSecret"
-    app.use passport.initialize()
-    app.use passport.session()
-    app.use "/api", require "../../api"
-    app.use require "./errorHandler"
-  else
-    app.use express.cookieParser()  
-    app.use multiparty()
-    app.use express.json()
-    app.use express.urlencoded()
+app.use do cookieParser 
+app.use do bodyParser
+app.use expressSession secret: config.get "web:cookieSecret"
+app.use passport.initialize()
+app.use passport.session()
 
-    app.use express.session
-      secret : config.get "web:cookieSecret"
+app.use "/api", require "../../api"
 
-    app.use passport.initialize()
-    app.use passport.session()
+unless config.get('env') is 'testing'
+  app.use "/streaming", require "../streaming"
+  # app.use "/queue",    (require "kue").app
 
-    app.use "/api",       require "../../api"
-    app.use "/streaming", require "../streaming"
-    app.use "/queue",    (require "kue").app
+publicPath = path.resolve "#{__dirname}/../../../public"
 
-    publicPath = path.resolve "#{__dirname}/../../../public"
+app.use staticFiles
+  path: publicPath
+  passthrough: true
+  gzip: true
+  index: 'index.html'
 
-    app.use express.static publicPath
+app.get "*", (req, res) ->
+  res.sendfile path.join publicPath, "index.html"
 
-    app.use app.router
-    app.get "*", (req, res) ->
-      res.sendfile path.join publicPath, "index.html"
+# Error handler
+app.use require "./errorHandler"
 
-    # Error handler
-    app.use require "./errorHandler"
-
-    # Start express http server
-    server.listen config.get("web:port"), (err) ->
-      if err
-        log.error "Web server error #{err}"
-      else
-        log.info "Web server started on port #{config.get('web:port')}"
+unless config.get('env') is 'testing'
+  # Start express http server
+  server.listen config.get("web:port"), (err) ->
+    if err
+      log.error "Web server error #{err}"
+    else
+      log.info "Web server started on port #{config.get('web:port')}"

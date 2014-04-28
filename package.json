@@ -5,7 +5,7 @@
   "description": "Real-Time Printing Experience",
   "main": "server/index.coffee",
   "dependencies": {
-    "express": "~3.4.7",
+    "express": "4.1.1",
     "instagram-node-lib": "~0.1.1",
     "socket.io": "~0.9.16",
     "lodash": "~2.4.1",
@@ -27,7 +27,11 @@
     "mongoose-multi-set": "~0.1.0",
     "q": "^1.0.0",
     "moment": "~2.5.1",
-    "twilio": "^1.6.0"
+    "twilio": "^1.6.0",
+    "body-parser": "^1.0.2",
+    "cookie-parser": "^1.0.1",
+    "express-session": "^1.0.4",
+    "st": "^0.4.1"
   },
   "devDependencies": {
     "coffee-script-brunch": "~1.7.3",
