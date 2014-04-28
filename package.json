@@ -45,6 +45,7 @@
     "coffee-script": "^1.7.1"
   },
   "scripts": {
+    "build" : "bower install && brunch build --production",
     "start": "forever start -o steviewhale.log -a --pidFile steviewhale.pid -c coffee server/index.coffee --env=production",
     "stop": "forever stop --pidFile steviewhale.pid",
     "test": "env env=testing mocha -R spec --compilers coffee:coffee-script/register"
