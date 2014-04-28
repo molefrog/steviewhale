@@ -15,7 +15,7 @@ hashing = (random, secret) ->
 
 ###
 # The array of authorized and online agents
-# This approach will not work when the server is clustered on 
+# This approach will not work when the server is clustered on
 # more than one machine. TODO: make this work through some fast
 # key-value storage (e.g. Redis)
 ###
@@ -24,7 +24,7 @@ clients = require "./clients"
 Client = require "./client"
 
 ###
-# This function is called when the agent has passed the handshake 
+# This function is called when the agent has passed the handshake
 # (has been authorized)
 ###
 handshaked = (station, socket) ->
@@ -50,7 +50,7 @@ pool.on "connection", (socket) ->
 
   log.info "New pool connection, sending random #{random}"
 
-  # Agent then calculates hash based on a random number and 
+  # Agent then calculates hash based on a random number and
   # secret auth key
   socket.emit "handshake", random, (name, hash) ->
     log.info "Got answer name: #{name}, hash: #{hash}"

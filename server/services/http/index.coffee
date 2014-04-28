@@ -14,7 +14,7 @@ http = require "http"
 module.exports.app    = app    = do express
 module.exports.server = server = http.createServer app
 
-app.use do cookieParser 
+app.use do cookieParser
 app.use do bodyParser
 app.use expressSession secret: config.get "web:cookieSecret"
 app.use passport.initialize()

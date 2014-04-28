@@ -1,5 +1,6 @@
 passport = require "passport"
-module.exports = app = do require "express"
+express  = require "express"
+module.exports = router = do express.Router
 
 ##
 # Controllers
@@ -13,29 +14,25 @@ AuthController    = require "./controllers/authController"
 ##
 Authenticated = require "./policies/authenticated"
 
-
-app.use (err, req, res, next) ->
-  console.log err
-
 ##
 # RESTful CRUD handlers
 ##
-app.param  "station",                   StationController.stationParam
-app.get    "/stations",                 StationController.index
-app.get    "/stations/:station",        StationController.show
-app.delete "/stations/:station",        Authenticated, StationController.delete
-app.post   "/stations",                 Authenticated, StationController.create
-app.put    "/stations/:station",        Authenticated, StationController.update
-app.post   "/stations/:station/rename", Authenticated, StationController.rename
-app.get    "/stations/:station/secret", Authenticated, StationController.secret
+router.param  "station",                   StationController.stationParam
+router.get    "/stations",                 StationController.index
+router.get    "/stations/:station",        StationController.show
+router.delete "/stations/:station",        Authenticated, StationController.delete
+router.post   "/stations",                 Authenticated, StationController.create
+router.put    "/stations/:station",        Authenticated, StationController.update
+router.post   "/stations/:station/rename", Authenticated, StationController.rename
+router.get    "/stations/:station/secret", Authenticated, StationController.secret
 
-app.get    "/shots",          ShotController.index
-app.get    "/shots/:id",      ShotController.show
-app.delete "/shots/:id",      Authenticated, ShotController.delete
-app.get    "/shots/:id/queue",Authenticated, ShotController.queue
+router.get    "/shots",          ShotController.index
+router.get    "/shots/:id",      ShotController.show
+router.delete "/shots/:id",      Authenticated, ShotController.delete
+router.get    "/shots/:id/queue",Authenticated, ShotController.queue
 
-app.post  "/auth/login",    passport.authenticate("local"), AuthController.login
-app.post  "/auth/logout",   Authenticated, AuthController.logout
-app.get   "/auth",          AuthController.index
+router.post  "/auth/login",    passport.authenticate("local"), AuthController.login
+router.post  "/auth/logout",   Authenticated, AuthController.logout
+router.get   "/auth",          AuthController.index
 
 

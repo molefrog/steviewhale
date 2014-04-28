@@ -4,6 +4,8 @@ app      = (require "../server/services/http").app
 
 
 describe "application API", ->
+  @timeout 10000
+
   before (done) ->
     mongoose.connect config.get("db:mongo"), (err) ->
       throw err if err
