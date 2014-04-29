@@ -24,6 +24,9 @@ module.exports = (app) ->
 
     describe "GET /api/shots", ->
       before (done) ->
+        @startDate = moment()
+        @endDate = moment( @startDate ).add('days', 1)
+
         @numberOfStations = _.random(2, 5)
         @numberOfShots    = _.random(10, 20)
 
@@ -40,8 +43,6 @@ module.exports = (app) ->
                 @shotsJson = _.map shots, (s) -> JSON.parse JSON.stringify s
 
                 do done
-
-
 
       it "just returns some of the latest shots when nothing is passed", (done) ->
         request(app)
@@ -154,6 +155,37 @@ module.exports = (app) ->
 
               lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
                 .filter (s) -> s.printedOn? and s.printedOn.toString() == station._id
+                .collect (s) -> _.pick(s, propertiesToCheck)
+                .value()
+
+              res.body.meta.should.have.enumerable 'total', lhs.length
+
+              rhs = _(res.body.shots).collect (s) -> _.pick(s, propertiesToCheck)
+                .value()
+
+              _.first(lhs, res.body.meta.count).should.eql rhs
+              do cb
+
+        , (err) ->
+          return done err if err
+          do done
+
+      it "supports pagination 'max_timestamp' parameter", (done) ->
+        async.each [1..6], (i, cb) =>
+          s = @startDate.unix()
+          e = @endDate.unix()
+
+          max_timestamp = s + _.random(0, e - s)
+
+          request(app)
+            .get('/api/shots')
+            .query({ max_timestamp })
+            .expect('Content-Type', 'application/json')
+            .expect(200)
+            .end (err, res) =>
+
+              lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
+                .filter (s) -> moment(s.created).unix() < max_timestamp
                 .collect (s) -> _.pick(s, propertiesToCheck)
                 .value()
 
