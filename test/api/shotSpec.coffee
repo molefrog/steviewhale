@@ -170,7 +170,7 @@ module.exports = (app) ->
           return done err if err
           do done
 
-      it "supports pagination 'max_timestamp' parameter", (done) ->
+      it "supports pagination using 'max_timestamp' parameter", (done) ->
         async.each [1..6], (i, cb) =>
           s = @startDate.unix()
           e = @endDate.unix()
