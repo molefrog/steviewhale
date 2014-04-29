@@ -1,3 +1,6 @@
+_      = require "lodash"
+moment = require "moment"
+
 Shot   = require "../../models/shot"
 
 log = require "../../utils/log"
@@ -29,28 +32,40 @@ readAccesibleFields = [
 # Get all shots
 ###
 exports.index = (req, res, next) ->
+  limit = parseInt(req.query.limit ? 16)
+  sortBy = "-created"
+
   findQuery = {}
-  limit = parseInt(req.query.limit ? 25)
 
-  query = Shot.find(findQuery)
-    .count (err, count) ->
-      return next err if err
+  if req.query.status?
+    statuses = _.flatten [ req.query.status ]
+    findQuery.status = { $in : statuses }
 
-      Shot.find(findQuery)
-        .sort("-created")
-        .limit(limit)
-        .populate("printedOn", populatedFields.join " ")
-        .select(readAccesibleFields.join(' ')).exec (err, items) ->
-          return next err if err
+  if req.query.printed_on?
+    findQuery.printedOn = req.query.printed_on
 
-          meta =
-            limit : limit
-            total : count
-            count : items.length
+  if req.query.max_timestamp?
+    date = moment.unix(parseInt(req.query.max_timestamp)).toDate()
+    findQuery.created = { $lte : date }
 
-          res.json
-            meta  : meta
-            shots : items
+  Shot.find(findQuery).count (err, count) ->
+    return next err if err
+
+    Shot.find(findQuery).sort(sortBy)
+      .limit(limit)
+      .populate("printedOn", populatedFields.join " ")
+      .select(readAccesibleFields.join(' ')).exec (err, items) ->
+        return next err if err
+
+        meta =
+          query : req.query
+          limit : limit
+          total : count
+          count : items.length
+
+        res.json
+          meta  : meta
+          shots : items
 
 ###
 # Get specified shot

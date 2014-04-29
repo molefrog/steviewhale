@@ -4,11 +4,17 @@ async    = require "async"
 Faker    = require "Faker"
 _        = require "lodash"
 uid      = require "uid"
+moment   = require "moment"
 
-{ Shot, Statio } = require "../../server/models"
+{ Shot, Station } = require "../../server/models"
+
 
 shotFactory = (index, cb) ->
+  now = moment().unix()
+  dayAfter = moment().add('days', 1).unix()
+
   shot = new Shot
+    created   : moment.unix( now + _.random(0, dayAfter - now) ).toDate()
     hash      : uid 24
     image     : Faker.Image.imageUrl()
     thumbnail : Faker.Image.imageUrl()
@@ -16,7 +22,6 @@ shotFactory = (index, cb) ->
 
   shot.save (err, doc) ->
     cb err, JSON.parse(JSON.stringify(doc))
-
 
 propertiesToCheck = [
   "_id"
@@ -34,6 +39,7 @@ module.exports = (app) ->
 
       before (done) ->
         @numberOfShots = _.random(10, 20)
+
         Shot.remove({}).exec (err) =>
           async.map [1..@numberOfShots], _.bind(shotFactory, @), (err, shots) =>
             return done err if err
@@ -55,9 +61,7 @@ module.exports = (app) ->
             meta = res.body.meta
 
             meta.should.have.enumerable 'total', @shots.length
-            meta.should.have.enumerable 'count'
-
-            meta.count.should.be.exactly json.shots.length
+            meta.should.have.enumerable 'count', json.shots.length
 
             _.each json.shots, (shot) =>
               idx = _.findIndex @shots, "_id": shot._id
@@ -69,3 +73,28 @@ module.exports = (app) ->
               lhs.should.eql rhs
 
             do done
+
+      it "supports 'limit' query parameter", (done) ->
+        limit = _.random(1, @numberOfShots)
+
+        request(app)
+          .get('/api/shots')
+          .query({ limit : limit })
+          .expect('Content-Type', 'application/json')
+          .expect(200)
+          .end (err, res) =>
+            return done err if err
+
+            res.body.meta.should.have.enumerable 'count', limit
+
+            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+              .first(limit)
+              .collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            rhs = _(res.body.shots).collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            lhs.should.eql rhs
+            do done
+
