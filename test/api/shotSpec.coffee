@@ -143,6 +143,28 @@ module.exports = (app) ->
             _.first(lhs, res.body.meta.count).should.eql rhs
             do done
 
+      it "supports filtering by station", (done) ->
+        async.each @stationsJson, (station, cb) =>
+          request(app)
+            .get('/api/shots')
+            .query({ printed_on : station._id })
+            .expect('Content-Type', 'application/json')
+            .expect(200)
+            .end (err, res) =>
 
+              lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
+                .filter (s) -> s.printedOn? and s.printedOn.toString() == station._id
+                .collect (s) -> _.pick(s, propertiesToCheck)
+                .value()
 
-      # it "suppor"
+              res.body.meta.should.have.enumerable 'total', lhs.length
+
+              rhs = _(res.body.shots).collect (s) -> _.pick(s, propertiesToCheck)
+                .value()
+
+              _.first(lhs, res.body.meta.count).should.eql rhs
+              do cb
+
+        , (err) ->
+          return done err if err
+          do done
