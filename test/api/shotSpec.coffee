@@ -8,6 +8,15 @@ moment   = require "moment"
 
 { Shot, Station } = require "../../server/models"
 
+propertiesToCheck = [
+  "_id"
+  "image"
+  "thumbnail"
+  "created"
+  "printed"
+]
+
+availableStatuses = [ "initial", "queued", "printed", "failed" ]
 
 shotFactory = (index, cb) ->
   now = moment().unix()
@@ -18,25 +27,17 @@ shotFactory = (index, cb) ->
     hash      : uid 24
     image     : Faker.Image.imageUrl()
     thumbnail : Faker.Image.imageUrl()
+    status    : _.sample availableStatuses
     instagram : {}
 
   shot.save (err, doc) ->
     cb err, JSON.parse(JSON.stringify(doc))
-
-propertiesToCheck = [
-  "_id"
-  "image"
-  "thumbnail"
-  "created"
-  "printed"
-]
 
 
 module.exports = (app) ->
   describe "shots resource", ->
 
     describe "GET /api/shots", ->
-
       before (done) ->
         @numberOfShots = _.random(10, 20)
 
@@ -98,3 +99,54 @@ module.exports = (app) ->
             lhs.should.eql rhs
             do done
 
+      it "supports filtering by a single status", (done) ->
+        status = _.sample availableStatuses
+
+        request(app)
+          .get('/api/shots')
+          .query({ status })
+          .expect('Content-Type', 'application/json')
+          .expect(200)
+          .end (err, res) =>
+            return done err if err
+
+            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+              .filter (s) -> s.status is status
+              .collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            res.body.meta.should.have.enumerable 'total', lhs.length
+
+            rhs = _(res.body.shots).collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            _.first(lhs, res.body.meta.count).should.eql rhs
+            do done
+
+      it "supports filtering by multiple statuses", (done) ->
+        statuses = _.sample availableStatuses, _.random(1, availableStatuses.length)
+
+        request(app)
+          .get('/api/shots')
+          .query({ status : statuses })
+          .expect('Content-Type', 'application/json')
+          .expect(200)
+          .end (err, res) =>
+            return done err if err
+
+            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+              .filter (s) -> _.contains(statuses, s.status)
+              .collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            res.body.meta.should.have.enumerable 'total', lhs.length
+
+            rhs = _(res.body.shots).collect (s) -> _.pick(s, propertiesToCheck)
+              .value()
+
+            _.first(lhs, res.body.meta.count).should.eql rhs
+            do done
+
+
+
+      # it "suppor"
