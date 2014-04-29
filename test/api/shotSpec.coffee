@@ -8,6 +8,9 @@ moment   = require "moment"
 
 { Shot, Station } = require "../../server/models"
 
+shotFactory    = require "../factories/shotFactory"
+stationFactory = require "../factories/stationFactory"
+
 propertiesToCheck = [
   "_id"
   "image"
@@ -16,36 +19,29 @@ propertiesToCheck = [
   "printed"
 ]
 
-availableStatuses = [ "initial", "queued", "printed", "failed" ]
-
-shotFactory = (index, cb) ->
-  now = moment().unix()
-  dayAfter = moment().add('days', 1).unix()
-
-  shot = new Shot
-    created   : moment.unix( now + _.random(0, dayAfter - now) ).toDate()
-    hash      : uid 24
-    image     : Faker.Image.imageUrl()
-    thumbnail : Faker.Image.imageUrl()
-    status    : _.sample availableStatuses
-    instagram : {}
-
-  shot.save (err, doc) ->
-    cb err, JSON.parse(JSON.stringify(doc))
-
-
 module.exports = (app) ->
   describe "shots resource", ->
 
     describe "GET /api/shots", ->
       before (done) ->
-        @numberOfShots = _.random(10, 20)
+        @numberOfStations = _.random(2, 5)
+        @numberOfShots    = _.random(10, 20)
 
-        Shot.remove({}).exec (err) =>
-          async.map [1..@numberOfShots], _.bind(shotFactory, @), (err, shots) =>
+        Station.remove({}).exec (err) =>
+          async.map [1..@numberOfStations], _.bind(stationFactory.generate, @), (err, stations) =>
             return done err if err
-            @shots = shots
-            do done
+            @stations = stations
+            @stationsJson = _.map stations, (s) -> JSON.parse JSON.stringify s
+
+            Shot.remove({}).exec (err) =>
+              async.map [1..@numberOfShots], _.bind(shotFactory.generate, @), (err, shots) =>
+                return done err if err
+                @shots = shots
+                @shotsJson = _.map shots, (s) -> JSON.parse JSON.stringify s
+
+                do done
+
+
 
       it "just returns some of the latest shots when nothing is passed", (done) ->
         request(app)
@@ -61,15 +57,15 @@ module.exports = (app) ->
             json.should.have.property 'shots'
             meta = res.body.meta
 
-            meta.should.have.enumerable 'total', @shots.length
+            meta.should.have.enumerable 'total', @shotsJson.length
             meta.should.have.enumerable 'count', json.shots.length
 
             _.each json.shots, (shot) =>
-              idx = _.findIndex @shots, "_id": shot._id
+              idx = _.findIndex @shotsJson, "_id": shot._id
 
               idx.should.not.eql -1
               lhs = _.pick(shot, propertiesToCheck)
-              rhs = _.pick(@shots[idx], propertiesToCheck)
+              rhs = _.pick(@shotsJson[idx], propertiesToCheck)
 
               lhs.should.eql rhs
 
@@ -88,7 +84,7 @@ module.exports = (app) ->
 
             res.body.meta.should.have.enumerable 'count', limit
 
-            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+            lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
               .first(limit)
               .collect (s) -> _.pick(s, propertiesToCheck)
               .value()
@@ -100,7 +96,7 @@ module.exports = (app) ->
             do done
 
       it "supports filtering by a single status", (done) ->
-        status = _.sample availableStatuses
+        status = _.sample shotFactory.availableStatuses
 
         request(app)
           .get('/api/shots')
@@ -110,7 +106,7 @@ module.exports = (app) ->
           .end (err, res) =>
             return done err if err
 
-            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+            lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
               .filter (s) -> s.status is status
               .collect (s) -> _.pick(s, propertiesToCheck)
               .value()
@@ -124,7 +120,7 @@ module.exports = (app) ->
             do done
 
       it "supports filtering by multiple statuses", (done) ->
-        statuses = _.sample availableStatuses, _.random(1, availableStatuses.length)
+        statuses = _.sample shotFactory.availableStatuses, _.random(1, shotFactory.availableStatuses.length)
 
         request(app)
           .get('/api/shots')
@@ -134,7 +130,7 @@ module.exports = (app) ->
           .end (err, res) =>
             return done err if err
 
-            lhs = _(@shots).sortBy (s) -> -moment(s.created).unix()
+            lhs = _(@shotsJson).sortBy (s) -> -moment(s.created).unix()
               .filter (s) -> _.contains(statuses, s.status)
               .collect (s) -> _.pick(s, propertiesToCheck)
               .value()
