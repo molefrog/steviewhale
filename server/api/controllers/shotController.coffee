@@ -15,18 +15,42 @@ populatedFields = [
   "streaming"
 ]
 
+readAccesibleFields = [
+  "_id"
+  "created"
+  "printed"
+  "status"
+  "image"
+  "thumbnail"
+  "instagram"
+]
+
 ###
 # Get all shots
 ###
 exports.index = (req, res, next) ->
-  Shot.find({})
-  .sort("-created")
-  .populate("printedOn", populatedFields.join " ")
-  .exec (err, items) ->
-    if err
-      return next err
+  findQuery = {}
+  limit = parseInt(req.query.limit ? 25)
 
-    res.json items
+  query = Shot.find(findQuery)
+    .count (err, count) ->
+      return next err if err
+
+      Shot.find(findQuery)
+        .sort("-created")
+        .limit(limit)
+        .populate("printedOn", populatedFields.join " ")
+        .select(readAccesibleFields.join(' ')).exec (err, items) ->
+          return next err if err
+
+          meta =
+            limit : limit
+            total : count
+            count : items.length
+
+          res.json
+            meta  : meta
+            shots : items
 
 ###
 # Get specified shot
