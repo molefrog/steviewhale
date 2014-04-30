@@ -4,7 +4,7 @@ Shot    = require "models/shot"
 
 
 module.exports = class ShotGridItemView extends View
-  className: "shot-grid-item col-lg-3 col-md-3 col-sm-4 col-xs-6"
+  className: "shot-grid-item"
 
   initialize: ->
     super

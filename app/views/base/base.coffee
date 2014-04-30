@@ -10,7 +10,6 @@ jade.auth = ->
   Storage.user?
 
 
- 
 # Base view.
 module.exports = class View extends Chaplin.View
   # Precompiled templates function initializer.

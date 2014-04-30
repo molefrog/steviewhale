@@ -14,12 +14,8 @@ module.exports = class ShotsController extends BaseController
     super
 
   index : ->
-    @collection = new ShotCollection
     @view = new ShotGridView
-      collection : @collection
       region : "main"
-
-    do @collection.fetch
 
   show : (params) ->
     @model = new Shot

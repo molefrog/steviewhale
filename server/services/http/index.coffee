@@ -31,6 +31,7 @@ publicPath = path.resolve "#{__dirname}/../../../public"
 app.use staticFiles
   path: publicPath
   passthrough: true
+  cache : false
   gzip: true
   index: 'index.html'
 

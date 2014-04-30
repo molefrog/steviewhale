@@ -1,9 +1,24 @@
 @import 'nib'
 
-.shot-grid-item
-  padding 5px
-  overflow hidden
 
+.shot-grid-item
+  opacity 0
+  transition opacity 0.3s ease
+
+  &.shown
+    opacity 1
+
+  @media (max-width: 640px)
+    width 100%
+  @media (max-width: 960px) and (min-width: 640px)
+    width 50%
+  @media (max-width: 1200px) and (min-width: 960px)
+    width 33%
+  @media (min-width: 1200px)
+    width : 25%
+
+  padding: 0px 4px 0px 4px
+  margin-bottom 8px
 
   .polaroid
     position relative
@@ -21,7 +36,6 @@
     .media
       margin-top 1px
     padding 10px 10px
-    white-space nowrap
     a
       color  #555555
     small
