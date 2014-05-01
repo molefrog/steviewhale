@@ -3,10 +3,12 @@
 
 .shot-grid-item
   opacity 0
-  transition opacity 0.3s ease
+  transition opacity 0.2s ease, transform 0.2s ease
 
+  transform scale(0.0)
   &.shown
     opacity 1
+    transform scale(1.0)
 
   @media (max-width: 640px)
     width 100%

@@ -16,4 +16,8 @@ $ ->
   $(window).resize (e) ->
     Chaplin.mediator.publish 'window-resized', $(window).width(), $(window).height()
 
+  $(window).scroll ->
+    if $(window).scrollTop() + $(window).height() >= $(document).height()
+      Chaplin.mediator.publish 'window-scrolled-bottom', $(window).width(), $(window).height()
+
 

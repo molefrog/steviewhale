@@ -4,17 +4,13 @@ View             = require "views/base/base"
 ShotCollection  = require "collections/shotCollection"
 
 module.exports = class ShotGridView extends View
+  _.extend @prototype, Chaplin.EventBroker
+
   initialize : ->
     super
     do @render
     @collection = new ShotCollection
-
-    # @listenTo @collection, 'add', (model, collection, options) =>
-    # @listenTo @collection, 'request', ->
-    # @listenTo @collection, 'sync', ->
-    # @listenTo @collection, 'error', ->
-
-    @delegate "click", ".super-button", @loadNextPortion
+    @subscribeEvent 'window-scrolled-bottom', @loadNextPortion
 
     do @loadNextPortion
 
@@ -24,8 +20,19 @@ module.exports = class ShotGridView extends View
 
   loading : false
 
+  showLoader : -> @$('.load-spinner').fadeIn(100)
+  hideLoader : -> @$('.load-spinner').fadeOut(100)
+
   loadNextPortion : ->
     return if @loading
+
+    if @collection.meta?
+      if @collection.meta.count >= @collection.meta.total
+        return
+
+    @loading = true
+
+    do @showLoader
 
     query = {}
 
@@ -37,23 +44,25 @@ module.exports = class ShotGridView extends View
       data : query
       error : =>
         @loading = false
+        do @hideLoader
+
       success : (models) =>
         @loading = false
+        do @hideLoader
 
         views = models.map (model) =>
           view = new ShotGridItemView { model }
           view.render()
           view.el
 
-          im = imagesLoaded view.el
-          im.on 'always', =>
+          imagesLoaded(view.el).on 'always', =>
             @$(".shot-grid").append( view.el )
             @masonry.appended view.el
-            view.$el.addClass 'shown'
+
+            setTimeout ->
+              view.$el.addClass 'shown'
+            , _.random(10, 400)
             @masonry.layout()
-
-
-    @loading = true
 
 
   render : ->
