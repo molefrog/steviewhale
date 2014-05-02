@@ -1,38 +1,43 @@
 .polaroid
-  a(href=jade.url('shots#show', {id : shot._id}))
-    img.polaroid-photo.img-responsive(src="#{shot.image }")
-
-    .photo-user
-      .media
-        a.pull-left(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
-          img.img-circle.media-object(src=shot.instagram.user.profile_picture width=48 height=48)
-
-        .media-body
-          a(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
-            h4.media-heading
-              | @
-              = shot.instagram.user.username
-              small
-                |  (
-                = shot.instagram.user.full_name
-                | )
-          if shot.instagram.caption
-            = shot.instagram.caption.text
+  .photo-area
+    a(href=jade.url('shots#show', {id : shot._id}))
+      img.polaroid-photo.img-responsive(src="#{ shot.image }")
 
     .photo-info
       if jade.auth()
         span.action-button.print-button.ion-ios7-printer-outline
         span.action-button.delete-button.ion-ios7-trash-outline
 
-      //- case shot.status
-      //-   when "failed"
-      //-     span.label.label-danger Не напечатана
-      //-   when "printed"
-      //-     //- a(href=jade.url('stations#show', { name : shot.printedOn.name }))
-      //-     //-   span.label.label-success= shot.printedOn.title
-      //-   when "queued"
-      //-     span.label.label-info В очереди
-      //-   default
-      //-     span.label.label-default Необработана
+      case shot.status
+        when "failed"
+          | Не напечатана
+        when "printed"
+          if shot.printedOn
+            a(href=jade.url('stations#show', { name : shot.printedOn.name }))
+              = shot.printedOn.title
+        when "queued"
+          | В очереди
+        default
+          | Необработана
+
+
+  .photo-user
+    .media
+      a.pull-left(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
+        img.img-circle.media-object(src=shot.instagram.user.profile_picture width=48 height=48)
+
+      .media-body
+        a(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
+          h4.media-heading
+            | @
+            = shot.instagram.user.username
+            small
+              |  (
+              = shot.instagram.user.full_name
+              | )
+        if shot.instagram.caption
+          = shot.instagram.caption.text
+
+
 
 

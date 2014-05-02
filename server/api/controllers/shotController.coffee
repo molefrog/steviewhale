@@ -26,13 +26,14 @@ readAccesibleFields = [
   "image"
   "thumbnail"
   "instagram"
+  "printedOn"
 ]
 
 ###
 # Get all shots
 ###
 exports.index = (req, res, next) ->
-  limit = parseInt(req.query.limit ? 16)
+  limit = parseInt(req.query.limit ? 25)
   sortBy = "-created"
 
   findQuery = {}
@@ -51,10 +52,12 @@ exports.index = (req, res, next) ->
   Shot.find(findQuery).count (err, count) ->
     return next err if err
 
-    Shot.find(findQuery).sort(sortBy)
+    Shot.find(findQuery)
+      .sort(sortBy)
       .limit(limit)
+      .select(readAccesibleFields.join(' '))
       .populate("printedOn", populatedFields.join " ")
-      .select(readAccesibleFields.join(' ')).exec (err, items) ->
+      .exec (err, items) ->
         return next err if err
 
         meta =
