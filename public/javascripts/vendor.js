@@ -26790,29 +26790,6 @@ exports.rethrow = function rethrow(err, filename, lineno, str){
 },{}]},{},[1])
 (1)
 });
-;require.register("test/apiSpec", function(exports, require, module) {
-var app, config, mongoose;
-
-mongoose = require("mongoose");
-
-config = require("../server/utils/config");
-
-app = (require("../server/services/http")).app;
-
-describe("application API", function() {
-  this.timeout(10000);
-  before(function(done) {
-    return mongoose.connect(config.get("db:mongo"), function(err) {
-      if (err) {
-        throw err;
-      }
-      return done();
-    });
-  });
-  return (require("./api/shotSpec"))(app);
-});
-});
-
 ;require.register("test/api/shotSpec", function(exports, require, module) {
 var Faker, Shot, Station, async, moment, propertiesToCheck, request, shotFactory, should, stationFactory, uid, _, _ref;
 
@@ -27046,6 +27023,29 @@ module.exports = function(app) {
     });
   });
 };
+});
+
+;require.register("test/apiSpec", function(exports, require, module) {
+var app, config, mongoose;
+
+mongoose = require("mongoose");
+
+config = require("../server/utils/config");
+
+app = (require("../server/services/http")).app;
+
+describe("application API", function() {
+  this.timeout(10000);
+  before(function(done) {
+    return mongoose.connect(config.get("db:mongo"), function(err) {
+      if (err) {
+        throw err;
+      }
+      return done();
+    });
+  });
+  return (require("./api/shotSpec"))(app);
+});
 });
 
 ;require.register("test/factories/shotFactory", function(exports, require, module) {

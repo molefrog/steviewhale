@@ -2775,7 +2775,7 @@ $(function() {
     return Chaplin.mediator.publish('window-resized', $(window).width(), $(window).height());
   });
   return $(window).scroll(function() {
-    if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
       return Chaplin.mediator.publish('window-scrolled-bottom', $(window).width(), $(window).height());
     }
   });
@@ -3330,27 +3330,35 @@ module.exports = ShotGridView = (function(_super) {
 
   ShotGridView.prototype.loading = false;
 
-  ShotGridView.prototype.showLoader = function() {
-    return this.$('.load-spinner').fadeIn(100);
+  ShotGridView.prototype.startLoading = function() {
+    if (this.loading) {
+      return false;
+    }
+    this.loading = true;
+    this.$('.load-spinner').fadeIn(100);
+    return true;
   };
 
-  ShotGridView.prototype.hideLoader = function() {
-    return this.$('.load-spinner').fadeOut(100);
+  ShotGridView.prototype.stopLoading = function() {
+    if (!this.loading) {
+      return false;
+    }
+    this.loading = false;
+    this.$('.load-spinner').fadeOut(100);
+    return true;
   };
 
   ShotGridView.prototype.loadNextPortion = function() {
     var query,
       _this = this;
-    if (this.loading) {
-      return;
-    }
     if (this.collection.meta != null) {
       if (this.collection.meta.count >= this.collection.meta.total) {
         return;
       }
     }
-    this.loading = true;
-    this.showLoader();
+    if (!this.startLoading()) {
+      return;
+    }
     query = {};
     if (!this.collection.isEmpty()) {
       query.max_timestamp = _.min(this.collection.map(function(s) {
@@ -3360,27 +3368,32 @@ module.exports = ShotGridView = (function(_super) {
     return this.collection.fetch({
       data: query,
       error: function() {
-        _this.loading = false;
-        return _this.hideLoader();
+        return _this.stopLoading();
       },
       success: function(models) {
         var views;
-        _this.loading = false;
-        _this.hideLoader();
-        return views = models.map(function(model) {
+        views = models.sortBy(function(model) {
+          return -moment(model.get('created')).unix();
+        }).map(function(model) {
           var view;
           view = new ShotGridItemView({
             model: model
           });
           view.render();
-          view.el;
-          return imagesLoaded(view.el).on('always', function() {
-            _this.$(".shot-grid").append(view.el);
-            _this.masonry.appended(view.el);
+          return view.el;
+        });
+        return imagesLoaded(views).on('always', function() {
+          var delay;
+          _this.stopLoading();
+          _this.$(".shot-grid").append(views);
+          _this.masonry.appended(views);
+          _this.masonry.layout();
+          delay = 0;
+          return _.each(views, function(v) {
             setTimeout(function() {
-              return view.$el.addClass('shown');
-            }, _.random(10, 400));
-            return _this.masonry.layout();
+              return $(v).addClass('shown');
+            }, delay);
+            return delay += _.random(10, 60);
           });
         });
       }
@@ -3389,11 +3402,12 @@ module.exports = ShotGridView = (function(_super) {
 
   ShotGridView.prototype.render = function() {
     ShotGridView.__super__.render.apply(this, arguments);
-    return this.masonry = new Masonry(this.$('.shot-grid')[0], {
+    this.masonry = new Masonry(this.$('.shot-grid')[0], {
       columnWidth: ".shot-grid-item",
       itemSelector: ".shot-grid-item",
       transitionDuration: 0
     });
+    return this.masonry.bindResize();
   };
 
   return ShotGridView;
@@ -3406,7 +3420,7 @@ var __templateData = function template(locals) {
 var buf = [];
 var jade_mixins = {};
 
-buf.push("<div class=\"shot-grid-view\"><div class=\"container\"><div class=\"shot-grid\"></div><div class=\"text-center\"><div class=\"load-spinner\"><i class=\"icon ion-loading-c\"></i></div></div></div></div>");;return buf.join("");
+buf.push("<div class=\"shot-grid-view\"><div class=\"container\"><div class=\"shot-grid\"></div><div class=\"text-center\"><div class=\"load-spinner\"><i class=\"icon ion-ios7-reloading\"></i></div></div></div></div>");;return buf.join("");
 };
 if (typeof define === 'function' && define.amd) {
   define([], function() {

@@ -33,7 +33,7 @@ readAccesibleFields = [
 # Get all shots
 ###
 exports.index = (req, res, next) ->
-  limit = parseInt(req.query.limit ? 25)
+  limit = parseInt(req.query.limit ? 20)
   sortBy = "-created"
 
   findQuery = {}

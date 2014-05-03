@@ -20,19 +20,25 @@ module.exports = class ShotGridView extends View
 
   loading : false
 
-  showLoader : -> @$('.load-spinner').fadeIn(100)
-  hideLoader : -> @$('.load-spinner').fadeOut(100)
+  startLoading : ->
+    return false if @loading
+    @loading = true
+    @$('.load-spinner').fadeIn(100)
+    true
+
+  stopLoading : ->
+    return false unless @loading
+    @loading = false
+    @$('.load-spinner').fadeOut(100)
+    true
 
   loadNextPortion : ->
-    return if @loading
-
+    # If there is no more data to load
     if @collection.meta?
       if @collection.meta.count >= @collection.meta.total
         return
 
-    @loading = true
-
-    do @showLoader
+    return unless do @startLoading
 
     query = {}
 
@@ -43,33 +49,40 @@ module.exports = class ShotGridView extends View
     @collection.fetch
       data : query
       error : =>
-        @loading = false
-        do @hideLoader
+        do @stopLoading
 
       success : (models) =>
-        @loading = false
-        do @hideLoader
-
-        views = models.map (model) =>
+        views = models.sortBy (model) ->
+          -moment( model.get('created') ).unix()
+        .map (model) =>
           view = new ShotGridItemView { model }
           view.render()
           view.el
 
-          imagesLoaded(view.el).on 'always', =>
-            @$(".shot-grid").append( view.el )
-            @masonry.appended view.el
+        imagesLoaded( views ).on 'always', =>
+          do @stopLoading
 
-            setTimeout ->
-              view.$el.addClass 'shown'
-            , _.random(10, 400)
-            @masonry.layout()
+          @$(".shot-grid").append( views )
+          @masonry.appended views
+          @masonry.layout()
+
+          delay = 0
+          _.each views, (v) =>
+            setTimeout =>
+              $(v).addClass 'shown'
+            , delay
+
+            delay += _.random(10, 60)
 
 
   render : ->
     super
+
     # Initialize Masonry grid
     @masonry = new Masonry @$('.shot-grid')[0],
       columnWidth  : ".shot-grid-item"
       itemSelector : ".shot-grid-item"
       transitionDuration : 0
+
+    @masonry.bindResize()
 
