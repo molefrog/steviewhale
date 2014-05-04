@@ -1,37 +1,35 @@
-.container
-  .row.shot-single-view
-    .col-lg-4.col-md-5.col-xs-8
-      .shot-grid-item
-        .polaroid
-          a(href=shot.instagram.link target="_blank")
-            img.polaroid-photo.img-responsive(src="#{shot.image}")
+.shot-view.container: .row
+  .col-xs-12.col-md-4
+    .polaroid
+      .photo-area
+        a(href="#{ shot.instagram.link }")
+          img.polaroid-photo.img-responsive(src="#{ shot.image }")
+      .photo-user
+        .media
+          a.pull-left(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
+            img.img-circle.media-object(src=shot.instagram.user.profile_picture width=48 height=48)
 
-          .photo-user
-            .media
-              a.pull-left(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
-                img.img-circle.media-object(src=shot.instagram.user.profile_picture width=48 height=48)
+          .media-body
+            a(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
+              h4.media-heading
+                | @
+                = shot.instagram.user.username
+                small
+                  |  (
+                  = shot.instagram.user.full_name
+                  | )
+            if shot.instagram.caption
+              = shot.instagram.caption.text
 
-              .media-body
-                a(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
-                  h4.media-heading
-                    | @
-                    = shot.instagram.user.username
-                    small
-                      |  (
-                      = shot.instagram.user.full_name
-                      | )
-                if shot.instagram.caption
-                  = shot.instagram.caption.text
-
-    .col-lg-8.col-md-7.col-xs-12
-      case shot.status
-        when "printed"
-          h3
-            | Как забрать фотографию со станции &laquo;
-            a(href=jade.url('stations#show', { name : shot.printedOn.name}))
-              = shot.printedOn.title
-            | &raquo;?
-          .markdown
-            != jade.markdown(shot.printedOn.instructions)
-        default
-          h3 Фотография еще не была напечатана
+  .col-xs-12.col-md-8
+    case shot.status
+      when "printed"
+        h3
+          | Как забрать фотографию со станции &laquo;
+          a(href=jade.url('stations#show', { name : shot.printedOn.name}))
+            = shot.printedOn.title
+          | &raquo;?
+        .markdown
+          != jade.markdown(shot.printedOn.instructions)
+      default
+        h3 Фотография еще не была напечатана
