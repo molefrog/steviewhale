@@ -52,7 +52,7 @@
   },
   "scripts": {
     "build": "bower install && brunch build --production",
-    "start": "forever start -o app.log -e error.log -a -c coffee server/index.coffee --env=production",
+    "start": "forever start -o logs/app.log -e logs/error.log -a -c coffee server/index.coffee --env=production",
     "stop": "forever stop -c coffee server/index.coffee --env=production",
     "test": "env env=testing mocha -R spec --compilers coffee:coffee-script/register"
   },
