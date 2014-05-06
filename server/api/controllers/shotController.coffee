@@ -103,12 +103,17 @@ exports.show = (req, res, next) ->
 # Delete existing shot
 ###
 exports.delete = (req, res, next) ->
-  Shot.remove({ _id : req.params.id })
-  .exec (err) ->
-    if err
-      return next err
+  Shot.findById( req.params.id )
+  .exec (err, shot) ->
+    return next err if err
+    return next new Error "Shot not found" unless shot?
 
-    res.json {}
+    _.map [ shot.image_standard, shot.image_low, shot.image_thumbnail, shot.user.avatar ], uploader.delete
+
+    Shot.remove({ _id : req.params.id })
+    .exec (err) ->
+      return next err if err
+      res.json {}
 
 ##
 # TODO: move enque method to a separate module

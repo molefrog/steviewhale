@@ -46,3 +46,17 @@ module.exports.fromRemote = (remote, location, done) ->
 
 module.exports.makeUrl = (path) ->
   "#{config.get('uploader:base_url')}#{config.get('uploader:container')}/#{path}"
+
+
+module.exports.delete = (filename) ->
+  deferred = Q.defer()
+
+  storage.deleteFile filename, (err, res) ->
+    return deferred.reject err if err
+    return deferred.reject "Wrong status code!" if res.statusCode != 204
+
+    deferred.resolve()
+
+  deferred.promise
+
+

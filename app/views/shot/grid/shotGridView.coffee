@@ -12,6 +12,9 @@ module.exports = class ShotGridView extends View
     @collection = new ShotCollection
     @subscribeEvent 'window-scrolled-bottom', @loadNextPortion
 
+    @listenTo @collection, "remove", =>
+      @masonry.layout()
+
     do @loadNextPortion
 
 
