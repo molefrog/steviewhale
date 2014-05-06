@@ -1,58 +1,78 @@
 Instagram   = require "instagram-node-lib"
-_       = require "lodash"
+_           = require "lodash"
 async       = require "async"
+moment      = require "moment"
+Q           = require "q"
 
 # Util objects
-log         = require "../../utils/log"
-config    = require "../../utils/config"
+{ log, config, uploader } = require "../../utils"
 
 # Local models
 Shot = require "../../models/shot"
 
-
-Instagram.set "client_id",    config.get "instagram:id"
-Instagram.set "client_secret",  config.get "instagram:secret"
+Instagram.set "client_id",     config.get "instagram:id"
+Instagram.set "client_secret", config.get "instagram:secret"
 
 hashtag       = config.get "instagram:hashtag"
 processed     = []
 checkInterval = config.get "instagram:interval"
 
 ##
-# This function processes one instagram item 
-## 
-processItem = (data, cb) ->
-  if data.type != "image"
+# This function processes one instagram item
+##
+processItem = (post, cb) ->
+  if post.type != "image"
     return cb null
 
-  log.info "#{data.user.username} posted image at #{data.link}"
+  log.info "#{post.user.username} posted image at #{post.link}"
 
-  # TODO: save image and thumbnail to Amazon S3
+  # save image and thumbnail to Amazon S3
   # Instagram item can be deleted!
+  Q.all([
+    uploader.fromRemote(post.images.standard_resolution.url, "shots")
+    uploader.fromRemote(post.images.low_resolution.url, "shots")
+    uploader.fromRemote(post.images.thumbnail.url, "shots")
+    uploader.fromRemote(post.user.profile_picture, "avatars")
+  ])
+  .then (images) ->
+    payload =
+      hash      : post.id
+      image_standard   : images[0]
+      image_low        : images[1]
+      image_thumbnail  : images[2]
+      image_original   : post.images
+      post_created     : moment.unix( post.created_time ).toDate()
+      link             : post.link
+      tags             : post.tags
+      user :
+        id       : post.user.id
+        name     : post.user.username
+        fullname : post.user.full_name
+        avatar   : images[3]
 
-  shot = new Shot
-    hash      : data.id
-    image     : data.images.standard_resolution.url
-    thumbnail : data.images.low_resolution.url
-    instagram : data
+    if post.caption?.text?
+      payload.caption = post.caption.text
 
-  shot.save (err, item) ->
-    if err 
-      log.error "Error saving new shot item #{err}" 
+    shot = new Shot(payload)
+    shot.save (err, item) ->
+      if err
+        log.error "Error saving new shot item #{err}"
+        return cb null
+
+      log.info "Saved new shot to db ##{item._id}. Moving it to the queue"
+
+      # TODO: wait until the operation is complete
+      item.queue ->
+
+      # The default behaviour of async.each is to stop the whole process when
+      # even just one item has failed.
+      # We prevent this situation by ignoring 'save' error handling
       return cb null
-
-    log.info "Saved new shot to db ##{item._id}. Moving it to the queue"
-
-    # TODO: wait until the operation is complete
-    item.queue ->
-
-    # The default behaviour of async.each is to stop the whole process when 
-    # even just one item has failed.
-    # We prevent this situation by ignoring 'save' error handling 
-
+  .fail (err) ->
     return cb null
 
 ##
-# This function is used to check whether a new portion of media is 
+# This function is used to check whether a new portion of media is
 # available on Instagram
 ##
 checkInstagram = ->
@@ -63,7 +83,7 @@ checkInstagram = ->
         not _.contains processed, d.id
 
       async.each portion, processItem, (err) ->
-        
+
         # Mark this portion as processed
         _.each portion, (d) ->
           processed.push d.id
@@ -71,7 +91,7 @@ checkInstagram = ->
         setTimeout checkInstagram, checkInterval
 
     error: (err) ->
-      log.error "Instagram error #{err}" 
+      log.error "Instagram error #{err}"
       setTimeout checkInstagram, checkInterval
 
 
@@ -90,7 +110,7 @@ module.exports.forceLoad = (cb) ->
     name: hashtag,
     complete : (data) ->
       # Add every item to the db
-      async.each data, processItem, cb 
+      async.each data, processItem, cb
     error : cb
 
 
@@ -98,4 +118,4 @@ module.exports.forceLoad = (cb) ->
 
 
 
-  
+

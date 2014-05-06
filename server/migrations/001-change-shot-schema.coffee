@@ -21,7 +21,7 @@ module.exports.up = ->
     if post.created_time?
       shot.post_created = moment.unix( post.created_time ).toDate()
 
-    if post.caption.text?
+    if post.caption?.text?
       shot.caption = post.caption.text
 
     if post.tags?

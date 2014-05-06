@@ -55,7 +55,7 @@ shotSchema = new Schema
     avatar   : String
 
   # Instagram field
-  instagram : Schema.Types.Mixed
+  image_original : Schema.Types.Mixed
 
 shotSchema.methods.queue = require "./shotQueue"
 
