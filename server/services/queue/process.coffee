@@ -3,7 +3,7 @@ _      = require "lodash"
 
 pool   = require "../pool/clients"
 
-{ config, log } = require "../../utils"
+{ config, log, uploader } = require "../../utils"
 { Shot }        = require "../../models"
 
 jobs = require "./jobs"
@@ -44,7 +44,7 @@ jobs.process "print", (job, done) ->
       return done "Wrong element"
 
     # Call 'print' function
-    agent.print( item.image )
+    agent.print( uploader.makeUrl item.image_standard )
     .then ->
       logEvent "Shot printed on station ##{agent.station.name}"
 

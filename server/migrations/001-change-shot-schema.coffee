@@ -18,6 +18,8 @@ module.exports.up = ->
       fullname : post.user.full_name
       avatar   : ""
 
+    shot.image_original = post.images
+
     if post.created_time?
       shot.post_created = moment.unix( post.created_time ).toDate()
 
@@ -52,12 +54,8 @@ module.exports.up = ->
         migrateShotFields shot, post, done
 
       error : (err) ->
-        if err.toString() == "APINotAllowedError"
-          console.log "[!] Shot has been deleted, removing"
-          shot.remove done
-        else
-          console.log "STRANGE ERROR:", err, shot
-          do done
+        console.log "ERROR:", err, shot
+        do done
 
   Shot.find {}, (err, shots) ->
     async.eachSeries shots, changeShot, (err) ->

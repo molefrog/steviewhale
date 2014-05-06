@@ -17,7 +17,7 @@ module.exports = (cb) ->
     job.on "failed", (err) =>
       sms
         to   : config.get 'sms:toNumber'
-        body : "Леша, фото @#{@instagram.user.username} не напечаталось!"
+        body : "Леша, фото @#{@user.name} не напечаталось!"
       @status = "failed"
       @save (err) =>
         log.warn "Shot ##{@_id} marked as failed"
