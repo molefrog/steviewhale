@@ -2,24 +2,23 @@
   .col-xs-12.col-md-4
     .polaroid
       .photo-area
-        a(href="#{ shot.instagram.link }")
-          img.polaroid-photo.img-responsive(src="#{ shot.image }")
+        a(href="#{ shot.link }")
+          img.polaroid-photo.img-responsive(src="#{ shot.image_standard }")
       .photo-user
         .media
-          a.pull-left(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
-            img.img-circle.media-object(src=shot.instagram.user.profile_picture width=48 height=48)
+          a.pull-left(href="http://instagram.com/" + shot.user.name target="_blank")
+            img.img-circle.media-object(src=shot.user.avatar width=48 height=48)
 
           .media-body
-            a(href="http://instagram.com/" + shot.instagram.user.username target="_blank")
+            a(href="http://instagram.com/" + shot.user.name target="_blank")
               h4.media-heading
                 | @
-                = shot.instagram.user.username
+                = shot.user.name
                 small
                   |  (
-                  = shot.instagram.user.full_name
+                  = shot.user.fullname
                   | )
-            if shot.instagram.caption
-              = shot.instagram.caption.text
+            = shot.caption
 
   .col-xs-12.col-md-8
     case shot.status
