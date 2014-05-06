@@ -4,6 +4,7 @@ moment = require "moment"
 Shot   = require "../../models/shot"
 
 log = require "../../utils/log"
+uploader = require "../../utils/uploader"
 
 # Fields that are used for population of the
 # 'printedOn' field
@@ -22,12 +23,25 @@ readAccesibleFields = [
   "_id"
   "created"
   "printed"
+  "post_created"
   "status"
-  "image"
-  "thumbnail"
-  "instagram"
+  "caption"
+  "hash"
+  "link"
+  "tags"
+  "user"
+  "image_standard"
+  "image_low"
+  "image_thumbnail"
   "printedOn"
 ]
+
+transformUrls = (shot) ->
+  shot.image_standard  = uploader.makeUrl shot.image_standard
+  shot.image_low       = uploader.makeUrl shot.image_low
+  shot.image_thumbnail = uploader.makeUrl shot.image_thumbnail
+  shot.user.avatar     = uploader.makeUrl shot.user.avatar
+  shot
 
 ###
 # Get all shots
@@ -68,7 +82,7 @@ exports.index = (req, res, next) ->
 
         res.json
           meta  : meta
-          shots : items
+          shots : _.map items, transformUrls
 
 ###
 # Get specified shot
@@ -83,7 +97,7 @@ exports.show = (req, res, next) ->
     if not item?
       return next new Error "Shot not found"
 
-    res.json item
+    res.json transformUrls item
 
 ###
 # Delete existing shot

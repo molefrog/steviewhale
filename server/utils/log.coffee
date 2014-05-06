@@ -12,4 +12,4 @@ unless process.env.env is 'testing'
 
 module.exports = new (winston.Logger)
   transports : transports
-  
+

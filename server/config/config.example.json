@@ -4,6 +4,8 @@
     "cookieSecret" : "keyboard-cat"
   },
 
+
+
   "streaming" : {
     "port" : 8080,
     "timeout" : 5000
@@ -11,6 +13,14 @@
 
   "db" : {
     "mongo" : "<MongoDB connection string>"
+  },
+
+  "uploader" : {
+    "provider"  : "amazon",
+    "key"       : "",
+    "key_id"    : "",
+    "base_url"  : "https://s3-eu-west-1.amazonaws.com/",
+    "container" : ""
   },
 
   "instagram" : {
