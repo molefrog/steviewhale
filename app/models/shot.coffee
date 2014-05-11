@@ -11,7 +11,8 @@ module.exports = class Shot extends Chaplin.Model
 
   urlRoot : "/api/shots"
 
-  parse : (response, options) -> response.shot
+  parse : (response, options) ->
+    if options.collection then response else response.shot
 
   print : ->
     $.get("#{@url()}/queue")

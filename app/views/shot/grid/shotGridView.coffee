@@ -43,7 +43,9 @@ module.exports = class ShotGridView extends View
 
     return unless do @startLoading
 
-    query = {}
+    query = {
+      limit : 10
+    }
 
     unless @collection.isEmpty()
       query.max_timestamp = _.min @collection.map (s) ->
@@ -60,17 +62,22 @@ module.exports = class ShotGridView extends View
         .map (model) =>
           view = new ShotGridItemView { model }
           view.render()
-          view.el
+          view
 
-        imagesLoaded( views ).on 'always', =>
+        viewEls = _.map views, (v) -> v.el
+
+        imagesLoaded( viewEls ).on 'always', =>
           do @stopLoading
 
-          @$(".shot-grid").append( views )
-          @masonry.appended views
+          @$(".shot-grid").append( viewEls )
+          @masonry.appended viewEls
           @masonry.layout()
 
           delay = 0
           _.each views, (v) =>
+            v.loadHighResolution()
+
+          _.each viewEls, (v) =>
             setTimeout =>
               $(v).addClass 'shown'
             , delay

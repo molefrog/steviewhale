@@ -1,7 +1,7 @@
 .polaroid
   .photo-area
     a(href=jade.url('shots#show', {id : shot._id}))
-      img.polaroid-photo.img-responsive(src="#{ shot.image_low }")
+      img.polaroid-photo.img-responsive(src="#{ shot.image_thumbnail }")
 
     .photo-info
       if jade.auth()
