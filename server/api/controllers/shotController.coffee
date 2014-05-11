@@ -97,7 +97,7 @@ exports.show = (req, res, next) ->
     if not item?
       return next new Error "Shot not found"
 
-    res.json transformUrls item
+    res.json shot: transformUrls item
 
 ###
 # Delete existing shot

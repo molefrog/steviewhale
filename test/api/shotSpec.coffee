@@ -13,10 +13,13 @@ stationFactory = require "../factories/stationFactory"
 
 propertiesToCheck = [
   "_id"
-  "image"
-  "thumbnail"
   "created"
   "printed"
+  "hash"
+  "caption"
+  "tags"
+  "link"
+  "status"
 ]
 
 module.exports = (app) ->
@@ -200,3 +203,58 @@ module.exports = (app) ->
         , (err) ->
           return done err if err
           do done
+
+
+    describe "GET /api/shots/:id", ->
+      before (done) ->
+        Shot.remove({}).exec (err) =>
+          shotFactory.generate 0, (err, shot) =>
+            @shot = shot
+            @shotJson = JSON.parse JSON.stringify @shot
+            do done
+
+      it "returns shot by its id", (done) ->
+        request(app)
+          .get("/api/shots/#{@shot.id}")
+          .expect('Content-Type', 'application/json')
+          .expect(200)
+          .end (err, res) =>
+            return done err if err
+
+            json = JSON.parse res.text
+            json.should.have.property 'shot'
+
+            lhs = _.pick @shotJson, propertiesToCheck
+            rhs = _.pick res.body.shot, propertiesToCheck
+
+            lhs.should.eql rhs
+            do done
+
+      it "returns error if shot doesn't exists", (done) ->
+        request(app)
+          .get("/api/shots/#{uid 10}")
+          .expect(500)
+          .end (err, res) =>
+            return done err if err
+            do done
+
+
+    describe "DELETE /api/shots/:id", ->
+      before (done) ->
+        Shot.remove({}).exec (err) =>
+          shotFactory.generate 0, (err, shot) =>
+            @shot = shot
+            @shotJson = JSON.parse JSON.stringify @shot
+            do done
+
+      it "returns error if not authorized", (done) ->
+        request(app)
+          .delete("/api/shots/#{@shot.id}")
+          .expect(500)
+          .end (err, res) =>
+            return done err if err
+            do done
+
+
+
+

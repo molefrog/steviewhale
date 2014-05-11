@@ -22,7 +22,7 @@ module.exports.generate = (index, cb) ->
       username : Faker.Internet.userName()
       avatar   : Faker.random.avatar_uri()
     status    : _.sample availableStatuses
-    instagram : {}
+    image_original : {}
 
   if @startDate? and @endDate?
     s = moment(@startDate).unix()
