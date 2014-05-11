@@ -26,13 +26,13 @@ module.exports = class ShotGridView extends View
   startLoading : ->
     return false if @loading
     @loading = true
-    @$('.load-spinner').fadeIn(100)
+    @$('.load-spinner').show(0)
     true
 
   stopLoading : ->
     return false unless @loading
     @loading = false
-    @$('.load-spinner').fadeOut(100)
+    @$('.load-spinner').hide(0)
     true
 
   loadNextPortion : ->
@@ -57,32 +57,38 @@ module.exports = class ShotGridView extends View
         do @stopLoading
 
       success : (models) =>
-        views = models.sortBy (model) ->
+        sorted = models.sortBy (model) ->
           -moment( model.get('created') ).unix()
-        .map (model) =>
+
+        images = sorted.map (model) ->
+          $('<img>').attr(src: model.get 'image_thumbnail')[0]
+
+        views = sorted.map (model) =>
           view = new ShotGridItemView { model }
           view.render()
           view
 
         viewEls = _.map views, (v) -> v.el
 
-        imagesLoaded( viewEls ).on 'always', =>
+        imagesLoaded( images ).on 'always', =>
           do @stopLoading
 
           @$(".shot-grid").append( viewEls )
-          @masonry.appended viewEls
-          @masonry.layout()
+          setTimeout =>
+            @masonry.appended(viewEls)
+            @masonry.layout()
 
-          delay = 0
-          _.each views, (v) =>
-            v.loadHighResolution()
+            delay = 0
+            _.each views, (v) =>
+              v.loadHighResolution()
 
-          _.each viewEls, (v) =>
-            setTimeout =>
-              $(v).addClass 'shown'
-            , delay
+            _.each viewEls, (v) =>
+              setTimeout =>
+                $(v).addClass 'shown'
+              , delay
 
-            delay += _.random(10, 60)
+              delay += _.random(10, 60)
+          , 0
 
 
   render : ->
