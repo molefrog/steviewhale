@@ -89,6 +89,7 @@ exports.index = (req, res, next) ->
 ###
 exports.show = (req, res, next) ->
   Shot.findById( req.params.id )
+  .select(readAccesibleFields.join(' '))
   .populate("printedOn", populatedFields.join " ")
   .exec (err, item) ->
     if err
