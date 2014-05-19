@@ -41,7 +41,7 @@ module.exports = P =
       color : '#000'
 
     subtitle:
-      text: 'Печать фотографий из Instagram'
+      text: 'Печать фотографий из Инстаграма'
       font: 'PTSans'
       fontFace : 'normal'
       size : 16

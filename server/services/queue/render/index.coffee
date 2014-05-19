@@ -213,8 +213,8 @@ renderLayout = (shot, source, avatar) ->
 module.exports = render = (shot) ->
   # First, load all the images, then render
   Q.all([
-    loadRemoteImage(shot.image_standard)
-    loadRemoteImage(shot.user.avatar)
+    loadRemoteImage( uploader.makeUrl shot.image_standard )
+    loadRemoteImage( uploader.makeUrl shot.user.avatar )
   ]).then (images) ->
     renderLayout(shot, images[0], images[1])
 

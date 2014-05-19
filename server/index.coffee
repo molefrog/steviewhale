@@ -25,7 +25,6 @@ Shot.update { status: "queued" }, { status : "failed" }, { multi: true }, (err, 
 
 # # Migrations
 # require('./migrations/001-change-shot-schema').up()
-do (require './services/queue/render')
 
 
 # Catch unhandled exceptions

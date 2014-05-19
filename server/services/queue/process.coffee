@@ -7,6 +7,7 @@ pool   = require "../pool/clients"
 { Shot }        = require "../../models"
 
 jobs = require "./jobs"
+render = require "./render"
 
 ###
 # Job processing function
@@ -43,21 +44,29 @@ jobs.process "print", (job, done) ->
     if not item?
       return done "Wrong element"
 
-    # Call 'print' function
-    agent.print( uploader.makeUrl item.image_standard )
-    .then ->
-      logEvent "Shot printed on station ##{agent.station.name}"
+    render(item)
+    .then (destination) ->
+      imageToPrint = uploader.makeUrl destination
+      logEvent "Rendered image into #{imageToPrint}"
 
-      item.printedOn = agent.station
-      item.printed = new Date
+      # Call 'print' function
+      agent.print( imageToPrint )
+      .then ->
+        logEvent "Shot printed on station ##{agent.station.name}"
 
-      item.save (err) ->
-        if err
-          logEvent "Error updating printed shot's properties #{err}"
+        item.printedOn = agent.station
+        item.printed = new Date
 
-        done null
-    .fail (err) ->
-      logEvent "Error printing on station ##{agent.station.name}"
+        item.save (err) ->
+          if err
+            logEvent "Error updating printed shot's properties #{err}"
 
-      done err
+          done null
+      .fail (err) ->
+        logEvent "Error printing on station ##{agent.station.name}"
+        done err
+
+      .fin ->
+        logEvent "Removing file #{imageToPrint}"
+        uploader.delete destination
 
