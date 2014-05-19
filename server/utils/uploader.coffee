@@ -4,6 +4,8 @@ path     = require "path"
 uid      = require "uid"
 http     = require "http"
 Q        = require "q"
+knoxMpu  = require "knox-mpu"
+mime     = require "mime"
 
 config = require "./config"
 
@@ -20,7 +22,7 @@ storage =
 ###
 # Uploads remote file into specific folder
 ###
-module.exports.fromRemote = (remote, location, done) ->
+module.exports.fromRemote = (remote, location) ->
   deferred = Q.defer()
   parsed = url.parse remote
 
@@ -34,6 +36,7 @@ module.exports.fromRemote = (remote, location, done) ->
     headers =
       'Content-Length': res.headers['content-length']
       'Content-Type': res.headers['content-type']
+      'x-amz-acl': 'public-read'
 
     storage.putStream res, destination, headers, (err, res) ->
       return deferred.reject err if err
@@ -41,6 +44,28 @@ module.exports.fromRemote = (remote, location, done) ->
       deferred.resolve destination
   ).on 'error', (err) ->
     deferred.reject err
+
+  deferred.promise
+
+
+###
+# Uploads file from stream
+###
+module.exports.fromStream = (stream, location) ->
+  deferred = Q.defer()
+
+  destination = path.join config.get('env'), location
+
+  upload = new knoxMpu
+    client: storage
+    objectName: destination
+    stream : stream
+    headers :
+      'Content-Type' : mime.lookup(location)
+      'x-amz-acl' : 'public-read'
+  , (err, body) ->
+    return deferred.reject err if err
+    deferred.resolve destination
 
   deferred.promise
 
