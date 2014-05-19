@@ -181,7 +181,9 @@ renderLayout = (shot, source, avatar) ->
 
   textWidth  = mediaWidth - (avatarWidth + P.avatar.margin * mediaWidth)
   textHeight = mediaHeight - 2 * mediaWidth * P.avatar.margin - titleHeight
-  wrapText ctx, shot.caption, 0, 0, textWidth, textHeight, captionSize * P.caption.lineHeight
+
+  if shot.caption
+    wrapText ctx, shot.caption, 0, 0, textWidth, textHeight, captionSize * P.caption.lineHeight
 
   do ctx.restore
 
