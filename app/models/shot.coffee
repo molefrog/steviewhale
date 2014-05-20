@@ -17,4 +17,3 @@ module.exports = class Shot extends Chaplin.Model
   print : ->
     $.get("#{@url()}/queue")
     .done =>
-      @.set "status", "queued"

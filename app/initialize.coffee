@@ -22,7 +22,7 @@ $ ->
 
   socket = do io.connect
 
-  listenEvent = [ 'shot.updated', 'shot.created', 'shot.deleted' ]
+  listenEvent = [ 'shot.updated', 'shot.created', 'shot.removed' ]
 
   _.each listenEvent, (_event) ->
     socket.on _event, (data) ->

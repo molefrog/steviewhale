@@ -26,12 +26,15 @@
       a.pull-left(href="http://instagram.com/" + shot.user.name target="_blank")
         img.img-circle.media-object(src=shot.user.avatar width=48 height=48)
 
-      if jade.auth()
-        .pull-right
-          .action-button.delete-button
-            .ion-ios7-trash-outline
-          .action-button.print-button
-            .ion-ios7-printer-outline
+      .pull-right
+        .status-indicator
+
+        if jade.auth()
+          .auth-buttons
+            .action-button.print-button
+              .ion-ios7-printer-outline
+            .action-button.delete-button
+              .ion-ios7-trash-outline
 
       .media-body
         a(href=shot.link target="_blank")

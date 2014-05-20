@@ -72,11 +72,8 @@ Shot.on 'afterUpdate', (shot) ->
 Shot.on 'afterInsert', (shot) ->
   notify.emit 'shot.created', _.pick shot, '_id'
 
-Shot.on 'beforeRemove', (shot) ->
-  console.log shot
-
 Shot.on 'afterRemove', (shot) ->
-  console.log 'afterRemove', shot
+  notify.emit 'shot.removed', _.pick shot, '_id'
 
 
 

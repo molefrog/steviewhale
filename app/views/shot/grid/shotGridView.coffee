@@ -13,10 +13,10 @@ module.exports = class ShotGridView extends View
     @collection = new ShotCollection
 
     @subscribeEvent 'window-scrolled-bottom', @loadNextPortion
-    @subscribeEvent 'shot.created', @shotCreated
 
-    @listenTo @collection, "remove", =>
-      @masonry.layout()
+    @subscribeEvent 'shot.created', @shotCreated
+    @subscribeEvent 'shot.removed', @shotRemoved
+    @subscribeEvent 'shot.updated', @shotUpdated
 
     do @loadNextPortion
 
@@ -40,8 +40,8 @@ module.exports = class ShotGridView extends View
 
   loadNextPortion : ->
     # If there is no more data to load
-    if @collection.meta?
-      if @collection.meta.count >= @collection.meta.total
+    if @meta?
+      if @meta.count >= @meta.total
         return
 
     return unless do @startLoading
@@ -54,14 +54,21 @@ module.exports = class ShotGridView extends View
       query.max_timestamp = _.min @collection.map (s) ->
         moment( s.attributes.created ).unix()
 
-    @collection.fetch
+
+    tempCollection = new ShotCollection
+    tempCollection.fetch
       data : query
       error : =>
         do @stopLoading
 
       success : (models) =>
+        @meta = tempCollection.meta
+
         sorted = models.sortBy (model) ->
           -moment( model.get('created') ).unix()
+
+        sorted.forEach (m) =>
+          @collection.push m
 
         images = sorted.map (model) ->
           $('<img>').attr(src: model.get 'image_thumbnail')[0]
@@ -69,6 +76,7 @@ module.exports = class ShotGridView extends View
         views = sorted.map (model) =>
           view = new ShotGridItemView { model }
           view.render()
+          view.masonry = @masonry
           view
 
         viewEls = _.map views, (v) -> v.el
@@ -104,6 +112,8 @@ module.exports = class ShotGridView extends View
         view = new ShotGridItemView { model }
         view.render()
 
+        view.masonry = @masonry
+
         imagesLoaded( view.el ).on 'always', =>
           @$('.shot-grid').prepend view.el
           view.loadHighResolution()
@@ -114,6 +124,16 @@ module.exports = class ShotGridView extends View
           setTimeout =>
             view.$el.addClass 'shown'
           , 10
+
+  shotUpdated : (shot) ->
+    model = @collection.get shot._id
+    return unless model
+    model.set 'status', shot.status
+
+  shotRemoved : (shot) ->
+    model = @collection.get shot._id
+    return unless model
+    @collection.remove model
 
 
   render : ->

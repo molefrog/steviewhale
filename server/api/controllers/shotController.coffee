@@ -111,8 +111,7 @@ exports.delete = (req, res, next) ->
 
     _.map [ shot.image_standard, shot.image_low, shot.image_thumbnail, shot.user.avatar ], uploader.delete
 
-    Shot.remove({ _id : req.params.id })
-    .exec (err) ->
+    shot.remove (err) ->
       return next err if err
       res.json {}
 

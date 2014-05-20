@@ -47,6 +47,24 @@
 
   .photo-user
 
+    .status-indicator
+      &, &.initial
+        background-color #AAAAAA
+      &.printed
+        background-color #4EC47C
+      &.failed
+        background-color #E01E73
+      &.queued
+        background-color #E4EDA6
+
+      margin 5px auto
+      width 8px
+      height 8px
+      border-radius 20px
+      cursor pointer
+
+      transition background-color 0.3s ease
+
     .media
       margin-top 1px
 

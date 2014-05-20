@@ -9,13 +9,23 @@ module.exports = class ShotGridItemView extends View
   initialize: ->
     super
 
-    @listenTo @model, 'destroy', =>
-      @remove()
+    @listenTo @model, 'change:status', =>
+      do @updateStatus
+
+    @listenTo @model, 'remove', =>
+      @$el.removeClass 'shown'
+      setTimeout =>
+        @remove()
+        @masonry?.layout()
+      , 300
 
 
     @delegate "click", ".delete-button", @deleteHandler
     @delegate "click", ".print-button",  @printHandler
 
+  updateStatus : ->
+    @$('.status-indicator').removeClass('initial queued printed failed')
+    @$('.status-indicator').addClass( @model.get('status') )
   ##
   # Function loads high-res version of the photo
   ##
@@ -38,3 +48,7 @@ module.exports = class ShotGridItemView extends View
 
   getTemplateData : ->
     shot : @model.attributes
+
+  render : ->
+    super
+    do @updateStatus
