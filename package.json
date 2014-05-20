@@ -22,6 +22,7 @@
     "mime": "^1.2.11",
     "moment": "~2.5.1",
     "mongoose": "3.8.8",
+    "mongoose-lifecycle": "^1.0.0",
     "mongoose-multi-set": "~0.1.0",
     "nconf": "~0.6.9",
     "passport": "~0.2.0",

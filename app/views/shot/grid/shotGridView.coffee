@@ -1,7 +1,8 @@
 ShotGridItemView = require "./item/shotGridItemView"
 CollectionView   = require "views/base/collectionView"
 View             = require "views/base/base"
-ShotCollection  = require "collections/shotCollection"
+ShotCollection   = require "collections/shotCollection"
+Shot             = require "models/shot"
 
 module.exports = class ShotGridView extends View
   _.extend @prototype, Chaplin.EventBroker
@@ -10,7 +11,9 @@ module.exports = class ShotGridView extends View
     super
     do @render
     @collection = new ShotCollection
+
     @subscribeEvent 'window-scrolled-bottom', @loadNextPortion
+    @subscribeEvent 'shot.created', @shotCreated
 
     @listenTo @collection, "remove", =>
       @masonry.layout()
@@ -89,6 +92,28 @@ module.exports = class ShotGridView extends View
 
               delay += _.random(10, 60)
           , 0
+
+
+  shotCreated : (shot) ->
+    shot = new Shot _id: shot._id
+
+    shot.fetch
+      success : (model) =>
+        @collection.unshift model
+
+        view = new ShotGridItemView { model }
+        view.render()
+
+        imagesLoaded( view.el ).on 'always', =>
+          @$('.shot-grid').prepend view.el
+          view.loadHighResolution()
+
+          @masonry.prepended( view.el )
+          @masonry.layout()
+
+          setTimeout =>
+            view.$el.addClass 'shown'
+          , 10
 
 
   render : ->

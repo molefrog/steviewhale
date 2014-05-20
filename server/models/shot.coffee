@@ -58,5 +58,25 @@ shotSchema = new Schema
   image_original : Schema.Types.Mixed
 
 shotSchema.methods.queue = require "./shotQueue"
+shotSchema.plugin require 'mongoose-lifecycle'
 
-module.exports = mongoose.model "Shot", shotSchema
+module.exports = Shot =  mongoose.model "Shot", shotSchema
+
+
+notify = require '../utils/notify'
+_ = require "lodash"
+
+Shot.on 'afterUpdate', (shot) ->
+  notify.emit 'shot.updated', _.pick shot, [ '_id', 'status' ]
+
+Shot.on 'afterInsert', (shot) ->
+  notify.emit 'shot.created', _.pick shot, '_id'
+
+Shot.on 'beforeRemove', (shot) ->
+  console.log shot
+
+Shot.on 'afterRemove', (shot) ->
+  console.log 'afterRemove', shot
+
+
+

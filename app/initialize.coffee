@@ -20,4 +20,10 @@ $ ->
     if $(window).scrollTop() + $(window).height() >= $(document).height() - 200
       Chaplin.mediator.publish 'window-scrolled-bottom', $(window).width(), $(window).height()
 
+  socket = do io.connect
 
+  listenEvent = [ 'shot.updated', 'shot.created', 'shot.deleted' ]
+
+  _.each listenEvent, (_event) ->
+    socket.on _event, (data) ->
+      Chaplin.mediator.publish _event, data

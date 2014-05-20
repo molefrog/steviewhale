@@ -4,3 +4,6 @@ socketio = require "socket.io"
 
 module.exports = io = socketio.listen server,
   log: false
+
+notify = require '../../utils/notify'
+notify.io = io

@@ -10,7 +10,8 @@
     "animate.css": "~3.1.0",
     "masonry": "~3.1.5",
     "moment": "~2.6.0",
-    "imagesloaded": "~3.1.5"
+    "imagesloaded": "~3.1.5",
+    "socket.io-client": "~0.9.16"
   },
   "overrides": {
     "backbone": {
@@ -19,6 +20,9 @@
         "jquery": "*"
       },
       "main": "backbone.js"
+    },
+    "socket.io-client" : {
+      "main" : "dist/socket.io.js"
     },
     "showdown": {
       "main": "compressed/showdown.js"
