@@ -191,6 +191,14 @@ renderLayout = (shot, source, avatar) ->
 
   ctx.translate 0, P.width + mediaHeight
 
+  ctx.lineWidth   = 0.5
+  ctx.strokeStyle = "#bbb"
+
+  ctx.beginPath()
+  ctx.moveTo 0, 0
+  ctx.lineTo P.width, 0
+  ctx.stroke()
+
   footerHeight =  P.height - P.width - mediaHeight
   if P.footer.backgroundColor
     ctx.fillStyle = P.footer.backgroundColor
