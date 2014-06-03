@@ -11,7 +11,7 @@
     "masonry": "~3.1.5",
     "moment": "~2.6.0",
     "imagesloaded": "~3.1.5",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~1.0.4"
   },
   "overrides": {
     "backbone": {
@@ -21,8 +21,8 @@
       },
       "main": "backbone.js"
     },
-    "socket.io-client" : {
-      "main" : "dist/socket.io.js"
+    "socket.io-client": {
+      "main": "socket.io.js"
     },
     "showdown": {
       "main": "compressed/showdown.js"
