@@ -69,30 +69,62 @@ loadRemoteImage = (remote) ->
     deferred.resolve img
   deferred.promise
 
+loadLocalImage = (path) ->
+  deferred = do Q.defer
+  fs.readFile path, (err, body) ->
+    return deferred.reject err if err
+
+    img = new Canvas.Image
+    img.src = body
+
+    deferred.resolve img
+  deferred.promise
+
+
 ###
 # Currently works only for square images
 ###
-placeImage = (ctx, image, cx, cy, w, options = {type: 'square'}) ->
+placeImage = (ctx, image, cx, cy, w, h, options = {type: 'square'}) ->
   ctx.fillStyle = ctx.createPattern image, "repeat"
 
   ctx.save()
   ctx.translate cx, cy
 
+  zoom = 1
+
   switch options.type
     when 'square'
-      ctx.beginPath();
+      ctx.beginPath()
       ctx.moveTo(-0.5 * w, -0.5 * w)
       ctx.lineTo( 0.5 * w, -0.5 * w)
       ctx.lineTo( 0.5 * w,  0.5 * w)
       ctx.lineTo(-0.5 * w,  0.5 * w)
       ctx.closePath()
+
+      # This fill fit the picture into the area
+      zoom = w / image.width
+
     when 'circle'
-      ctx.beginPath();
+      ctx.beginPath()
       ctx.arc 0, 0, 0.5 * w, 0, 2 * Math.PI, false
       ctx.closePath()
 
-  # This fill fit the picture into the area
-  zoom = w / image.width
+      # This fill fit the picture into the area
+      zoom = w / image.width
+
+    when 'fitHeight'
+      # This fill fit the picture into the area
+      zoom = h / image.height
+
+      w = image.width * zoom
+      ctx.beginPath();
+      ctx.moveTo(-0.5 * w, -0.5 * h)
+      ctx.lineTo( 0.5 * w, -0.5 * h)
+      ctx.lineTo( 0.5 * w,  0.5 * h)
+      ctx.lineTo(-0.5 * w,  0.5 * h)
+      ctx.closePath()
+
+
 
   ctx.scale(zoom, zoom)
   ctx.translate(-0.5 * image.width, -0.5 * image.height)
@@ -123,7 +155,7 @@ uploadCanvasToStorage = (canvas) ->
 ###
 # Main rendering function
 ###
-renderLayout = (shot, source, avatar) ->
+renderLayout = (shot, source, avatar, banner) ->
   canvas = new Canvas P.width, P.height
   ctx = canvas.getContext "2d"
 
@@ -134,7 +166,7 @@ renderLayout = (shot, source, avatar) ->
   ctx.fillRect 0, 0, P.width, P.height
 
   margin = P.width * P.margin
-  placeImage(ctx, source, P.width * 0.5, P.width * 0.5, P.width - 2 * margin)
+  placeImage(ctx, source, P.width * 0.5, P.width * 0.5, P.width - 2 * margin, P.width - 2 * margin)
 
 
   h = P.height - P.width
@@ -146,9 +178,6 @@ renderLayout = (shot, source, avatar) ->
 
   avatarWidth = mediaWidth * P.avatar.width
 
-  if P.media.backgroundColor
-    ctx.fillStyle = P.media.backgroundColor
-    ctx.fillRect 0, P.width, P.width, mediaHeight
 
   do ctx.save
 
@@ -157,7 +186,7 @@ renderLayout = (shot, source, avatar) ->
   placeImage(ctx, avatar,
     0.5 * avatarWidth,
     0.5 * avatarWidth + mediaPadding,
-    avatarWidth, type: 'circle')
+    avatarWidth, avatarWidth, type: 'circle')
 
   # Draw title
   ctx.translate avatarWidth + P.avatar.margin * mediaWidth, 0
@@ -188,46 +217,21 @@ renderLayout = (shot, source, avatar) ->
   do ctx.restore
 
   # Draw footer
-
   ctx.translate 0, P.width + mediaHeight
-
-  ctx.lineWidth   = 0.5
-  ctx.strokeStyle = "#bbb"
-
-  ctx.beginPath()
-  ctx.moveTo 0, 0
-  ctx.lineTo P.width, 0
-  ctx.stroke()
-
   footerHeight =  P.height - P.width - mediaHeight
-  if P.footer.backgroundColor
-    ctx.fillStyle = P.footer.backgroundColor
-    ctx.fillRect 0, 0, P.width,footerHeight
 
-  ctx.translate 0, P.footer.padding * footerHeight
-  ctx.textBaseline = 'top'
-  ctx.textAlign    = 'center'
-
-  footerTitleSize = (P.width / P.fontUnit * P.footer.title.size)
-  ctx.fillStyle = P.footer.title.color
-  ctx.font = "#{P.footer.title.fontFace} #{footerTitleSize.toFixed(0)}px #{P.footer.title.font}"
-  ctx.fillText P.footer.title.text, P.width * 0.5, 0
-
-  footerSubtitleSize = (P.width / P.fontUnit * P.footer.subtitle.size)
-  ctx.font = "#{P.footer.subtitle.fontFace} #{footerSubtitleSize.toFixed(0)}px #{P.footer.subtitle.font}"
-  ctx.fillStyle = P.footer.subtitle.color
-  ctx.fillText P.footer.subtitle.text, P.width * 0.5, footerTitleSize
+  bannerHeight = footerHeight * (1 - 2 * P.footer.padding)
+  placeImage ctx, banner, 0.5 * P.width, 0.5 * bannerHeight, 0, bannerHeight, type: 'fitHeight'
 
   uploadCanvasToStorage canvas
+
 
 module.exports = render = (shot) ->
   # First, load all the images, then render
   Q.all([
     loadRemoteImage( uploader.makeUrl shot.image_standard )
     loadRemoteImage( uploader.makeUrl shot.user.avatar )
+    loadLocalImage( path.resolve(path.join(__dirname, P.footer.banner)) )
   ]).then (images) ->
-    renderLayout(shot, images[0], images[1])
-
-
-
+    renderLayout(shot, images[0], images[1], images[2])
 

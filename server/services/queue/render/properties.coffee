@@ -9,7 +9,6 @@ module.exports = P =
 
   media :
     height : 0.65
-    backgroundColor : false
     padding : 0.025
 
   avatar :
@@ -31,18 +30,6 @@ module.exports = P =
     lineHeight : 1.1
 
   footer:
-    backgroundColor:  false
-    padding: 0
-    title:
-      text: 'steviewhale.com'
-      font: 'PTSansNarrow'
-      fontFace : 'bold'
-      size : 18
-      color : '#000'
+    padding: 0.15
+    banner: 'assets/logo.jpg'
 
-    subtitle:
-      text: 'Печать фотографий из Инстаграма'
-      font: 'PTSans'
-      fontFace : 'normal'
-      size : 16
-      color : '#111'
