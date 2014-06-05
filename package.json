@@ -25,6 +25,7 @@
     "mongoose-lifecycle": "^1.0.0",
     "mongoose-multi-set": "~0.1.0",
     "nconf": "~0.6.9",
+    "node-logentries": "^0.1.4",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
     "password-hash": "~1.2.1",
