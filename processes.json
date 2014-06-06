@@ -1,0 +1,5 @@
+[{
+  "name"        : "steviewhale",
+  "script"      : "server/index.coffee",
+  "args"        : "['--env=production']"
+}]
