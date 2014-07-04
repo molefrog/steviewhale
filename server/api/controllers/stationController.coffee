@@ -2,14 +2,15 @@ Station = require "../../models/station"
 _       = require "lodash"
 uid     = require "uid"
 
-allowedReadFields = [ 
-  "_id" 
-  "name" 
+allowedReadFields = [
+  "_id"
+  "name"
   "title"
-  "subtitle" 
-  "description" 
-  "instructions" 
-  "created" 
+  "subtitle"
+  "description"
+  "hashtag"
+  "instructions"
+  "created"
   "online"
   "streaming"
 ]
@@ -19,6 +20,7 @@ allowedWriteFields = [
   "name"
   "title"
   "subtitle"
+  "hashtag"
   "description"
   "instructions"
 ]
@@ -44,13 +46,13 @@ exports.index = (req, res, next) ->
   Station.find({})
   .select( allowedReadFields.join " " )
   .exec (err, items) ->
-    if err 
+    if err
       return next err
 
     res.json items
 
 ###
-# Get station with specified name 
+# Get station with specified name
 ###
 exports.show = (req, res, next) ->
   res.json _.pick req.station, allowedReadFields
@@ -59,7 +61,7 @@ exports.show = (req, res, next) ->
 # Create new print station
 ###
 exports.create = (req, res, next) ->
-  # Filter fields 
+  # Filter fields
   fields = _.pick req.body, allowedWriteFields
 
   # Generate random secret key for this station
@@ -99,15 +101,7 @@ exports.delete = (req, res, next) ->
 exports.secret = (req, res, next) ->
   res.json _.pick req.station, "secret"
 
-###
-# Rename station (change URL)
-###
-exports.rename = (req, res, next) ->
-  Station.update { name : req.station.name }, { name : req.body.name }, (err) ->
-    if err 
-      return next err
 
-    res.json {}
 
 
 

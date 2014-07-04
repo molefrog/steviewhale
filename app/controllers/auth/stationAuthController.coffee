@@ -2,8 +2,7 @@ AuthController    = require "./authController"
 
 Station           = require "models/station"
 StationEditView   = require "views/station/edit/stationEditView"
-StationCreateView = require "views/station/create/stationCreateView" 
-StationRenameView = require "views/station/rename/stationRenameView"
+StationCreateView = require "views/station/create/stationCreateView"
 
 SiteView        = require "views/site/siteView"
 
@@ -28,14 +27,3 @@ module.exports = class stationAuthController extends AuthController
     @view = new StationCreateView
       region : "main"
       autoRender : true
-
-  rename : (params) ->
-    @model = new Station
-      name : params.name
-
-    @view = new StationRenameView
-      model : @model
-      region : "main"
-
-    @model.fetch().then =>
-      do @view.render

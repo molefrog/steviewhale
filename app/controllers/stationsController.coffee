@@ -14,7 +14,6 @@ module.exports = class StationsController extends BaseController
   beforeAction: ->
     super
 
-  # Index action. Will just display a list of users.
   index: (params) ->
     @collection = new StationCollection
     @view = new StationListView

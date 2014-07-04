@@ -11,9 +11,11 @@ module.exports = class StationEditView extends View
 
   save : ->
     fields =
+      name        : @$(".name-input").val()
       title       : @$(".title-input").val()
       subtitle    : @$(".subtitle-input").val()
       description : @$(".desc-input").val()
+      hashtag     : @$(".hashtag-input").val()
       instructions: @$(".instructions-input").val()
 
     @model.save fields,

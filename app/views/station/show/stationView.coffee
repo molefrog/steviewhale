@@ -7,7 +7,7 @@ module.exports = class StationView extends View
   initialize : ->
     @delegate "click", ".delete-confirm-button", @deleteStation
     @delegate "click", ".secret-button", @showSecret
-  
+
   deleteStation : ->
     @$(".delete-modal").modal("hide")
     @model.destroy
@@ -15,7 +15,7 @@ module.exports = class StationView extends View
         Chaplin.utils.redirectTo "stations#index"
 
   showSecret : ->
-    @model.secret (secret) => 
+    @model.secret (secret) =>
       @$(".secret-modal .secret-field").text(secret)
       @$(".secret-modal").modal("show")
 
@@ -39,7 +39,7 @@ module.exports = class StationView extends View
       wsAddress = "ws://#{window.location.hostname}:3030/#{@model.attributes.name}"
 
       @client = new WebSocket( wsAddress )
-      @player = new jsmpeg @client, 
+      @player = new jsmpeg @client,
         canvas : canvas
 
   getTemplateData : ->

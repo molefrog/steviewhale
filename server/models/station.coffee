@@ -2,36 +2,42 @@ _        = require "lodash"
 mongoose = require "mongoose"
 Schema   = mongoose.Schema
 
-schemaOptions = 
-  toJSON : 
+schemaOptions =
+  toJSON :
     virtuals : true
-  toObject : 
+  toObject :
     virtuals : true
 
-stationSchema = new Schema 
+stationSchema = new Schema
   # The name of the station is used as a main id
-  name : 
-    type      : String 
-    unique    : true 
+  name :
+    type      : String
+    unique    : true
     index     : true
     lowercase : true
     trim      : true
 
-  # Secret key that is used by station client 
+  # Secret key that is used by station client
   secret :
     type : String
     required : true
 
+  # Hashtag that identifies the station
+  hashtag:
+    type: String
+    lowercase: true
+    trim: true
+
   # The station's short title, e.g. "My home station"
   title :
-    type : String 
+    type : String
     required : true
 
-  subtitle : 
+  subtitle :
     type : String
 
   # More detailed description of the station
-  description : 
+  description :
     type : String
 
   # Some instructions of how to get photo

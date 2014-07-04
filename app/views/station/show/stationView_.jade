@@ -1,29 +1,25 @@
 .container
   .station-item
     h1
-      =station.title 
+      =station.title
       | &nbsp;
       case station.online
-        when true 
+        when true
           span.label.label-success Онлайн
         default
           span.label.label-warning Оффлайн
-      h2 
+      h2
         if jade.auth()
           .btn-group.btn-group-sm
             button.btn.btn-default.dropdown-toggle(type="button" data-toggle="dropdown")
               i.fa.fa-gear
-              | 
+              | &nbsp;
               span.caret
             ul.dropdown-menu(role="menu")
               li
                 a.edit-button(href=jade.url('station_edit', {name : station.name}))
                   i.fa.fa-edit
                   |  Редактировать
-              li
-                a.edit-button(href=jade.url('station_rename', {name : station.name}))
-                  i.fa.fa-cloud
-                  |  Сменить URL
 
               li
                 a.secret-button(href="#")
@@ -34,7 +30,7 @@
                 a.delete-button(href="#" data-toggle="modal" data-target=".delete-modal")
                   i.fa.fa-trash-o
                   |  Удалить
-        |         
+        | &nbsp;
         small= station.subtitle
 
     .station-info.row
@@ -43,7 +39,7 @@
 
       .station-title.col-md-8
         h3 Как забирать фотографии с этой станции?
-        
+
         .markdown
           != jade.markdown(station.instructions)
     .markdown
@@ -55,8 +51,8 @@
         .modal-header
           h4.modal-title Удалить станцию?
         .modal-body
-          | Внимательно подумайте перед удалением станции, возможно, она вам 
-          | еще пригодится! 
+          | Внимательно подумайте перед удалением станции, возможно, она вам
+          | еще пригодится!
         .modal-footer.text-center
           button.delete-confirm-button.btn.btn-primary Да!
           button.btn.btn-default(data-dismiss="modal") Нет, я передумал.

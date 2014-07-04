@@ -8,13 +8,12 @@ module.exports = class StationCreateView extends View
     @delegate "click", ".register-button", @register
 
   register : ->
-    fields = 
+    fields =
       title : @$(".title-input").val()
       subtitle : @$(".subtitle-input").val()
 
-    station = new Station fields
-
-    station.save null,
+    dummy = new StationCollection
+    dummy.create fields,
       success : ->
         Chaplin.utils.redirectTo("stations#index")
 

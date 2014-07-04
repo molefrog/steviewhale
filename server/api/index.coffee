@@ -23,7 +23,6 @@ router.get    "/stations/:station",        StationController.show
 router.delete "/stations/:station",        Authenticated, StationController.delete
 router.post   "/stations",                 Authenticated, StationController.create
 router.put    "/stations/:station",        Authenticated, StationController.update
-router.post   "/stations/:station/rename", Authenticated, StationController.rename
 router.get    "/stations/:station/secret", Authenticated, StationController.secret
 
 router.get    "/shots",          ShotController.index
