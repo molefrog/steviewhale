@@ -6,6 +6,7 @@ http     = require "http"
 Q        = require "q"
 knoxMpu  = require "knox-mpu"
 mime     = require "mime"
+needle   = require "needle"
 
 config = require "./config"
 
@@ -29,21 +30,18 @@ module.exports.fromRemote = (remote, location) ->
   filename = "#{uid 20}#{path.extname parsed.pathname}"
   destination = path.join config.get('env'), location, filename
 
-  http.get(remote, (res) ->
-    if res.statusCode != 200
-      return deferred.reject "Wrong status code!"
+  needle.head remote, (error, res) ->
+    return deferred.reject(error) if error
+    return deferred.reject('Wrong status code!') unless res.statusCode is 200
 
     headers =
       'Content-Length': res.headers['content-length']
-      'Content-Type': res.headers['content-type']
-      'x-amz-acl': 'public-read'
+      'Content-Type':   res.headers['content-type']
+      'x-amz-acl':      'public-read'
 
-    storage.putStream res, destination, headers, (err, res) ->
+    storage.putStream needle.get(remote), destination, headers, (err, res) ->
       return deferred.reject err if err
-
       deferred.resolve destination
-  ).on 'error', (err) ->
-    deferred.reject err
 
   deferred.promise
 
